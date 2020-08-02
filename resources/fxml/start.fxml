@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="245.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.0" minWidth="10.0" prefWidth="179.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="436.0" minWidth="10.0" prefWidth="131.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="143.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="143.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="92.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="92.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label alignment="TOP_LEFT" text="Rent a car">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnLogin" mnemonicParsing="false" onAction="#loginAction" text="Logujte se" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="Infinity"/>
+      <Label text="Nemate korisnički račun?" GridPane.rowIndex="2" />
+      <Button fx:id="btnRegistration" mnemonicParsing="false" onAction="#registrationAction" text="Registrujte se" GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="Infinity"/>
+      <Label text="Za pristup aplikaciji" GridPane.rowIndex="1" />
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</GridPane>

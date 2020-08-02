@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="366.0" prefWidth="515.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="503.0" minWidth="10.0" prefWidth="480.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="93.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="313.0" minHeight="10.0" prefHeight="273.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <TableView fx:id="tableViewCars" prefHeight="263.0" prefWidth="480.0" GridPane.rowIndex="1">
+        <columns>
+          <TableColumn fx:id="colName" prefWidth="75.0" text="Naziv" />
+            <TableColumn fx:id="colNmbSeats" prefWidth="73.0" text="Broj sjedišta" />
+            <TableColumn fx:id="colNmbDoors" prefWidth="105.0" text="Broj vrata" />
+            <TableColumn fx:id="colEngine" prefWidth="75.0" text="Gorivo" />
+            <TableColumn fx:id="colType" prefWidth="75.0" text="Vrsta" />
+            <TableColumn fx:id="colTransmission" prefWidth="99.0" text="Mjenjač" />
+        </columns>
+      </TableView>
+      <HBox prefHeight="66.0" prefWidth="517.0">
+         <children>
+            <Button fx:id="btnReservationClient" mnemonicParsing="false" onAction="#reservationClientAction" text="Rezerviši" />
+            <Button fx:id="btnDetailsCar" mnemonicParsing="false" onAction="#detailsCarAction" text="Detalji" />
+            <Button fx:id="btnPriceRent" mnemonicParsing="false" onAction="#priceRentAction" text="Cijena" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</GridPane>

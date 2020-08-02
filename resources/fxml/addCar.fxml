@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="406.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="103.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <Label text="Brend:" />
+        <Label text="Model:" GridPane.rowIndex="1" />
+        <Label text="Vrsta:" GridPane.rowIndex="2" />
+        <Label text="Godište:" GridPane.rowIndex="3" />
+        <Label text="Gorivo:" GridPane.rowIndex="4" />
+        <Label text="Potrošnja goriva:" GridPane.rowIndex="5" />
+        <Label text="Broj sjedišta:" GridPane.rowIndex="6" />
+        <Label text="Broj vozila:" GridPane.rowIndex="7" />
+        <Label text="Mjenjač:" GridPane.rowIndex="8" />
+        <Label text="Boja:" GridPane.rowIndex="9" />
+        <Label text="Dostupnost:" GridPane.rowIndex="11" />
+        <TextField fx:id="fldBrand" GridPane.columnIndex="1" />
+        <TextField fx:id="fldModel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="fldYear" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <TextField fx:id="fldFuelConumption" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <TextField fx:id="fldColor" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+        <TextField fx:id="fldAvailability" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+        <Label text="Cijena po danu:" GridPane.rowIndex="10" />
+        <TextField fx:id="fldPrice" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+      <ChoiceBox fx:id="choiceEngine" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <Spinner fx:id="spinnerNmbSeats" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Spinner fx:id="spinnerNmbDoors" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="12">
+        <buttons>
+          <Button fx:id="btnAddConfirm" mnemonicParsing="false" onAction="#addConfirmAction" text="OK" />
+        </buttons>
+      </ButtonBar>
+      <ChoiceBox fx:id="choiceType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    </children>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+</GridPane>

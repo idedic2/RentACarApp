@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="235.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label text="Za platiti:" />
+      <TextField fx:id="fldPrice" GridPane.columnIndex="1" />
+      <Label text="Broj kartice:" GridPane.rowIndex="1" />
+      <TextField fx:id="fldNmbCard" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label text="Datum isteka:" GridPane.rowIndex="2" />
+      <DatePicker fx:id="fldExpireDate" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label text="CVC:" GridPane.rowIndex="3" />
+      <TextField fx:id="fldCode" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <buttons>
+          <Button fx:id="btnPayingConfirm" mnemonicParsing="false" onAction="#payingConfirmAction" text="OK" />
+            <Button fx:id="btnPayingCancel" mnemonicParsing="false" onAction="#payingCancelAction" text="Odustani" />
+        </buttons>
+      </ButtonBar>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</GridPane>

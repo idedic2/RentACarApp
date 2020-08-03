@@ -1,0 +1,6 @@
+.ispravnoPolje{
+    -fx-background-color: yellowgreen;
+}
+.neispravnoPolje{
+    -fx-background-color: coral;
+}

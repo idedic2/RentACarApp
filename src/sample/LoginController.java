@@ -104,12 +104,12 @@ public class LoginController {
     }
     public void loginConfirmAction(ActionEvent actionEvent) {
         boolean usernameOk=true, passwordOk=true;
-        if (fldUsername.getText().isEmpty() || fldUsername.getText().length() < 3) {
+        if (fldUsername.getText().isEmpty()) {
             showAlert("Greška", "Unesite korisničko ime", Alert.AlertType.ERROR);
             usernameOk=false;
             return;
         }
-        if (fldPassword.getText().isEmpty() || fldPassword.getText().length() < 4) {
+        if (fldPassword.getText().isEmpty()) {
             showAlert("Greška", "Unesite šifru", Alert.AlertType.ERROR);
             passwordOk=false;
             return;

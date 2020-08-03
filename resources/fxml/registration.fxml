@@ -5,8 +5,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import java.net.URL?>
 <GridPane fx:controller="sample.RegistrationController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-  <columnConstraints>
+    <stylesheets>
+        <URL value="@/css/rentacar.css" />
+    </stylesheets>
+    <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -34,7 +38,7 @@
         <Label text="Korisničko ime:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
         <Label text="Lozinka:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
         <TextField fx:id="fldUsername" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-        <TextField fx:id="fldPassword" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <PasswordField fx:id="fldPassword" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
         <buttons>
           <Button fx:id="btnRegistrationConfirm" mnemonicParsing="false" onAction="#registrationConfirmAction" text="OK" />

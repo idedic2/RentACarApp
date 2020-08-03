@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="490.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="490.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CarDetailsController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="133.0" minWidth="0.0" prefWidth="132.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="161.0" />
@@ -33,7 +33,7 @@
       <Label text="Gorivo:" GridPane.rowIndex="4" />
       <Label text="Potrošnja goriva:" GridPane.rowIndex="5" />
       <Label text="Broj sjedišta:" GridPane.rowIndex="6" />
-      <Label fx:id="fldNmbDoors" text="Broj vrata:" GridPane.rowIndex="7" />
+      <Label text="Broj vrata:" GridPane.rowIndex="7" />
       <Label text="Mjenjač:" GridPane.rowIndex="8" />
       <Label text="Boja:" GridPane.rowIndex="9" />
       <Label text="Dostupnost:" GridPane.rowIndex="11" />
@@ -44,7 +44,7 @@
       <TextField fx:id="fldTransmission" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <TextField fx:id="fldFuelConsumption" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <TextField fx:id="fldNmbSeats" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <TextField GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <TextField fx:id="fldNmbDoors" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <TextField fx:id="fldEngine" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <TextField fx:id="fldColor" GridPane.columnIndex="1" GridPane.rowIndex="9" />
       <TextField fx:id="fldAvailability" GridPane.columnIndex="1" GridPane.rowIndex="11" />

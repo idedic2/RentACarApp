@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="578.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="578.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ReservationEvidentionController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="420.0" minWidth="10.0" prefWidth="420.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="290.0" minWidth="10.0" prefWidth="180.0" />
@@ -15,12 +15,12 @@
       <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView prefHeight="134.0" prefWidth="373.0" GridPane.rowIndex="1">
+      <TableView fx:id="tableViewReservations" prefHeight="134.0" prefWidth="373.0" GridPane.rowIndex="1">
         <columns>
-          <TableColumn prefWidth="75.0" text="Klijent" />
-          <TableColumn prefWidth="75.0" text="Vozilo" />
-            <TableColumn prefWidth="130.0" text="Datum preuzimanja" />
-            <TableColumn prefWidth="139.0" text="Datum vraćanja" />
+          <TableColumn fx:id="colClient" prefWidth="75.0" text="Klijent" />
+          <TableColumn fx:id="colVehicle" prefWidth="75.0" text="Vozilo" />
+            <TableColumn fx:id="colPickupDate" prefWidth="130.0" text="Datum preuzimanja" />
+            <TableColumn fx:id="colReturnDate" prefWidth="139.0" text="Datum vraćanja" />
         </columns>
       </TableView>
       <HBox prefHeight="60.0" prefWidth="404.0">

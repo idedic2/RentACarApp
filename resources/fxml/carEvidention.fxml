@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:controller="sample.CarEvidentionController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -16,7 +16,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
     <children>
-        <TreeTableView fx:id="VozilaTreeTableView" prefHeight="200.0" prefWidth="903.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
+        <TreeTableView fx:id="treeTableViewCars" prefHeight="200.0" prefWidth="903.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
             <columns>
                 <TreeTableColumn fx:id="colBrand" prefWidth="75.0" text="Brend" />
                 <TreeTableColumn fx:id="colModel" prefWidth="75.0" text="Model" />
@@ -32,7 +32,7 @@
                 <TreeTableColumn fx:id="colAvailability" prefWidth="75.0" text="Dostupnost" />
             </columns>
         </TreeTableView>
-        <HBox fx:id="treeTableViewCars" prefHeight="31.0" prefWidth="515.0">
+        <HBox  prefHeight="31.0" prefWidth="515.0">
             <children>
                 <Button fx:id="btnAddCar" mnemonicParsing="false" onAction="#addCarAction" text="Dodaj vozilo" />
                 <Button fx:id="btnEditCar" mnemonicParsing="false" onAction="#editCarAction" text="Izmijeni vozilo">

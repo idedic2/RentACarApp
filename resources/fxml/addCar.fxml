@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="406.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="406.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddCarController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="103.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
@@ -48,7 +48,7 @@
       <ChoiceBox fx:id="choiceEngine" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <Spinner fx:id="spinnerNmbSeats" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <Spinner fx:id="spinnerNmbDoors" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <ChoiceBox fx:id="choiceTransmission" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="12">
         <buttons>
           <Button fx:id="btnAddConfirm" mnemonicParsing="false" onAction="#addConfirmAction" text="OK" />

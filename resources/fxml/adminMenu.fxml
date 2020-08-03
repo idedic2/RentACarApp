@@ -4,6 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <GridPane fx:controller="sample.AdminMenuController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="141.0" prefWidth="447.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="130.0" />
@@ -15,7 +17,14 @@
   </rowConstraints>
    <children>
       <Label text="Odaberite akciju:" />
-      <ChoiceBox fx:id="choiceAction" prefWidth="150.0" GridPane.columnIndex="1" />
+      <ChoiceBox fx:id="choiceAction" prefWidth="150.0" GridPane.columnIndex="1" >
+       <items>
+           <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Evidencija vozila" />
+               <String fx:value="Upravljanje rezervacijama" />
+           </FXCollections>
+       </items>
+      </ChoiceBox>
       <Button fx:id="btnChoiceConfirm" mnemonicParsing="false" onAction="#choiceConfirmAction" text="OK" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    </children>
    <padding>

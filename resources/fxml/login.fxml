@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane fx:controller="sample.LoginController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="195.0" prefWidth="532.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="195.0" prefWidth="532.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -25,9 +25,9 @@
       </Label>
       <Label text="Korisničko ime:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
       <Label text="Lozinka:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-      <PasswordField fx:id="fldUsername" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField fx:id="fldPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <RadioButton fx:id="radioClient" mnemonicParsing="false" text="Klijent" GridPane.rowIndex="3">
+      <PasswordField fx:id="fldPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="fldUsername" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <RadioButton fx:id="radioClient" mnemonicParsing="false" text="Client" GridPane.rowIndex="3">
          <toggleGroup>
             <ToggleGroup fx:id="toggleGroup" />
          </toggleGroup>

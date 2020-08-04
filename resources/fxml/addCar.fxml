@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="406.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="287.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@/css/rentacar.css" />
+    </stylesheets>
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="103.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
     </columnConstraints>
     <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -24,37 +30,97 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <Label text="Brend:" />
-        <Label text="Model:" GridPane.rowIndex="1" />
-        <Label text="Vrsta:" GridPane.rowIndex="2" />
-        <Label text="Godište:" GridPane.rowIndex="3" />
-        <Label text="Gorivo:" GridPane.rowIndex="4" />
-        <Label text="Potrošnja goriva:" GridPane.rowIndex="5" />
-        <Label text="Broj sjedišta:" GridPane.rowIndex="6" />
-        <Label text="Broj vozila:" GridPane.rowIndex="7" />
-        <Label text="Mjenjač:" GridPane.rowIndex="8" />
-        <Label text="Boja:" GridPane.rowIndex="9" />
-        <Label text="Dostupnost:" GridPane.rowIndex="11" />
-        <TextField fx:id="fldBrand" GridPane.columnIndex="1" />
-        <TextField fx:id="fldModel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <TextField fx:id="fldYear" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-        <TextField fx:id="fldFuelConumption" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <TextField fx:id="fldColor" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-        <TextField fx:id="fldAvailability" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-        <Label text="Cijena po danu:" GridPane.rowIndex="10" />
-        <TextField fx:id="fldPrice" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-      <ChoiceBox fx:id="choiceEngine" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-      <Spinner fx:id="spinnerNmbSeats" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <Spinner fx:id="spinnerNmbDoors" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <ChoiceBox fx:id="choiceTransmission" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="12">
+        <Label text="Brend:" GridPane.rowIndex="1" />
+        <Label text="Model:" GridPane.rowIndex="2" />
+        <Label text="Vrsta:" GridPane.rowIndex="3" />
+        <Label text="Godište:" GridPane.rowIndex="4" />
+        <Label text="Gorivo:" GridPane.rowIndex="5" />
+        <Label text="Potrošnja goriva:" GridPane.rowIndex="6" />
+        <Label text="Broj sjedišta:" GridPane.rowIndex="7" />
+        <Label text="Broj vozila:" GridPane.rowIndex="8" />
+        <Label text="Mjenjač:" GridPane.rowIndex="9" />
+        <Label text="Boja:" GridPane.rowIndex="10" />
+        <Label text="Dostupnost:" GridPane.rowIndex="12" />
+        <TextField fx:id="fldBrand" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="fldModel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <TextField fx:id="fldColor" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+        <Label text="Cijena po danu:" GridPane.rowIndex="11" />
+      <ChoiceBox fx:id="choiceEngine" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Dizel" />
+                <String fx:value="Benzin" />
+            </FXCollections>
+        </items>
+        </ChoiceBox>
+      <Spinner fx:id="spinnerNmbSeats" amountToStepBy="1" editable="false" max="20" min="1" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Spinner fx:id="spinnerNmbDoors" amountToStepBy="1" editable="false" max="20" min="1" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <ChoiceBox fx:id="choiceTransmission" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Automatik" />
+                <String fx:value="Manuelni" />
+            </FXCollections>
+        </items>
+        </ChoiceBox>
+      <ButtonBar prefHeight="30.0" prefWidth="241.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="14">
         <buttons>
           <Button fx:id="btnAddConfirm" mnemonicParsing="false" onAction="#addConfirmAction" text="OK" />
+            <Button fx:id="btnCloseAddCar" mnemonicParsing="false" onAction="#CloseAddCarAction" prefHeight="25.0" prefWidth="162.0" text="Zatvori" />
         </buttons>
       </ButtonBar>
-      <ChoiceBox fx:id="choiceType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <ChoiceBox fx:id="choiceType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Putnicki automobil" />
+                <String fx:value="Luksuzni automobil" />
+                <String fx:value="Transportno vozilo" />
+            </FXCollections>
+        </items>
+        </ChoiceBox>
+      <Label text="Naziv:" />
+      <TextField fx:id="fldName" GridPane.columnIndex="1" />
+      <CheckBox fx:id="checkboxAvailability" mnemonicParsing="false" text="DOSTUPNO" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+      <ComboBox fx:id="comboYear" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" >
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <Integer fx:value="2010" />
+                <Integer fx:value="2011" />
+                <Integer fx:value="2012" />
+                <Integer fx:value="2013" />
+                <Integer fx:value="2014" />
+                <Integer fx:value="2015" />
+                <Integer fx:value="2016" />
+                <Integer fx:value="2017" />
+                <Integer fx:value="2018" />
+                <Integer fx:value="2019" />
+                <Integer fx:value="2020" />
+            </FXCollections>
+        </items>
+      </ComboBox>
+      <ComboBox fx:id="comboFuelConsupmtion" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" >
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <Double fx:value="60" />
+                <Double fx:value="70" />
+                <Double fx:value="80" />
+                <Double fx:value="90" />
+            </FXCollections>
+        </items>
+      </ComboBox>
+      <ComboBox fx:id="comboPrice" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="11" >
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <Double fx:value="50" />
+                <Double fx:value="80" />
+                <Double fx:value="120" />
+                <Double fx:value="140" />
+            </FXCollections>
+        </items>
+      </ComboBox>
     </children>
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

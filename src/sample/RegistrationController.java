@@ -6,11 +6,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.Optional;
 import java.util.regex.Pattern;
+
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 public class RegistrationController {
     public TextField fldFirstName;
@@ -233,6 +243,33 @@ public class RegistrationController {
             else {
                 User user=new User(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText());
                 rentACarDAO.addUser(user);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("");
+                alert.setHeaderText("Odaberite opciju");
+                alert.setContentText("Potvrdite za nastavak");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK){
+                    // ... user chose OK
+                    Parent root = null;
+                    try {
+                        Stage stage = (Stage) fldFirstName.getScene().getWindow();
+                        stage.close();
+                        Stage primaryStage = new Stage();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/clientPage.fxml"));
+                        //ClientFileController controller = new ClientFileController(newPerson);
+                        //loader.setController(controller);
+                        root = loader.load();
+                        primaryStage.setTitle("Client File");
+                        primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                        primaryStage.initModality(Modality.APPLICATION_MODAL);
+                        primaryStage.setResizable(false);
+                        primaryStage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                }
             }
 
         }

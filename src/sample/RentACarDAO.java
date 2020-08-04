@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery;
+    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery;
     private RentACarDAO() {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:rentacar.db");
@@ -30,6 +30,9 @@ public class RentACarDAO {
             getUserQuery=conn.prepareStatement("SELECT * FROM user WHERE username=? AND password=? AND type_user=?");
             addUserQuery=conn.prepareStatement("INSERT INTO user VALUES(?,?,?,?,?,?,?)");
             maxIdUserQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM user");
+            getVehiclesQuery=conn.prepareStatement("SELECT * FROM vehicle");
+            addVehicleQuery=conn.prepareStatement("INSERT INTO vehicle VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            maxIdVehicleQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM vehicle");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -116,6 +119,41 @@ public class RentACarDAO {
             addUserQuery.setString(6,user.getPassword());
             addUserQuery.setInt(7,2);
             addUserQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public ArrayList<Vehicle> getVehicles(){
+        ArrayList<Vehicle>vehicles=new ArrayList<>();
+        try{
+            ResultSet rs=getVehiclesQuery.executeQuery();
+            while(rs.next())
+            vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicles;
+    }
+    public void addVehicle(Vehicle vehicle){
+        try{
+            int id=1;
+            ResultSet rs=maxIdVehicleQuery.executeQuery();
+            if(rs.next())id=rs.getInt(1);
+            addVehicleQuery.setInt(1, id);
+            addVehicleQuery.setString(2, vehicle.getName());
+            addVehicleQuery.setString(3, vehicle.getBrand());
+            addVehicleQuery.setString(4, vehicle.getModel());
+            addVehicleQuery.setString(5, vehicle.getType());
+            addVehicleQuery.setInt(6, vehicle.getYear());
+            addVehicleQuery.setInt(7, vehicle.getSeatsNumber());
+            addVehicleQuery.setInt(8, vehicle.getDoorsNumber());
+            addVehicleQuery.setString(9, vehicle.getEngine());
+            addVehicleQuery.setString(10, vehicle.getTransmission());
+            addVehicleQuery.setDouble(11, vehicle.getFuelConsumption());
+            addVehicleQuery.setString(12, vehicle.getColor());
+            addVehicleQuery.setDouble(13, vehicle.getPricePerDay());
+            addVehicleQuery.setString(14, vehicle.getAvailability());
+            addVehicleQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

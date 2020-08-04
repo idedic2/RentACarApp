@@ -20,7 +20,7 @@ public class AdminMenuController {
             Stage mainStage = new Stage();
             switch (stageName) {
                 case "Evidencija vozila":
-                    loader = new FXMLLoader(getClass().getResource("/fxml/carEvidention.fxml"));
+                    loader = new FXMLLoader(getClass().getResource("/fxml/adminPage.fxml"));
                     mainStage.getIcons().add(new Image("/images/admin.png"));
                     //AdminMenuController controller = new AdminMenuController();
                     //loader.setController(controller);

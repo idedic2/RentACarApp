@@ -77,7 +77,7 @@ public class LoginController {
             Stage mainStage = new Stage();
             switch (stageName) {
                 case "Admin":
-                    loader = new FXMLLoader(getClass().getResource("/fxml/adminMenu.fxml"));
+                    loader = new FXMLLoader(getClass().getResource("/fxml/adminPage.fxml"));
                     mainStage.getIcons().add(new Image("/images/admin.png"));
                     //AdminMenuController controller = new AdminMenuController();
                     //loader.setController(controller);

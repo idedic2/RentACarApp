@@ -18,6 +18,14 @@ public class AddCarController {
     public Spinner spinnerNmbDoors;
     public ChoiceBox choiceTransmission;
     public ChoiceBox choiceType;
+    public Vehicle vehicle;
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public AddCarController(Vehicle vehicle) {
+    }
 
     public void addConfirmAction(ActionEvent actionEvent) {
     }

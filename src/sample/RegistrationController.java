@@ -2,6 +2,8 @@ package sample;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -16,11 +18,23 @@ public class RegistrationController {
     public TextField fldEmail;
     public TextField fldUsername;
     public PasswordField fldPassword;
+    public ObservableList<User> listUsers;
+    public RentACarDAO rentACarDAO;
 
+    public RegistrationController() {
+        rentACarDAO = RentACarDAO.getInstance();
+        listUsers= FXCollections.observableArrayList(rentACarDAO.getUsers());
+    }
     private boolean allLetters(String str){
         return  str.chars().allMatch(Character::isLetter);
     }
-
+    private boolean doesExistUsername(String username){
+        for(User user: listUsers){
+            if(user.getUsername().equals(username))
+                return true;
+        }
+        return false;
+    }
     @FXML
     public void initialize(){
         fldFirstName.textProperty().addListener(new ChangeListener<String>() {
@@ -129,71 +143,98 @@ public class RegistrationController {
         error.show();
     }
     public void registrationConfirmAction(ActionEvent actionEvent) {
+        boolean sveOk=true;
         if(fldFirstName.getText().trim().isEmpty()){
+            sveOk=false;
             showAlert("Greška", "Unesite ime", Alert.AlertType.ERROR);
             return;
         }
         else{
             if(!allLetters(fldFirstName.getText())){
+                sveOk=false;
                 showAlert("Greška", "Ime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
                 return;
             }
             if(fldFirstName.getText().length()<2){
+                sveOk=false;
                 showAlert("Greška", "Ime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
                 return;
             }
         }
 
         if(fldLastName.getText().trim().isEmpty()){
+            sveOk=false;
             showAlert("Greška", "Unesite prezime", Alert.AlertType.ERROR);
             return;
         }
         else{
             if(!allLetters(fldLastName.getText())){
+                sveOk=false;
                 showAlert("Greška", "Prezime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
                 return;
             }
             if(fldLastName.getText().length()<2){
+                sveOk=false;
                 showAlert("Greška", "Prezime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
                 return;
             }
         }
 
         if(fldEmail.getText().trim().isEmpty()){
+            sveOk=false;
             showAlert("Greška", "Unesite email adresu", Alert.AlertType.ERROR);
             return;
         }
         else{
             if(!isValidEmailAddress(fldEmail.getText())){
+                sveOk=false;
                 showAlert("Greška", "Nevalidna email adresa", Alert.AlertType.ERROR);
                 return;
             }
         }
         if(fldUsername.getText().trim().isEmpty()){
+            sveOk=false;
             showAlert("Greška", "Unesite korisničko ime", Alert.AlertType.ERROR);
             return;
         }
         else{
             if(!isValidUsername(fldUsername.getText())){
+                sveOk=false;
                 showAlert("Greška", "Korisničko ime mora sadržavati samo brojeve i/ili slova", Alert.AlertType.ERROR);
                 return;
             }
             if(fldUsername.getText().length()<2){
+                sveOk=false;
                 showAlert("Greška", "Korisničko ime mora biti duže od jednog znaka", Alert.AlertType.ERROR);
                 return;
             }
         }
         if(fldPassword.getText().trim().isEmpty()){
+            sveOk=false;
             showAlert("Greška", "Unesite lozinku", Alert.AlertType.ERROR);
             return;
         }
         else{
             if(!isValidUsername(fldUsername.getText())){
+                sveOk=false;
                 showAlert("Greška", "Korisničko ime mora sadržavati samo brojeve i/ili slova", Alert.AlertType.ERROR);
                 return;
             }
         }
+        if(sveOk){
+            //treba provjeriti postoji li korisnik u bazi, ako ne dodat ga
+            //pitat korisnika zeli li nastaviti i ako potvrdi onda slj prozor
+            if(doesExistUsername(fldUsername.getText())){
+                showAlert("Greška", "Korisničko ime je zauzeto", Alert.AlertType.ERROR);
+                fldUsername.getStyleClass().removeAll("ispravnoPolje");
+                fldUsername.getStyleClass().add("neispravnoPolje");
+                return;
+            }
+            else {
+                User user=new User(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText());
+                rentACarDAO.addUser(user);
+            }
 
-
+        }
     }
 }

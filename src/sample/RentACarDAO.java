@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement getUsersQuery,getUserQuery;
+    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery;
     private RentACarDAO() {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:rentacar.db");
@@ -28,6 +28,8 @@ public class RentACarDAO {
         }
         try{
             getUserQuery=conn.prepareStatement("SELECT * FROM user WHERE username=? AND password=? AND type_user=?");
+            addUserQuery=conn.prepareStatement("INSERT INTO user VALUES(?,?,?,?,?,?,?)");
+            maxIdUserQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM user");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,6 +101,24 @@ public class RentACarDAO {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public void addUser(User user){
+        try{
+            int id=1;
+            ResultSet rs=maxIdUserQuery.executeQuery();
+            if(rs.next())id=rs.getInt(1);
+            addUserQuery.setInt(1,id);
+            addUserQuery.setString(2,user.getFirstName());
+            addUserQuery.setString(3,user.getLastName());
+            addUserQuery.setString(4,user.getEmail());
+            addUserQuery.setString(5,user.getUsername());
+            addUserQuery.setString(6,user.getPassword());
+            addUserQuery.setInt(7,2);
+            addUserQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -8,12 +8,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
@@ -122,5 +124,19 @@ public class AdminPageController {
     }
 
     public void deleteVehicleAction(ActionEvent actionEvent) {
+        Vehicle vehicle = tableViewVehicles.getSelectionModel().getSelectedItem();
+        if (vehicle == null) {
+            showAlert("Upozorenje", "Odaberite vozilo koje želite obrisati", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potvrda brisanja");
+        alert.setHeaderText("Brisanje grada "+vehicle.getName());
+        alert.setContentText("Da li ste sigurni da želite obrisati grad " +vehicle.getName()+"?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            rentACarDAO.deleteVehicle(vehicle);
+            listVehicles.setAll(rentACarDAO.getVehicles());
+        }
     }
 }

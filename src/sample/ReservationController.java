@@ -15,6 +15,11 @@ public class ReservationController {
     public TextField fldEmail;
     public CheckBox checkBoxNow;
     public CheckBox checkBoxShop;
+    private Vehicle vehicle;
+
+    public ReservationController(Vehicle vehicle) {
+        this.vehicle=vehicle;
+    }
 
     public void reservationConfirmAction(ActionEvent actionEvent) {
     }

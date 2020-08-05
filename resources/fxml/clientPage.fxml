@@ -1,35 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:controller="sample.ClientPageController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="366.0" prefWidth="515.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ClientPageController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="503.0" minWidth="10.0" prefWidth="480.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="93.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="313.0" minHeight="10.0" prefHeight="273.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="tableViewCars" prefHeight="263.0" prefWidth="480.0" GridPane.rowIndex="1">
+      <TableView fx:id="tableViewCars" prefHeight="290.0" prefWidth="573.0" GridPane.rowIndex="2">
         <columns>
-          <TableColumn fx:id="colName" prefWidth="75.0" text="Naziv" />
-            <TableColumn fx:id="colNmbSeats" prefWidth="73.0" text="Broj sjedišta" />
-            <TableColumn fx:id="colNmbDoors" prefWidth="105.0" text="Broj vrata" />
-            <TableColumn fx:id="colEngine" prefWidth="75.0" text="Gorivo" />
-            <TableColumn fx:id="colType" prefWidth="75.0" text="Vrsta" />
-            <TableColumn fx:id="colTransmission" prefWidth="99.0" text="Mjenjač" />
+            <TableColumn fx:id="colId" minWidth="0.0" prefWidth="0.0" text="ID" />
+          <TableColumn fx:id="colName" prefWidth="93.99999237060547" text="Naziv" />
+            <TableColumn fx:id="colNmbSeats" prefWidth="81.0" text="Broj sjedišta" />
+            <TableColumn fx:id="colNmbDoors" prefWidth="76.0" text="Broj vrata" />
+            <TableColumn fx:id="colEngine" prefWidth="65.0" text="Gorivo" />
+            <TableColumn fx:id="colTransmission" minWidth="0.0" prefWidth="77.0" text="Mjenjač" />
+            <TableColumn fx:id="colPrice" prefWidth="109.0" text="Cijena po danu" />
         </columns>
       </TableView>
-      <HBox prefHeight="66.0" prefWidth="517.0">
+      <HBox prefHeight="67.0" prefWidth="546.0">
          <children>
             <Button fx:id="btnReservationClient" mnemonicParsing="false" onAction="#reservationClientAction" text="Rezerviši" />
             <Button fx:id="btnDetailsCar" mnemonicParsing="false" onAction="#detailsCarAction" text="Detalji" />
             <Button fx:id="btnPriceRent" mnemonicParsing="false" onAction="#priceRentAction" text="Cijena" />
          </children>
       </HBox>
+      <ChoiceBox fx:id="choiceType" onAction="#changeType" prefWidth="150.0" GridPane.rowIndex="1">
+          <items>
+              <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Putnicki automobil" />
+                  <String fx:value="Luksuzni automobil" />
+                  <String fx:value="Transportno vozilo" />
+              </FXCollections>
+          </items>
+      </ChoiceBox>
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

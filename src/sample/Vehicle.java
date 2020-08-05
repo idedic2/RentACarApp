@@ -32,7 +32,10 @@ public class Vehicle {
         this.pricePerDay = pricePerDay;
         this.availability = availability;
     }
-
+    @Override
+    public String toString(){
+        return getId()+","+getName()+","+getBrand()+","+getModel()+","+getType()+","+getYear()+","+getSeatsNumber()+","+getDoorsNumber()+","+getEngine()+","+getTransmission()+","+getFuelConsumption()+","+getColor()+","+getPricePerDay()+","+getAvailability();
+    }
     public Vehicle() {
     }
 

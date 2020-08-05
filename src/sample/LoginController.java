@@ -125,8 +125,10 @@ public class LoginController {
             return;
         }
         Stage mainStage = getNewStage(selectedRadio.getText());
-        if (mainStage == null)
+        if (mainStage == null) {
+            //System.out.println("lfsgl");
             return;
+        }
         Stage currentStage = (Stage) fldUsername.getScene().getWindow();
         currentStage.close();
         mainStage.show();

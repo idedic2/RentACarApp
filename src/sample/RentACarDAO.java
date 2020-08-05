@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery;
+    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery;
 
     private RentACarDAO() {
         try {
@@ -35,6 +35,9 @@ public class RentACarDAO {
             addVehicleQuery=conn.prepareStatement("INSERT INTO vehicle VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             maxIdVehicleQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM vehicle");
             editVehicleQuery=conn.prepareStatement("UPDATE vehicle SET name=?,brand=?,model=?,type=?,year=?,seats_number=?,doors_number=?,engine=?,transmission=?,fuel_consumption=?,color=?,price_per_day=?,availability=? WHERE id=?");
+            deleteVehicleQuery=conn.prepareStatement("DELETE FROM vehicle WHERE id=?");
+            getVehiclesPerTypeQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE type=?");
+            getVehiclePerIdQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -181,5 +184,36 @@ public class RentACarDAO {
             e.printStackTrace();
         }
     }
-
+    public void deleteVehicle(Vehicle vehicle){
+        try{
+            deleteVehicleQuery.setInt(1, vehicle.getId());
+            deleteVehicleQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public ArrayList<Vehicle>getVehiclesPerType(String type){
+        ArrayList<Vehicle>vehicles=new ArrayList<>();
+        try{
+            getVehiclesPerTypeQuery.setString(1, type);
+            ResultSet rs=getVehiclesPerTypeQuery.executeQuery();
+            while(rs.next())
+                vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicles;
+    }
+    public Vehicle getVehiclePerId(int id){
+        Vehicle vehicle=null;
+        try{
+            getVehiclePerIdQuery.setInt(1, id);
+            ResultSet rs=getVehiclePerIdQuery.executeQuery();
+            if(!rs.next())return null;
+            vehicle=new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicle;
+    }
 }

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -83,8 +84,41 @@ public class AdminPageController {
             e.printStackTrace();
         }
     }
-
+    private void showAlert(String title, String headerText, Alert.AlertType type) {
+        Alert error = new Alert(type);
+        error.setTitle(title);
+        error.setHeaderText(headerText);
+        error.show();
+    }
     public void editVehicleAction(ActionEvent actionEvent) {
+        Vehicle vehicle = tableViewVehicles.getSelectionModel().getSelectedItem();
+        if (vehicle == null) {
+            showAlert("Upozorenje", "Odaberite vozilo koje želite izmijeniti", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addCar.fxml"));
+            AddCarController addCarController = new AddCarController(vehicle);
+            loader.setController(addCarController);
+            root = loader.load();
+            stage.setTitle("Izmijeni vozilo");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+
+            stage.setOnHiding( event -> {
+                Vehicle newVehicle = addCarController.getVehicle();
+                if (newVehicle != null) {
+                    rentACarDAO.editVehicle(newVehicle);
+                    listVehicles.setAll(rentACarDAO.getVehicles());
+                }
+            } );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteVehicleAction(ActionEvent actionEvent) {

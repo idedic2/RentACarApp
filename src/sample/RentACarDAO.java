@@ -9,7 +9,8 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery;
+    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery;
+
     private RentACarDAO() {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:rentacar.db");
@@ -33,6 +34,7 @@ public class RentACarDAO {
             getVehiclesQuery=conn.prepareStatement("SELECT * FROM vehicle");
             addVehicleQuery=conn.prepareStatement("INSERT INTO vehicle VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             maxIdVehicleQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM vehicle");
+            editVehicleQuery=conn.prepareStatement("UPDATE vehicle SET name=?,brand=?,model=?,type=?,year=?,seats_number=?,doors_number=?,engine=?,transmission=?,fuel_consumption=?,color=?,price_per_day=?,availability=? WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -154,6 +156,27 @@ public class RentACarDAO {
             addVehicleQuery.setDouble(13, vehicle.getPricePerDay());
             addVehicleQuery.setString(14, vehicle.getAvailability());
             addVehicleQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void editVehicle(Vehicle vehicle){
+        try{
+            editVehicleQuery.setString(1, vehicle.getName());
+            editVehicleQuery.setString(2,vehicle.getBrand());
+            editVehicleQuery.setString(3,vehicle.getModel());
+            addVehicleQuery.setString(4, vehicle.getType());
+            editVehicleQuery.setInt(5, vehicle.getYear());
+            editVehicleQuery.setInt(6, vehicle.getSeatsNumber());
+            editVehicleQuery.setInt(7, vehicle.getDoorsNumber());
+            editVehicleQuery.setString(8, vehicle.getEngine());
+            editVehicleQuery.setString(9, vehicle.getTransmission());
+            editVehicleQuery.setDouble(10, vehicle.getFuelConsumption());
+            editVehicleQuery.setString(11, vehicle.getColor());
+            editVehicleQuery.setDouble(12, vehicle.getPricePerDay());
+            editVehicleQuery.setString(13, vehicle.getAvailability());
+            editVehicleQuery.setInt(14, vehicle.getId());
+            editVehicleQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

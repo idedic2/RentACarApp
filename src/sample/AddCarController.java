@@ -18,15 +18,14 @@ public class AddCarController {
     public TextField fldBrand;
     public TextField fldModel;
     public TextField fldColor;
-    public CheckBox checkboxAvailability;
-    public ChoiceBox choiceEngine;
-    public ChoiceBox choiceTransmission;
-    public ChoiceBox choiceType;
+    public ChoiceBox<String> choiceEngine;
+    public ChoiceBox<String> choiceTransmission;
+    public ChoiceBox<String> choiceType;
     public Spinner<Integer> spinnerNmbSeats;
     public Spinner<Integer> spinnerNmbDoors;
-    public ComboBox<Double> comboFuelConsumption;
-    public ComboBox<Integer> comboYear;
-    public ComboBox<Double> comboPrice;
+    public ComboBox<String> comboFuelConsumption;
+    public ComboBox<String> comboYear;
+    public ComboBox<String> comboPrice;
     public Vehicle vehicle;
     private boolean sveOk=true;
     public Vehicle getVehicle() {
@@ -40,6 +39,19 @@ public class AddCarController {
     @FXML
     public void initialize() {
         if (vehicle != null) {
+           fldName.setText(vehicle.getName());
+           fldBrand.setText(vehicle.getBrand());
+           fldModel.setText(vehicle.getModel());
+           fldColor.setText(vehicle.getColor());
+           choiceEngine.getSelectionModel().select(vehicle.getEngine());
+           choiceTransmission.getSelectionModel().select(vehicle.getTransmission());
+           choiceType.getSelectionModel().select(vehicle.getType());
+           spinnerNmbSeats.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, vehicle.getSeatsNumber()));
+           spinnerNmbDoors.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, vehicle.getDoorsNumber()));
+           comboFuelConsumption.getSelectionModel().select(Double.toString(vehicle.getFuelConsumption()));
+           comboYear.getSelectionModel().select(Double.toString(vehicle.getYear()));
+           comboPrice.getSelectionModel().select(Double.toString(vehicle.getPricePerDay()));
+
         } else {
             choiceEngine.getSelectionModel().selectFirst();
             choiceTransmission.getSelectionModel().selectFirst();
@@ -116,12 +128,65 @@ public class AddCarController {
         return  str.chars().allMatch(Character::isLetter);
     }
 
+    private void showAlert(String title, String headerText, Alert.AlertType type) {
+        Alert error = new Alert(type);
+        error.setTitle(title);
+        error.setHeaderText(headerText);
+        error.show();
+    }
     public void addConfirmAction(ActionEvent actionEvent) {
+        boolean sveOk=true;
+        if(fldName.getText().trim().isEmpty()){
+            sveOk=false;
+            showAlert("Greška", "Unesite naziv vozila", Alert.AlertType.ERROR);
+            return;
+        }
+        if(fldBrand.getText().trim().isEmpty()){
+            sveOk=false;
+            showAlert("Greška", "Unesite brend vozila", Alert.AlertType.ERROR);
+            return;
+        }
+        if(fldModel.getText().trim().isEmpty()){
+            sveOk=false;
+            showAlert("Greška", "Unesite model vozila", Alert.AlertType.ERROR);
+            return;
+        }
+        if(fldColor.getText().trim().isEmpty()){
+            sveOk=false;
+            showAlert("Greška", "Unesite boju vozila", Alert.AlertType.ERROR);
+            return;
+        }
+        else{
+            if(!allLetters(fldColor.getText())){
+                sveOk=false;
+                showAlert("Greška", "Boja mora sadržavati isključivo slova", Alert.AlertType.ERROR);
+                return;
+            }
+        }
+        if (!sveOk) return;
 
+        if (vehicle == null) vehicle = new Vehicle();
+        vehicle.setName(fldName.getText());
+        vehicle.setBrand(fldBrand.getText());
+        vehicle.setModel(fldModel.getText());
+        vehicle.setColor(fldColor.getText());
+        vehicle.setAvailability("DA");
+        vehicle.setEngine(choiceEngine.getValue());
+        vehicle.setTransmission(choiceTransmission.getValue());
+        vehicle.setType(choiceType.getValue());
+        vehicle.setDoorsNumber(spinnerNmbDoors.getValue());
+        vehicle.setSeatsNumber(spinnerNmbSeats.getValue());
+        vehicle.setYear(Integer.parseInt(comboYear.getValue()));
+        vehicle.setFuelConsumption(Double.parseDouble(comboFuelConsumption.getValue()));
+        vehicle.setPricePerDay(Double.parseDouble(comboPrice.getValue()));
+        Stage stage = (Stage) fldName.getScene().getWindow();
+        stage.close();
     }
     public void CloseAddCarAction(ActionEvent actionEvent){
+        vehicle=null;
         Stage stage= (Stage) fldBrand.getScene().getWindow();
         stage.close();
     }
+
 
 }

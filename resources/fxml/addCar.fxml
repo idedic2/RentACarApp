@@ -37,13 +37,12 @@
         <Label text="Model:" GridPane.rowIndex="2" />
         <Label text="Vrsta:" GridPane.rowIndex="3" />
         <Label text="Godište:" GridPane.rowIndex="4" />
-        <Label text="Gorivo:" GridPane.rowIndex="5" />
+        <Label text="Mjenjač:" GridPane.rowIndex="5" />
         <Label text="Potrošnja goriva:" GridPane.rowIndex="6" />
         <Label text="Broj sjedišta:" GridPane.rowIndex="7" />
         <Label text="Broj vozila:" GridPane.rowIndex="8" />
-        <Label text="Mjenjač:" GridPane.rowIndex="9" />
+        <Label text="Gorivo:" GridPane.rowIndex="9" />
         <Label text="Boja:" GridPane.rowIndex="10" />
-        <Label text="Dostupnost:" GridPane.rowIndex="12" />
         <TextField fx:id="fldBrand" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <TextField fx:id="fldModel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <TextField fx:id="fldColor" GridPane.columnIndex="1" GridPane.rowIndex="10" />
@@ -83,41 +82,40 @@
         </ChoiceBox>
       <Label text="Naziv:" />
       <TextField fx:id="fldName" GridPane.columnIndex="1" />
-      <CheckBox fx:id="checkboxAvailability" mnemonicParsing="false" text="DOSTUPNO" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-      <ComboBox fx:id="comboYear" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" >
+      <ComboBox fx:id="comboYear" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <Integer fx:value="2010" />
-                <Integer fx:value="2011" />
-                <Integer fx:value="2012" />
-                <Integer fx:value="2013" />
-                <Integer fx:value="2014" />
-                <Integer fx:value="2015" />
-                <Integer fx:value="2016" />
-                <Integer fx:value="2017" />
-                <Integer fx:value="2018" />
-                <Integer fx:value="2019" />
-                <Integer fx:value="2020" />
+                <String fx:value="2010" />
+                <String fx:value="2011" />
+                <String fx:value="2012" />
+                <String fx:value="2013" />
+                <String fx:value="2014" />
+                <String fx:value="2015" />
+                <String fx:value="2016" />
+                <String fx:value="2017" />
+                <String fx:value="2018" />
+                <String fx:value="2019" />
+                <String fx:value="2020" />
             </FXCollections>
         </items>
       </ComboBox>
-      <ComboBox fx:id="comboFuelConsupmtion" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" >
+      <ComboBox fx:id="comboFuelConsumption" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <Double fx:value="60" />
-                <Double fx:value="70" />
-                <Double fx:value="80" />
-                <Double fx:value="90" />
+                <String fx:value="60" />
+                <String fx:value="70" />
+                <String fx:value="80" />
+                <String fx:value="90" />
             </FXCollections>
         </items>
       </ComboBox>
-      <ComboBox fx:id="comboPrice" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="11" >
+      <ComboBox fx:id="comboPrice" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <Double fx:value="50" />
-                <Double fx:value="80" />
-                <Double fx:value="120" />
-                <Double fx:value="140" />
+                <String fx:value="50" />
+                <String fx:value="80" />
+                <String fx:value="120" />
+                <String fx:value="140" />
             </FXCollections>
         </items>
       </ComboBox>

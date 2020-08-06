@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery;
+    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getUserPerUsername;
 
     private RentACarDAO() {
         try {
@@ -38,6 +38,7 @@ public class RentACarDAO {
             deleteVehicleQuery=conn.prepareStatement("DELETE FROM vehicle WHERE id=?");
             getVehiclesPerTypeQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE type=?");
             getVehiclePerIdQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE id=?");
+            getUserPerUsername=conn.prepareStatement("SELECT * FROM user WHERE username=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -215,5 +216,17 @@ public class RentACarDAO {
             e.printStackTrace();
         }
         return vehicle;
+    }
+    public User getUserPerUsername(String username){
+        User user=null;
+        try{
+            getUserPerUsername.setString(1, username);
+            ResultSet rs=getUserPerUsername.executeQuery();
+            if(!rs.next())return null;
+            user=new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }

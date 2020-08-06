@@ -10,14 +10,35 @@ public class Reservation {
     private User user;
     private LocalDate pickUpDate;
     private LocalDate returnDate;
+    private String pickupTime;
+    private String returnTime;
 
-    public Reservation(int id, Vehicle vehicle, User user, LocalDate pickUpDate, LocalDate returnDate) {
+    public Reservation(int id, Vehicle vehicle, User user, LocalDate pickUpDate, LocalDate returnDate, String pickupTime, String returnTime) {
         this.id = id;
         this.vehicle = vehicle;
         this.user = user;
         this.pickUpDate = pickUpDate;
         this.returnDate = returnDate;
+        this.pickupTime = pickupTime;
+        this.returnTime = returnTime;
     }
+
+    public String getPickupTime() {
+        return pickupTime;
+    }
+
+    public void setPickupTime(String pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+
+    public String getReturnTime() {
+        return returnTime;
+    }
+
+    public void setReturnTime(String returnTime) {
+        this.returnTime = returnTime;
+    }
+
 
     public Reservation() {
     }

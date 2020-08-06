@@ -86,8 +86,8 @@ public class LoginController {
                 case "Client":
                     loader = new FXMLLoader(getClass().getResource("/fxml/clientPage.fxml"));
                     mainStage.getIcons().add(new Image("/images/client.jpg"));
-                    //ClientPageController clientController = new ClientPageController();
-                    //loader.setController(clientController);
+                    ClientPageController clientController = new ClientPageController(fldUsername.getText());
+                    loader.setController(clientController);
                     //mainStage.setOnHidden(event -> writeStudentView(studentController.getTabConfig()));
                     break;
                 default:

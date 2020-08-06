@@ -28,10 +28,11 @@ public class ClientPageController {
     public ChoiceBox<String>choiceType;
     private RentACarDAO rentACarDAO;
     private ObservableList<Vehicle>listVehicles;
-
-    public ClientPageController(){
+    private String username;
+    public ClientPageController(String text){
         rentACarDAO=RentACarDAO.getInstance();
         listVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
+        username=text;
     }
     @FXML
     public void initialize() {
@@ -68,7 +69,12 @@ public class ClientPageController {
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/reservation.fxml"));
-            ReservationController reservationController = new ReservationController(vehicle);
+            User user=rentACarDAO.getUserPerUsername(username);
+            if(user==null){
+                showAlert("Greška", "Nije pronađen user", Alert.AlertType.ERROR);
+                return;
+            }
+            ReservationController reservationController = new ReservationController(vehicle,user);
             loader.setController(reservationController);
             root = loader.load();
             stage.setTitle("Rezerviši vozilo");

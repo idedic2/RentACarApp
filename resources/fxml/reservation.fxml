@@ -8,21 +8,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="418.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@/css/rentacar.css" />
     </stylesheets>
     <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="119.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.0" minWidth="10.0" prefWidth="139.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="0.0" prefWidth="20.0" />
-      <ColumnConstraints maxWidth="178.0" minWidth="52.0" prefWidth="76.0" />
-      <ColumnConstraints maxWidth="178.0" minWidth="61.0" prefWidth="95.0" />
-      <ColumnConstraints maxWidth="191.0" minWidth="0.0" prefWidth="73.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="0.0" prefWidth="32.0" />
+      <ColumnConstraints maxWidth="178.0" minWidth="46.0" prefWidth="46.0" />
+      <ColumnConstraints maxWidth="178.0" minWidth="61.0" prefWidth="104.0" />
+      <ColumnConstraints maxWidth="191.0" minWidth="0.0" prefWidth="56.0" />
       <ColumnConstraints maxWidth="191.0" minWidth="19.0" prefWidth="89.0" />
-      <ColumnConstraints maxWidth="70.0" minWidth="0.0" prefWidth="20.0" />
-      <ColumnConstraints maxWidth="160.0" minWidth="0.0" prefWidth="83.0" />
-      <ColumnConstraints maxWidth="151.0" minWidth="10.0" prefWidth="139.0" />
+      <ColumnConstraints maxWidth="70.0" minWidth="0.0" prefWidth="32.0" />
+      <ColumnConstraints maxWidth="160.0" minWidth="0.0" prefWidth="141.0" />
+      <ColumnConstraints maxWidth="151.0" minWidth="7.0" prefWidth="76.0" />
+      <ColumnConstraints maxWidth="90.0" minWidth="7.0" prefWidth="50.0" />
       <ColumnConstraints />
   </columnConstraints>
   <rowConstraints>
@@ -43,8 +44,8 @@
        <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
       <Label text="Datum preuzimanja vozila:" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <Label text="Datum vraćanja vozila:" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <DatePicker fx:id="datePickup" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <DatePicker fx:id="dateReturn" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <DatePicker fx:id="datePickup" onAction="#changeDate" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <DatePicker fx:id="dateReturn" onAction="#changeDate" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="3" />
       <Label text="Ime i prezime:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
       <TextField fx:id="fldName" prefHeight="25.0" prefWidth="154.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Label text="Adresa:" GridPane.rowIndex="3" />
@@ -60,7 +61,6 @@
        <Label fx:id="lblNmbCard" text="Broj kartice:" GridPane.columnIndex="8" GridPane.rowIndex="3" />
        <TextField fx:id="fldNmbCard" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.rowIndex="3" />
        <Label fx:id="lblExpireDate" text="Datum isteka:" GridPane.columnIndex="8" GridPane.rowIndex="4" />
-       <DatePicker fx:id="dateExpire" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.rowIndex="4" />
        <Label fx:id="lblCode" text="CVC:" GridPane.columnIndex="8" GridPane.rowIndex="5" />
        <TextField fx:id="fldCode" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.rowIndex="5" />
       <Separator orientation="VERTICAL" prefHeight="210.0" prefWidth="20.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="6">
@@ -164,6 +164,25 @@
          </buttons>
       </ButtonBar>
       <Label fx:id="lblTotalPrice" text="*UKUPNA CIJENA JE " GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+      <ChoiceBox fx:id="choiceMonth" value="JAN" prefHeight="25.0" prefWidth="64.0" GridPane.columnIndex="9" GridPane.rowIndex="4">
+       <items>
+           <FXCollections fx:factory="observableArrayList">
+               <String fx:value="JAN" />
+               <String fx:value="FEB" />
+               <String fx:value="MAR" />
+               <String fx:value="APR" />
+               <String fx:value="MAJ" />
+               <String fx:value="JUN" />
+               <String fx:value="JUL" />
+               <String fx:value="AUG" />
+               <String fx:value="SEP" />
+               <String fx:value="OKT" />
+               <String fx:value="NOV" />
+               <String fx:value="DEC" />
+           </FXCollections>
+       </items>
+      </ChoiceBox>
+      <TextField fx:id="fldYear" GridPane.columnIndex="10" GridPane.rowIndex="4" promptText="2021"/>
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

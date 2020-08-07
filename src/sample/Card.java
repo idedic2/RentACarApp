@@ -5,19 +5,19 @@ import java.util.Date;
 
 public class Card {
     private int id;
-    private int cardNumber;
-    private int code;
+    private String cardNumber;
+    private String code;
     private LocalDate expirationDate;
 
-    public Card(int id, int cardNumber, int code, LocalDate expirationDate) {
+    public Card(int id, String cardNumber, String code, LocalDate expirationDate) {
         this.id = id;
         this.cardNumber = cardNumber;
         this.code = code;
         this.expirationDate = expirationDate;
     }
+    public Card(){
 
-    public Card() {
-    }
+}
 
     public int getId() {
         return id;
@@ -27,19 +27,19 @@ public class Card {
         this.id = id;
     }
 
-    public int getCardNumber() {
+    public String getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(int cardNumber) {
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

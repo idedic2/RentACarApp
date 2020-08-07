@@ -224,13 +224,7 @@ public class RegistrationController {
             showAlert("Greška", "Unesite lozinku", Alert.AlertType.ERROR);
             return;
         }
-        else{
-            if(!isValidUsername(fldUsername.getText())){
-                sveOk=false;
-                showAlert("Greška", "Korisničko ime mora sadržavati samo brojeve i/ili slova", Alert.AlertType.ERROR);
-                return;
-            }
-        }
+
         if(sveOk){
             //treba provjeriti postoji li korisnik u bazi, ako ne dodat ga
             //pitat korisnika zeli li nastaviti i ako potvrdi onda slj prozor

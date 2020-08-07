@@ -34,7 +34,7 @@
             <Button fx:id="btnPriceRent" mnemonicParsing="false" onAction="#priceRentAction" text="Cijena" />
          </children>
       </HBox>
-      <ChoiceBox fx:id="choiceType" onAction="#changeType" prefWidth="150.0" GridPane.rowIndex="1">
+      <ChoiceBox fx:id="choiceType" value="Putnicki automobil" onAction="#changeType" prefWidth="150.0" GridPane.rowIndex="1">
           <items>
               <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Putnicki automobil" />

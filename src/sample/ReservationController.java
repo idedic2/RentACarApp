@@ -12,11 +12,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public class ReservationController {
-
 
     public DatePicker datePickup;
     public DatePicker dateReturn;
@@ -35,6 +35,10 @@ public class ReservationController {
     public Label lblCardData;
     public Label lblTotalPrice;
     public TextField fldPrice;
+    public ChoiceBox<String>choicePickupHour;
+    public ChoiceBox<String>choicePickupMinute;
+    public ChoiceBox<String>choiceReturnHour;
+    public ChoiceBox<String>choiceReturnMinute;
     private Vehicle vehicle;
     private User user;
     private RentACarDAO rentACarDAO;
@@ -235,14 +239,20 @@ public class ReservationController {
                     if(allDigits(fldYear.getText()) && fldYear.getText().length()==4){
                         fldYear.getStyleClass().removeAll("neispravnoPolje");
                         fldYear.getStyleClass().add("ispravnoPolje");
+                        choiceMonth.getStyleClass().removeAll("neispravnoPolje");
+                        choiceMonth.getStyleClass().add("ispravnoPolje");
                     }
                     else{
                         fldYear.getStyleClass().removeAll("ispravnoPolje");
                         fldYear.getStyleClass().add("neispravnoPolje");
+                        choiceMonth.getStyleClass().removeAll("ispravnoPolje");
+                        choiceMonth.getStyleClass().add("neispravnoPolje");
                     }
                 } else {
                     fldYear.getStyleClass().removeAll("ispravnoPolje");
                     fldYear.getStyleClass().add("neispravnoPolje");
+                    choiceMonth.getStyleClass().removeAll("ispravnoPolje");
+                    choiceMonth.getStyleClass().add("neispravnoPolje");
                 }
             }
         });
@@ -296,10 +306,23 @@ public class ReservationController {
             showAlert("Greška", "Odaberite datum rentanja/vraćanja vozila", Alert.AlertType.ERROR);
             return;
         }
-        if(!checkBoxNow.isSelected()) {
-            showAlert("Potvrdite", "Da li ste sigurni da ne želite platiti karticom", Alert.AlertType.CONFIRMATION);
-            return;
-        }
+        /*if(!checkBoxNow.isSelected()) {
+            //showAlert("Potvrdite", "Da li ste sigurni da ne želite platiti karticom", Alert.AlertType.CONFIRMATION);
+            //return;
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Potvrda rezervisanja");
+            alert.setHeaderText("Rezervisanje vozila  "+vehicle.getName());
+            alert.setContentText("Da li ste sigurni da želite rezervisati vozilo " +vehicle.getName()+"?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                vehicle.setAvailability("NE");
+                rentACarDAO.editVehicle(vehicle);
+
+                listVehicles.setAll(rentACarDAO.getVehicles());
+            }
+        }*/
+
+
         if(checkBoxNow.isSelected()){
             boolean cardOk=false;
             if(fldNmbCard.getText().trim().isEmpty()){
@@ -333,6 +356,12 @@ public class ReservationController {
                 choiceMonth.getStyleClass().add("neispravnoPolje");
                 return;
             }
+            if(checkExpirationDate()){
+                fldYear.getStyleClass().removeAll("neispravnoPolje");
+                fldYear.getStyleClass().add("ispravnoPolje");
+                choiceMonth.getStyleClass().removeAll("neispravnoPolje");
+                choiceMonth.getStyleClass().add("ispravnoPolje");
+            }
             if(fldCode.getText().trim().isEmpty()){
                 cardOk=false;
                 showAlert("Greška", "Unesite kod", Alert.AlertType.ERROR);
@@ -344,11 +373,38 @@ public class ReservationController {
                     return;
 
             }
-
-            showAlert("Odlicno", "placate odmah", Alert.AlertType.ERROR);
-
         }
-
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potvrda rezervisanja");
+        alert.setHeaderText("Rezervisanje vozila  "+vehicle.getName());
+        alert.setContentText("Da li ste sigurni da želite rezervisati vozilo " +vehicle.getName()+"?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            vehicle.setAvailability("NE");
+            rentACarDAO.editVehicle(vehicle);
+            //listVehicles.setAll(rentACarDAO.getVehicles());
+            Card card=null;
+            /*if(!checkBoxNow.isSelected()){
+                Card card=null;
+                //Client clientPaysNotNow=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(),fldAddress.getText(), fldTelephone.getText(), null);
+            }*/
+            //Client client=new Client();
+            boolean payingNow=false;
+            if(checkBoxNow.isSelected()){//zeli odmah platiti
+                String expire=getDays(choiceMonth.getValue())+"."+getMonth(choiceMonth.getValue())+"."+fldYear.getText();
+                LocalDate expireDate=stringToDate(expire);
+                card=new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
+                rentACarDAO.addCard(card);
+                payingNow=true;
+                //client=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(), fldAddress.getText(), fldTelephone.getText(), card);
+            }
+            Client client=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(), fldAddress.getText(), fldTelephone.getText(), card);
+            rentACarDAO.addClient(client, payingNow);
+            //String pickup=getDays(choiceMonth.getValue())+"."+getMonth(choiceMonth.getValue())+"."+fldYear.getText();
+            rentACarDAO.addReservation(new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue()+":"+choicePickupMinute.getValue(), choiceReturnHour.getValue()+":"+choiceReturnMinute.getValue()));
+            Stage stage = (Stage) lblTotalPrice.getScene().getWindow();
+            stage.close();
+        }
     }
     private Double priceForRenting(){
         long daysBetween = DAYS.between(datePickup.getValue(), dateReturn.getValue());
@@ -376,6 +432,17 @@ public class ReservationController {
             dateReturn.getStyleClass().add("neispravnoPolje");
             //showAlert("Upozorenje", "Odaberite datum vraćanja vozila", Alert.AlertType.WARNING);
             //return;
+        }
+        if(datePickup.getValue().isBefore(LocalDate.now()) || dateReturn.getValue().isBefore(LocalDate.now())){
+            dateOk=false;
+            datePickup.getStyleClass().removeAll("ispravnoPolje");
+            datePickup.getStyleClass().add("neispravnoPolje");
+            dateReturn.getStyleClass().removeAll("ispravnoPolje");
+            dateReturn.getStyleClass().add("neispravnoPolje");
+            lblTotalPrice.setVisible(false);
+            fldPrice.setVisible(false);
+            showAlert("Greška", "Odabrani datum/datumi iz prošlosti", Alert.AlertType.ERROR);
+            return;
         }
         else{
             if(datePickup.getValue().isEqual(dateReturn.getValue())){
@@ -410,8 +477,8 @@ public class ReservationController {
                 showAlert("Greška", "Datum povratka mora biti nakon datuma rentanja", Alert.AlertType.ERROR);
 
             }
-
         }
+
     }
     public void backAction(ActionEvent actionEvent){
         Stage stage= (Stage) fldName.getScene().getWindow();

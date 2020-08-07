@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getUserPerUsername;
+    private PreparedStatement getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getUserPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery;
 
     private RentACarDAO() {
         try {
@@ -39,6 +39,11 @@ public class RentACarDAO {
             getVehiclesPerTypeQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE type=?");
             getVehiclePerIdQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE id=?");
             getUserPerUsername=conn.prepareStatement("SELECT * FROM user WHERE username=?");
+            maxReservationIdQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM reservation");
+            addReservationQuery=conn.prepareStatement("INSERT INTO reservation VALUES(?,?,?,?,?,?,?)");
+            maxIdCardQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM card");
+            addCardQuery=conn.prepareStatement("INSERT INTO card VALUES(?,?,?,?)");
+            addClientQuery=conn.prepareStatement("INSERT INTO client VALUES(?,?,?,?)");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -169,7 +174,7 @@ public class RentACarDAO {
             editVehicleQuery.setString(1, vehicle.getName());
             editVehicleQuery.setString(2,vehicle.getBrand());
             editVehicleQuery.setString(3,vehicle.getModel());
-            addVehicleQuery.setString(4, vehicle.getType());
+            editVehicleQuery.setString(4, vehicle.getType());
             editVehicleQuery.setInt(5, vehicle.getYear());
             editVehicleQuery.setInt(6, vehicle.getSeatsNumber());
             editVehicleQuery.setInt(7, vehicle.getDoorsNumber());
@@ -229,4 +234,47 @@ public class RentACarDAO {
         }
         return user;
     }
+    public void addReservation(Reservation reservation){
+        try{
+            int id=1;
+            ResultSet rs=maxReservationIdQuery.executeQuery();
+            if(rs.next())id=rs.getInt(1);
+            addReservationQuery.setInt(1, id);
+            addReservationQuery.setInt(2, reservation.getVehicle().getId());
+            addReservationQuery.setInt(3, reservation.getClient().getId());
+            addReservationQuery.setString(4, reservation.getPickUpDate().getDayOfMonth()+"/"+reservation.getPickUpDate().getMonth()+"/"+reservation.getPickUpDate().getYear());
+            addReservationQuery.setString(5, reservation.getReturnDate().getDayOfMonth()+"/"+reservation.getReturnDate().getMonth()+"/"+reservation.getReturnDate().getYear());
+            addReservationQuery.setString(6, reservation.getPickupTime());
+            addReservationQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void addCard(Card card){
+        try{
+            int id=1;
+            ResultSet rs=maxIdCardQuery.executeQuery();
+            if(rs.next())id=rs.getInt(1);
+            addCardQuery.setInt(1, id);
+            addCardQuery.setString(2, card.getCardNumber());
+            addCardQuery.setString(3, card.getCode());
+            addCardQuery.setString(4, card.getExpirationDate().getMonth()+"/"+card.getExpirationDate().getYear());
+            addCardQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void addClient(Client client, boolean payingNow){
+        try{
+            addClientQuery.setInt(1, client.getId());
+            addClientQuery.setString(2, client.getAddress());
+            addClientQuery.setString(3, client.getTelephone());
+            if(!payingNow) addClientQuery.setInt(4, 0);
+            else addClientQuery.setInt(4, client.getCard().getId());
+            addClientQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -7,20 +7,28 @@ import java.util.Date;
 public class Reservation {
     private int id;
     private Vehicle vehicle;
-    private User user;
+    private Client client;
     private LocalDate pickUpDate;
     private LocalDate returnDate;
     private String pickupTime;
     private String returnTime;
 
-    public Reservation(int id, Vehicle vehicle, User user, LocalDate pickUpDate, LocalDate returnDate, String pickupTime, String returnTime) {
+    public Reservation(int id, Vehicle vehicle, Client client, LocalDate pickUpDate, LocalDate returnDate, String pickupTime, String returnTime) {
         this.id = id;
         this.vehicle = vehicle;
-        this.user = user;
+        this.client = client;
         this.pickUpDate = pickUpDate;
         this.returnDate = returnDate;
         this.pickupTime = pickupTime;
         this.returnTime = returnTime;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public String getPickupTime() {
@@ -59,13 +67,6 @@ public class Reservation {
         this.vehicle = vehicle;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public LocalDate getPickUpDate() {
         return pickUpDate;

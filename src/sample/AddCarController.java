@@ -26,13 +26,12 @@ public class AddCarController {
     public ComboBox<String> comboFuelConsumption;
     public ComboBox<String> comboYear;
     public ComboBox<String> comboPrice;
+    public CheckBox checkAvailability;
     public Vehicle vehicle;
     private boolean sveOk=true;
     public Vehicle getVehicle() {
         return vehicle;
     }
-
-
     public AddCarController(Vehicle vehicle) {
         this.vehicle=vehicle;
     }
@@ -49,9 +48,11 @@ public class AddCarController {
            spinnerNmbSeats.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, vehicle.getSeatsNumber()));
            spinnerNmbDoors.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 20, vehicle.getDoorsNumber()));
            comboFuelConsumption.getSelectionModel().select(Double.toString(vehicle.getFuelConsumption()));
-           comboYear.getSelectionModel().select(Double.toString(vehicle.getYear()));
+           comboYear.getSelectionModel().select(Integer.toString(vehicle.getYear()));
            comboPrice.getSelectionModel().select(Double.toString(vehicle.getPricePerDay()));
-
+           if(vehicle.getAvailability().equals("DA"))
+               checkAvailability.setSelected(true);
+           else checkAvailability.setSelected(false);
         } else {
             choiceEngine.getSelectionModel().selectFirst();
             choiceTransmission.getSelectionModel().selectFirst();
@@ -156,13 +157,12 @@ public class AddCarController {
             showAlert("Greška", "Unesite boju vozila", Alert.AlertType.ERROR);
             return;
         }
-        else{
             if(!allLetters(fldColor.getText())){
                 sveOk=false;
                 showAlert("Greška", "Boja mora sadržavati isključivo slova", Alert.AlertType.ERROR);
                 return;
             }
-        }
+        
         if (!sveOk) return;
 
         if (vehicle == null) vehicle = new Vehicle();
@@ -179,6 +179,8 @@ public class AddCarController {
         vehicle.setYear(Integer.parseInt(comboYear.getValue()));
         vehicle.setFuelConsumption(Double.parseDouble(comboFuelConsumption.getValue()));
         vehicle.setPricePerDay(Double.parseDouble(comboPrice.getValue()));
+        if(checkAvailability.isSelected())vehicle.setAvailability("DA");
+        else vehicle.setAvailability("NE");
         Stage stage = (Stage) fldName.getScene().getWindow();
         stage.close();
     }

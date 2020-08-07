@@ -98,7 +98,6 @@ public class AdminPageController {
             showAlert("Upozorenje", "Odaberite vozilo koje želite izmijeniti", Alert.AlertType.CONFIRMATION);
             return;
         }
-
         Stage stage = new Stage();
         Parent root = null;
         try {

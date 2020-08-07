@@ -119,6 +119,8 @@
             </FXCollections>
         </items>
       </ComboBox>
+      <Label text="Dostupnost:" GridPane.rowIndex="12" />
+      <CheckBox fx:id="checkAvailability" mnemonicParsing="false" text="DA" GridPane.columnIndex="1" GridPane.rowIndex="12" />
     </children>
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

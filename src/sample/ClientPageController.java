@@ -28,16 +28,20 @@ public class ClientPageController {
     public ChoiceBox<String>choiceType;
     private RentACarDAO rentACarDAO;
     private ObservableList<Vehicle>listVehicles;
+    private ObservableList<Vehicle>chosedVehicles;
     private String username;
+
     public ClientPageController(String text){
         rentACarDAO=RentACarDAO.getInstance();
-        listVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
+        //listVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
+        listVehicles=FXCollections.observableArrayList(rentACarDAO.getVehicles());
+        chosedVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
         username=text;
     }
     @FXML
     public void initialize() {
-        tableViewCars.setItems(listVehicles);
-        choiceType.setValue("Putnicki automobil");
+        tableViewCars.setItems(chosedVehicles);
+        //choiceType.setValue("Putnicki automobil");
         colId.setCellValueFactory(new PropertyValueFactory("id"));
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colPrice.setCellValueFactory(new PropertyValueFactory("pricePerDay"));
@@ -46,6 +50,7 @@ public class ClientPageController {
         colEngine.setCellValueFactory(new PropertyValueFactory("engine"));
         colTransmission.setCellValueFactory(new PropertyValueFactory("transmission"));
         colId.setVisible(false);
+
     }
     private void showAlert(String title, String headerText, Alert.AlertType type) {
         Alert error = new Alert(type);
@@ -55,9 +60,10 @@ public class ClientPageController {
     }
     public void reservationClientAction(ActionEvent actionEvent) {
         if(tableViewCars.getSelectionModel().getSelectedItem()==null){
-            showAlert("Upozorenje", "Odaberite vozilo koje želite rezervisati", Alert.AlertType.CONFIRMATION);
+            showAlert("Upozorenje", "Odaberite vozilo koje želite rezervisati", Alert.AlertType.WARNING);
             return;
         }
+
         TablePosition pos = (TablePosition) tableViewCars.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
         String selected = tableViewCars.getItems().get(index).toString();
@@ -65,6 +71,10 @@ public class ClientPageController {
         String[] parts = selected.split(",");
         //parts[0]
         Vehicle vehicle=rentACarDAO.getVehiclePerId(Integer.parseInt(parts[0]));
+        if(vehicle.getAvailability().equals("NE")){
+            showAlert("Upozorenje", "Odabrano vozilo nije dostupno", Alert.AlertType.WARNING);
+            return;
+        }
         Stage stage = new Stage();
         Parent root = null;
         try {
@@ -175,6 +185,6 @@ public class ClientPageController {
     }
 
     public void changeType(ActionEvent actionEvent) {
-        listVehicles.setAll(rentACarDAO.getVehiclesPerType(choiceType.getValue()));
+        chosedVehicles.setAll(rentACarDAO.getVehiclesPerType(choiceType.getValue()));
     }
 }

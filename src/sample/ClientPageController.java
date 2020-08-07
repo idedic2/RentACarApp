@@ -108,8 +108,13 @@ public class ClientPageController {
         Stage stage = new Stage();
         Parent root = null;
         try {
+            User user=rentACarDAO.getUserPerUsername(username);
+            if(user==null){
+                showAlert("Greška", "Nije pronađen user", Alert.AlertType.ERROR);
+                return;
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/carDetails.fxml"));
-            CarDetailsController carDetailsController = new CarDetailsController(vehicle);
+            CarDetailsController carDetailsController = new CarDetailsController(vehicle, user);
             loader.setController(carDetailsController);
             root = loader.load();
             stage.setTitle("Informacije o vozilu");

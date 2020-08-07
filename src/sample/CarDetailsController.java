@@ -2,11 +2,15 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 public class CarDetailsController {
     public Label lblNmbDoors;
@@ -22,10 +26,12 @@ public class CarDetailsController {
     public Label lblAvailability;
     public Label lblPrice;
     public Label lblName;
+    public Button btnReservation;
     public Vehicle vehicle;
-
-    public CarDetailsController(Vehicle vehicle) {
+    public User user;
+    public CarDetailsController(Vehicle vehicle, User user) {
         this.vehicle=vehicle;
+        this.user=user;
     }
     private void showAlert(String title, String headerText, Alert.AlertType type) {
         Alert error = new Alert(type);
@@ -54,9 +60,35 @@ public class CarDetailsController {
             lblFuelConsumption.setText(Double.toString(vehicle.getFuelConsumption()));
             lblYear.setText(Integer.toString(vehicle.getYear()));
         }
+        if (vehicle.getAvailability().equals("NE")) btnReservation.setDisable(true);
     }
     public void reservationAction(ActionEvent actionEvent) {
-    }
+
+            Stage currentStage = (Stage) lblName.getScene().getWindow();
+            currentStage.close();
+            Stage stage = new Stage();
+            Parent root = null;
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/reservation.fxml"));
+                ReservationController reservationController = new ReservationController(vehicle, user);
+                loader.setController(reservationController);
+                root = loader.load();
+                stage.setTitle("Rezerviši");
+                stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                stage.setResizable(true);
+                stage.show();
+
+            /*stage.setOnHiding( event -> {
+                Vehicle newVehicle = addCarController.getVehicle();
+                if (newVehicle != null) {
+                    rentACarDAO.editVehicle(newVehicle);
+                    listVehicles.setAll(rentACarDAO.getVehicles());
+                }
+            } );*/
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     public void backAction(ActionEvent actionEvent) {
         Stage stage= (Stage) lblBrand.getScene().getWindow();

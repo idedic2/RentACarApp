@@ -1,4 +1,11 @@
 BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "card" (
+	"id"	INTEGER,
+	"card_number"	TEXT,
+	"code"	TEXT,
+	"expiration_date"	TEXT,
+	PRIMARY KEY("id")
+);
 CREATE TABLE IF NOT EXISTS "reservation" (
 	"id"	INTEGER,
 	"vehicle_id"	INTEGER,
@@ -49,13 +56,7 @@ CREATE TABLE IF NOT EXISTS "vehicle" (
 	"availability"	TEXT,
 	PRIMARY KEY("id")
 );
-CREATE TABLE IF NOT EXISTS "card" (
-	"id"	INTEGER,
-	"card_number"	INTEGER,
-	"code"	INTEGER,
-	"expiration_date"	TEXT,
-	PRIMARY KEY("id")
-);
+INSERT INTO "card" ("id","card_number","code","expiration_date") VALUES (1,'343796895302403','2403','10/2020');
 INSERT INTO "reservation" ("id","vehicle_id","user_id","pickup_date","return_date","pickup_time","return_time") VALUES (1,3,1,'15/10/2020','20/10/2020','10:10','15:10');
 INSERT INTO "client" ("id","address","telephone","id_card") VALUES (1,'Paromlinska 12','062345997',1);
 INSERT INTO "admin" ("id") VALUES (1);
@@ -67,5 +68,4 @@ INSERT INTO "vehicle" ("id","name","brand","model","type","year","seats_number",
  (4,'BMW 640d','BMW','BMW 640d Coupe','Luksuzni automobil',2013,5,5,'Benzin','Automatik',20.0,'Crna',100.0,'NE'),
  (5,'OPEL VIVARO','OPEL','OPEL VIVARO SELECTION','Transportno vozilo',2018,8,5,'Dizel','Manuelni',91.0,'Siva metalik',140.0,'DA'),
  (6,'SEAT ARONA','SEAT','SEAT ARONA AUTOMATIC','Putnicki automobil',2018,5,5,'Benzin','Automatik',71.0,'Crvena',85.0,'DA');
-INSERT INTO "card" ("id","card_number","code","expiration_date") VALUES (1,343796895302403,2403,'10/2020');
 COMMIT;

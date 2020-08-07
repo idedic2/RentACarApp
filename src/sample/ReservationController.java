@@ -7,12 +7,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class ReservationController {
+
 
     public DatePicker datePickup;
     public DatePicker dateReturn;
@@ -30,6 +34,7 @@ public class ReservationController {
     public TextField fldCode;
     public Label lblCardData;
     public Label lblTotalPrice;
+    public TextField fldPrice;
     private Vehicle vehicle;
     private User user;
     private RentACarDAO rentACarDAO;
@@ -110,6 +115,8 @@ public class ReservationController {
     }
     @FXML
     public void initialize(){
+        lblTotalPrice.setVisible(false);
+        fldPrice.setVisible(false);
         fldName.setText(user.getFirstName()+" "+user.getLastName());
         fldEmail.setText(user.getEmail());
         fldName.setDisable(true);
@@ -123,7 +130,6 @@ public class ReservationController {
             fldYear.setDisable(true);
             lblCode.setDisable(true);
             fldCode.setDisable(true);
-
         /*datePickup.getEditor().textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String n) {
@@ -344,10 +350,15 @@ public class ReservationController {
         }
 
     }
-
+    private Double priceForRenting(){
+        long daysBetween = DAYS.between(datePickup.getValue(), dateReturn.getValue());
+        return daysBetween*vehicle.getPricePerDay();
+    }
     public void changeDate(ActionEvent actionEvent) {
         if (datePickup.getValue() == null) {
             dateOk=false;
+            lblTotalPrice.setVisible(false);
+            fldPrice.setVisible(false);
             datePickup.getStyleClass().removeAll("ispravnoPolje");
             datePickup.getStyleClass().add("neispravnoPolje");
             dateReturn.getStyleClass().removeAll("neispravnoPolje");
@@ -357,6 +368,8 @@ public class ReservationController {
         }
         else if(dateReturn.getValue()==null){
             dateOk=false;
+            lblTotalPrice.setVisible(false);
+            fldPrice.setVisible(false);
             datePickup.getStyleClass().removeAll("neispravnoPolje");
             datePickup.getStyleClass().add("ispravnoPolje");
             dateReturn.getStyleClass().removeAll("ispravnoPolje");
@@ -365,20 +378,37 @@ public class ReservationController {
             //return;
         }
         else{
-            if (isReturnAfterPickup()) {
-                dateOk=true;
-                datePickup.getStyleClass().removeAll("neispravnoPolje");
-                datePickup.getStyleClass().add("ispravnoPolje");
-                dateReturn.getStyleClass().removeAll("neispravnoPolje");
-                dateReturn.getStyleClass().add("ispravnoPolje");
-            } else {
+            if(datePickup.getValue().isEqual(dateReturn.getValue())){
                 dateOk=false;
                 datePickup.getStyleClass().removeAll("ispravnoPolje");
                 datePickup.getStyleClass().add("neispravnoPolje");
                 dateReturn.getStyleClass().removeAll("ispravnoPolje");
                 dateReturn.getStyleClass().add("neispravnoPolje");
-                showAlert("Greška", "Datum povratka mora biti nakon datuma rentanja", Alert.AlertType.ERROR);
+                lblTotalPrice.setVisible(false);
+                fldPrice.setVisible(false);
+                showAlert("Greška", "Minimum rentanja je 24h", Alert.AlertType.ERROR);
                 return;
+            }
+            if (isReturnAfterPickup()) {
+                    dateOk = true;
+                    datePickup.getStyleClass().removeAll("neispravnoPolje");
+                    datePickup.getStyleClass().add("ispravnoPolje");
+                    dateReturn.getStyleClass().removeAll("neispravnoPolje");
+                    dateReturn.getStyleClass().add("ispravnoPolje");
+                    lblTotalPrice.setVisible(true);
+                    fldPrice.setVisible(true);
+                    fldPrice.setText(priceForRenting() + " KM");
+
+            } else {
+                dateOk=false;
+                lblTotalPrice.setVisible(false);
+                fldPrice.setVisible(false);
+                datePickup.getStyleClass().removeAll("ispravnoPolje");
+                datePickup.getStyleClass().add("neispravnoPolje");
+                dateReturn.getStyleClass().removeAll("ispravnoPolje");
+                dateReturn.getStyleClass().add("neispravnoPolje");
+                showAlert("Greška", "Datum povratka mora biti nakon datuma rentanja", Alert.AlertType.ERROR);
+
             }
 
         }

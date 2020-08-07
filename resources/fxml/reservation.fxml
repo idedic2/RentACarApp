@@ -70,14 +70,6 @@
       <ChoiceBox fx:id="choicePickupHour" prefHeight="25.0" prefWidth="64.0" value="10" GridPane.columnIndex="3" GridPane.rowIndex="4">
        <items>
            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="00" />
-               <String fx:value="01" />
-               <String fx:value="02" />
-               <String fx:value="03" />
-               <String fx:value="04" />
-               <String fx:value="05" />
-               <String fx:value="06" />
-               <String fx:value="07" />
                <String fx:value="08" />
                <String fx:value="09" />
                <String fx:value="10" />
@@ -88,12 +80,6 @@
                <String fx:value="15" />
                <String fx:value="16" />
                <String fx:value="17" />
-               <String fx:value="18" />
-               <String fx:value="19" />
-               <String fx:value="20" />
-               <String fx:value="21" />
-               <String fx:value="22" />
-               <String fx:value="23" />
            </FXCollections>
        </items>
       </ChoiceBox>
@@ -110,14 +96,6 @@
       <ChoiceBox fx:id="choiceReturnHour" prefWidth="64.0" value="10" GridPane.columnIndex="5" GridPane.rowIndex="4">
        <items>
            <FXCollections fx:factory="observableArrayList">
-               <String fx:value="00" />
-               <String fx:value="01" />
-               <String fx:value="02" />
-               <String fx:value="03" />
-               <String fx:value="04" />
-               <String fx:value="05" />
-               <String fx:value="06" />
-               <String fx:value="07" />
                <String fx:value="08" />
                <String fx:value="09" />
                <String fx:value="10" />
@@ -128,12 +106,6 @@
                <String fx:value="15" />
                <String fx:value="16" />
                <String fx:value="17" />
-               <String fx:value="18" />
-               <String fx:value="19" />
-               <String fx:value="20" />
-               <String fx:value="21" />
-               <String fx:value="22" />
-               <String fx:value="23" />
            </FXCollections>
        </items>
       </ChoiceBox>
@@ -164,7 +136,7 @@
          </buttons>
       </ButtonBar>
       <Label fx:id="lblTotalPrice" text="*UKUPNA CIJENA JE " GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-      <ChoiceBox fx:id="choiceMonth" value="JAN" prefHeight="25.0" prefWidth="64.0" GridPane.columnIndex="9" GridPane.rowIndex="4">
+      <ChoiceBox fx:id="choiceMonth" prefHeight="25.0" prefWidth="64.0" value="JAN" GridPane.columnIndex="9" GridPane.rowIndex="4">
        <items>
            <FXCollections fx:factory="observableArrayList">
                <String fx:value="JAN" />
@@ -182,7 +154,8 @@
            </FXCollections>
        </items>
       </ChoiceBox>
-      <TextField fx:id="fldYear" GridPane.columnIndex="10" GridPane.rowIndex="4" promptText="2021"/>
+      <TextField fx:id="fldYear" promptText="2021" GridPane.columnIndex="10" GridPane.rowIndex="4" />
+      <TextField fx:id="fldPrice" editable="false" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="5" />
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

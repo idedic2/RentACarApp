@@ -135,6 +135,43 @@ public class ClientPageController {
     }
 
     public void priceRentAction(ActionEvent actionEvent) {
+        if(tableViewCars.getSelectionModel().getSelectedItem()==null){
+            showAlert("Upozorenje", "Odaberite vozilo", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        TablePosition pos = (TablePosition) tableViewCars.getSelectionModel().getSelectedCells().get(0);
+        int index = pos.getRow();
+        String selected = tableViewCars.getItems().get(index).toString();
+        //selected = selected.substring(1, selected.indexOf(","));
+        String[] parts = selected.split(",");
+        //parts[0]
+        Vehicle vehicle=rentACarDAO.getVehiclePerId(Integer.parseInt(parts[0]));
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            User user=rentACarDAO.getUserPerUsername(username);
+            if(user==null){
+                showAlert("Greška", "Nije pronađen user", Alert.AlertType.ERROR);
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/priceRenting.fxml"));
+            PriceRentingController priceRentingController = new PriceRentingController(vehicle, user);
+            loader.setController(priceRentingController);
+            root = loader.load();
+            stage.setTitle("Cijena iznajmljivanja vozila");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+            //stage.setOnHiding( event -> {
+            //  Vehicle newVehicle = addCarController.getVehicle();
+            //if (newVehicle != null) {
+            //  rentACarDAO.editVehicle(newVehicle);
+            //listVehicles.setAll(rentACarDAO.getVehicles());
+            //}
+            //} );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void changeType(ActionEvent actionEvent) {

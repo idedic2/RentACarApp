@@ -31,12 +31,12 @@ public class ClientPageController {
     private ObservableList<Vehicle>chosedVehicles;
     private String username;
 
-    public ClientPageController(String text){
+    public ClientPageController(String username){
         rentACarDAO=RentACarDAO.getInstance();
         //listVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
         listVehicles=FXCollections.observableArrayList(rentACarDAO.getVehicles());
         chosedVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
-        username=text;
+        this.username=username;
     }
     @FXML
     public void initialize() {
@@ -63,7 +63,6 @@ public class ClientPageController {
             showAlert("Upozorenje", "Odaberite vozilo koje želite rezervisati", Alert.AlertType.WARNING);
             return;
         }
-
         TablePosition pos = (TablePosition) tableViewCars.getSelectionModel().getSelectedCells().get(0);
         int index = pos.getRow();
         String selected = tableViewCars.getItems().get(index).toString();
@@ -79,12 +78,12 @@ public class ClientPageController {
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/reservation.fxml"));
-            User user=rentACarDAO.getUserPerUsername(username);
-            if(user==null){
+            Client client=rentACarDAO.getClientPerUsername(username);
+            if(client==null){
                 showAlert("Greška", "Nije pronađen user", Alert.AlertType.ERROR);
                 return;
             }
-            ReservationController reservationController = new ReservationController(vehicle,user);
+            ReservationController reservationController = new ReservationController(vehicle,client);
             loader.setController(reservationController);
             root = loader.load();
             stage.setTitle("Rezerviši vozilo");
@@ -118,13 +117,13 @@ public class ClientPageController {
         Stage stage = new Stage();
         Parent root = null;
         try {
-            User user=rentACarDAO.getUserPerUsername(username);
-            if(user==null){
+            Client client=rentACarDAO.getClientPerUsername(username);
+            if(client==null){
                 showAlert("Greška", "Nije pronađen user", Alert.AlertType.ERROR);
                 return;
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/carDetails.fxml"));
-            CarDetailsController carDetailsController = new CarDetailsController(vehicle, user);
+            CarDetailsController carDetailsController = new CarDetailsController(vehicle, client);
             loader.setController(carDetailsController);
             root = loader.load();
             stage.setTitle("Informacije o vozilu");
@@ -159,13 +158,13 @@ public class ClientPageController {
         Stage stage = new Stage();
         Parent root = null;
         try {
-            User user=rentACarDAO.getUserPerUsername(username);
-            if(user==null){
+            Client client=rentACarDAO.getClientPerUsername(username);
+            if(client==null){
                 showAlert("Greška", "Nije pronađen user", Alert.AlertType.ERROR);
                 return;
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/priceRenting.fxml"));
-            PriceRentingController priceRentingController = new PriceRentingController(vehicle, user);
+            PriceRentingController priceRentingController = new PriceRentingController(vehicle, client);
             loader.setController(priceRentingController);
             root = loader.load();
             stage.setTitle("Cijena iznajmljivanja vozila");

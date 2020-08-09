@@ -8,12 +8,13 @@ public class Reservation {
     private int id;
     private Vehicle vehicle;
     private Client client;
+    private Card card;
     private LocalDate pickUpDate;
     private LocalDate returnDate;
     private String pickupTime;
     private String returnTime;
 
-    public Reservation(int id, Vehicle vehicle, Client client, LocalDate pickUpDate, LocalDate returnDate, String pickupTime, String returnTime) {
+    public Reservation(int id, Vehicle vehicle, Client client, LocalDate pickUpDate, LocalDate returnDate, String pickupTime, String returnTime, Card card) {
         this.id = id;
         this.vehicle = vehicle;
         this.client = client;
@@ -21,6 +22,7 @@ public class Reservation {
         this.returnDate = returnDate;
         this.pickupTime = pickupTime;
         this.returnTime = returnTime;
+        this.card=card;
     }
 
     public Client getClient() {
@@ -82,5 +84,13 @@ public class Reservation {
 
     public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
     }
 }

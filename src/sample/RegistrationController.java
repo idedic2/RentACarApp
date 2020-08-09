@@ -28,23 +28,15 @@ public class RegistrationController {
     public TextField fldEmail;
     public TextField fldUsername;
     public PasswordField fldPassword;
-    public ObservableList<User> listUsers;
     public RentACarDAO rentACarDAO;
 
     public RegistrationController() {
         rentACarDAO = RentACarDAO.getInstance();
-        listUsers= FXCollections.observableArrayList(rentACarDAO.getUsers());
     }
     private boolean allLetters(String str){
         return  str.chars().allMatch(Character::isLetter);
     }
-    private boolean doesExistUsername(String username){
-        for(User user: listUsers){
-            if(user.getUsername().equals(username))
-                return true;
-        }
-        return false;
-    }
+
     @FXML
     public void initialize(){
         fldFirstName.textProperty().addListener(new ChangeListener<String>() {
@@ -228,15 +220,15 @@ public class RegistrationController {
         if(sveOk){
             //treba provjeriti postoji li korisnik u bazi, ako ne dodat ga
             //pitat korisnika zeli li nastaviti i ako potvrdi onda slj prozor
-            if(doesExistUsername(fldUsername.getText())){
+            if(rentACarDAO.getClientPerUsername(fldUsername.getText())!=null){
                 showAlert("Greška", "Korisničko ime je zauzeto", Alert.AlertType.ERROR);
                 fldUsername.getStyleClass().removeAll("ispravnoPolje");
                 fldUsername.getStyleClass().add("neispravnoPolje");
                 return;
             }
             else {
-                User user=new User(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText());
-                rentACarDAO.addUser(user);
+                Client client=new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), "", "");
+                rentACarDAO.addClient(client);
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("");
                 alert.setHeaderText("Odaberite opciju");
@@ -250,8 +242,8 @@ public class RegistrationController {
                         stage.close();
                         Stage primaryStage = new Stage();
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/clientPage.fxml"));
-                        //ClientFileController controller = new ClientFileController(newPerson);
-                        //loader.setController(controller);
+                        ClientPageController clientPageController = new ClientPageController(client.getUsername());
+                        loader.setController(clientPageController);
                         root = loader.load();
                         primaryStage.setTitle("Client File");
                         primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));

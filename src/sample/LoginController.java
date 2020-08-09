@@ -23,15 +23,14 @@ public class LoginController {
     public PasswordField fldPassword;
     public RadioButton radioClient;
     public RadioButton radioAdmin;
-    public ObservableList<User> listUsers;
     public ToggleGroup toggleGroup;
     private User user;
     private RentACarDAO rentACarDAO;
     private boolean usernameOk=true;
     private boolean passwordOk=true;
+
     public LoginController() {
         rentACarDAO = RentACarDAO.getInstance();
-        listUsers= FXCollections.observableArrayList(rentACarDAO.getUsers());
     }
     @FXML
     public void initialize() {
@@ -119,8 +118,8 @@ public class LoginController {
             return;
         }
         RadioButton selectedRadio= (RadioButton) toggleGroup.getSelectedToggle();
-        User user=rentACarDAO.getUser(fldUsername.getText(), fldPassword.getText(), selectedRadio.getText());
-        if (user == null) {
+        boolean doesExistUser=rentACarDAO.doesExistUser(fldUsername.getText(), fldPassword.getText(), selectedRadio.getText());
+        if (!doesExistUser) {
             showAlert("Greška", "Ne postoji korisnik sa datim podacima", Alert.AlertType.ERROR);
             return;
         }

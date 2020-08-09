@@ -40,16 +40,16 @@ public class ReservationController {
     public ChoiceBox<String>choiceReturnHour;
     public ChoiceBox<String>choiceReturnMinute;
     private Vehicle vehicle;
-    private User user;
+    private Client client;
     private RentACarDAO rentACarDAO;
+    private boolean existClient=false;
     //private  boolean sveOk=false;
     private boolean dateOk=false;
-    public ReservationController(Vehicle vehicle, User user) {
+    public ReservationController(Vehicle vehicle, Client client) {
         this.vehicle=vehicle;
-        this.user=user;
+        this.client=client;
         rentACarDAO=RentACarDAO.getInstance();
     }
-
     private boolean allDigits(String str){
         return  str.chars().allMatch(Character::isDigit);
     }
@@ -121,10 +121,12 @@ public class ReservationController {
     public void initialize(){
         lblTotalPrice.setVisible(false);
         fldPrice.setVisible(false);
-        fldName.setText(user.getFirstName()+" "+user.getLastName());
-        fldEmail.setText(user.getEmail());
+        fldName.setText(client.getFirstName()+" "+client.getLastName());
+        fldEmail.setText(client.getEmail());
         fldName.setDisable(true);
         fldEmail.setDisable(true);
+        //((client=rentACarDAO.getClient(user.getId());
+        //if(client!=null)existClient=true;
         //datePickup.getStyleClass().add("neispravnoPolje");
         //dateReturn.getStyleClass().add("neispravnoPolje");
             lblNmbCard.setDisable(true);
@@ -382,26 +384,41 @@ public class ReservationController {
         if (result.get() == ButtonType.OK){
             vehicle.setAvailability("NE");
             rentACarDAO.editVehicle(vehicle);
-            //listVehicles.setAll(rentACarDAO.getVehicles());
             Card card=null;
+            if(checkBoxNow.isSelected()){
+                String expire=getDays(choiceMonth.getValue())+"."+getMonth(choiceMonth.getValue())+"."+fldYear.getText();
+                LocalDate expireDate=stringToDate(expire);
+                card=new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
+                rentACarDAO.addCard(card);
+                //dobavi ponovo karticu iz baze
+                card=rentACarDAO.getCard(fldNmbCard.getText());
+            }
+            Reservation reservation=new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue()+":"+choicePickupMinute.getValue(), choiceReturnHour.getValue()+":"+choiceReturnMinute.getValue(), card);
+            rentACarDAO.addReservation(reservation);
+            //listVehicles.setAll(rentACarDAO.getVehicles());
+
+            //svaki put se pravi kartica nema provjera, imamo klijneta i npravit rezervaciju
+            //Card card=null;
             /*if(!checkBoxNow.isSelected()){
                 Card card=null;
                 //Client clientPaysNotNow=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(),fldAddress.getText(), fldTelephone.getText(), null);
             }*/
             //Client client=new Client();
-            boolean payingNow=false;
+            /*boolean payingNow=false;
             if(checkBoxNow.isSelected()){//zeli odmah platiti
                 String expire=getDays(choiceMonth.getValue())+"."+getMonth(choiceMonth.getValue())+"."+fldYear.getText();
                 LocalDate expireDate=stringToDate(expire);
                 card=new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
+                /*if(rentACarDAO.(fldNmbCard.getText()))
                 rentACarDAO.addCard(card);
                 payingNow=true;
                 //client=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(), fldAddress.getText(), fldTelephone.getText(), card);
             }
             Client client=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(), fldAddress.getText(), fldTelephone.getText(), card);
+            if(!existClient)
             rentACarDAO.addClient(client, payingNow);
-            //String pickup=getDays(choiceMonth.getValue())+"."+getMonth(choiceMonth.getValue())+"."+fldYear.getText();
-            rentACarDAO.addReservation(new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue()+":"+choicePickupMinute.getValue(), choiceReturnHour.getValue()+":"+choiceReturnMinute.getValue()));
+            String pickup=getDays(choiceMonth.getValue())+"."+getMonth(choiceMonth.getValue())+"."+fldYear.getText();
+            rentACarDAO.addReservation(new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue()+":"+choicePickupMinute.getValue(), choiceReturnHour.getValue()+":"+choiceReturnMinute.getValue()));*/
             Stage stage = (Stage) lblTotalPrice.getScene().getWindow();
             stage.close();
         }
@@ -433,7 +450,7 @@ public class ReservationController {
             //showAlert("Upozorenje", "Odaberite datum vraćanja vozila", Alert.AlertType.WARNING);
             //return;
         }
-        if(datePickup.getValue().isBefore(LocalDate.now()) || dateReturn.getValue().isBefore(LocalDate.now())){
+        /*if(datePickup.getValue().isBefore(LocalDate.now()) || dateReturn.getValue().isBefore(LocalDate.now())){
             dateOk=false;
             datePickup.getStyleClass().removeAll("ispravnoPolje");
             datePickup.getStyleClass().add("neispravnoPolje");
@@ -443,7 +460,7 @@ public class ReservationController {
             fldPrice.setVisible(false);
             showAlert("Greška", "Odabrani datum/datumi iz prošlosti", Alert.AlertType.ERROR);
             return;
-        }
+        }*/
         else{
             if(datePickup.getValue().isEqual(dateReturn.getValue())){
                 dateOk=false;

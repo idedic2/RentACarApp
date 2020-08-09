@@ -3,21 +3,14 @@ package sample;
 public class Client extends User{
     private String address;
     private String telephone;
-    private Card card;
-
-    public Client(int id, String firstName, String lastName, String email, String username, String password, String address, String telephone, Card card) {
-        super(id, firstName, lastName, email, username, password);
-        this.address = address;
-        this.telephone = telephone;
-        this.card = card;
-    }
-
+//iz klijenta obrisati karitcu, i kartica ce bti u rez,
     public Client(int id, String firstName, String lastName, String email, String username, String password, String address, String telephone) {
         super(id, firstName, lastName, email, username, password);
         this.address = address;
         this.telephone = telephone;
-        this.card = null;
+
     }
+
 
     public Client() {
         super();
@@ -39,11 +32,4 @@ public class Client extends User{
         this.telephone = telephone;
     }
 
-    public Card getCard() {
-        return card;
-    }
-
-    public void setCard(Card card) {
-        this.card = card;
-    }
 }

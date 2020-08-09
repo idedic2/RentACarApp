@@ -28,10 +28,10 @@ public class CarDetailsController {
     public Label lblName;
     public Button btnReservation;
     public Vehicle vehicle;
-    public User user;
-    public CarDetailsController(Vehicle vehicle, User user) {
+    public Client client;
+    public CarDetailsController(Vehicle vehicle, Client client) {
         this.vehicle=vehicle;
-        this.user=user;
+        this.client=client;
     }
     private void showAlert(String title, String headerText, Alert.AlertType type) {
         Alert error = new Alert(type);
@@ -70,7 +70,7 @@ public class CarDetailsController {
             Parent root = null;
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/reservation.fxml"));
-                ReservationController reservationController = new ReservationController(vehicle, user);
+                ReservationController reservationController = new ReservationController(vehicle, client);
                 loader.setController(reservationController);
                 root = loader.load();
                 stage.setTitle("Rezerviši");

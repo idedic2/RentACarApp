@@ -162,7 +162,7 @@ public class AddCarController {
                 showAlert("Greška", "Boja mora sadržavati isključivo slova", Alert.AlertType.ERROR);
                 return;
             }
-        
+
         if (!sveOk) return;
 
         if (vehicle == null) vehicle = new Vehicle();

@@ -1,13 +1,11 @@
 package sample;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,14 +18,21 @@ public class PriceRentingController {
     public Label lblPrice;
     public DatePicker datePickup;
     public DatePicker dateReturn;
-    private User user;
+    private Client client;
     private Vehicle vehicle;
-
-    public PriceRentingController(Vehicle vehicle, User user) {
-        this.user=user;
+    public Button btnReservation;
+    public PriceRentingController(Vehicle vehicle, Client client) {
         this.vehicle=vehicle;
+        this.client=client;
     }
-
+    @FXML
+    public void initialize(){
+        if(vehicle==null){
+            showAlert("Greška", "Vozilo nije odabrano", Alert.AlertType.ERROR);
+            return;
+        }
+        if (vehicle.getAvailability().equals("NE")) btnReservation.setDisable(true);
+    }
     public void reservationAction(ActionEvent actionEvent) {
         Stage currentStage = (Stage) fldPrice.getScene().getWindow();
         currentStage.close();
@@ -35,7 +40,7 @@ public class PriceRentingController {
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/reservation.fxml"));
-            ReservationController reservationController = new ReservationController(vehicle, user);
+            ReservationController reservationController = new ReservationController(vehicle, client);
             loader.setController(reservationController);
             root = loader.load();
             stage.setTitle("Rezerviši");

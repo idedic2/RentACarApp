@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import sun.util.cldr.CLDRLocaleDataMetaInfo;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -35,12 +36,22 @@ public class AdminPageController {
     public TableColumn colColor;
     public TableColumn colPrice;
     public TableColumn colAvailability;
+    public TableView<Client> tableViewClients;
+    public TableColumn colIdClient;
+    public TableColumn colFirstName;
+    public TableColumn colLastName;
+    public TableColumn colEmail;
+    public TableColumn colUsername;
+    public TableColumn colPassword;
+    public TableColumn colAddress;
+    public TableColumn colTelephone;
     private RentACarDAO rentACarDAO;
     private ObservableList<Vehicle> listVehicles;
-
+    private ObservableList<Client> listClients;
     public AdminPageController() {
         rentACarDAO = RentACarDAO.getInstance();
         listVehicles = FXCollections.observableArrayList(rentACarDAO.getVehicles());
+        listClients=FXCollections.observableArrayList(rentACarDAO.getClients());
     }
 
     @FXML
@@ -60,6 +71,15 @@ public class AdminPageController {
         colColor.setCellValueFactory(new PropertyValueFactory("color"));
         colPrice.setCellValueFactory(new PropertyValueFactory("pricePerDay"));
         colAvailability.setCellValueFactory(new PropertyValueFactory("availability"));
+        tableViewClients.setItems(listClients);
+        colIdClient.setCellValueFactory(new PropertyValueFactory("id"));
+        colFirstName.setCellValueFactory(new PropertyValueFactory("firstName"));
+        colLastName.setCellValueFactory(new PropertyValueFactory("lastName"));
+        colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+        colUsername.setCellValueFactory(new PropertyValueFactory("username"));
+        colPassword.setCellValueFactory(new PropertyValueFactory("password"));
+        colAddress.setCellValueFactory(new PropertyValueFactory("address"));
+        colTelephone.setCellValueFactory(new PropertyValueFactory("telephone"));
     }
 
     public void addVehicle(ActionEvent actionEvent) {
@@ -137,5 +157,63 @@ public class AdminPageController {
             rentACarDAO.deleteVehicle(vehicle);
             listVehicles.setAll(rentACarDAO.getVehicles());
         }
+    }
+
+    public void addClientAction(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addClient.fxml"));
+            AddClientController addClientController = new AddClientController(null, true);
+            loader.setController(addClientController);
+            root = loader.load();
+            stage.setTitle("Dodavanje novog klijenta");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+            stage.setOnHiding( event -> {
+                Client client = addClientController.getClient();
+                if (client != null) {
+                    rentACarDAO.addClient(client);
+                    listClients.setAll(rentACarDAO.getClients());
+                }
+            } );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editClientAction(ActionEvent actionEvent) {
+        Client client = tableViewClients.getSelectionModel().getSelectedItem();
+        if (client == null) {
+            showAlert("Upozorenje", "Odaberite klijenta kojeg želite izmijeniti", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addClient.fxml"));
+            AddClientController addClientController = new AddClientController(client, false);
+            loader.setController(addClientController);
+            root = loader.load();
+            stage.setTitle("Izmijeni klijenta");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+
+            stage.setOnHiding( event -> {
+                Client newClient = addClientController.getClient();
+                if (newClient != null) {
+                    rentACarDAO.editClient(newClient);
+                    listClients.setAll(rentACarDAO.getClients());
+                }
+            } );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteClientAction(ActionEvent actionEvent) {
+        
     }
 }

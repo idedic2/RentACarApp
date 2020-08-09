@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
+    private PreparedStatement editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
 
     private RentACarDAO() {
         try {
@@ -51,6 +51,9 @@ public class RentACarDAO {
             //getUserPerId=conn.prepareStatement("SELECT * FROM user WHERE id=?");
             maxClientIdQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM client");
             doesExistCardQuery=conn.prepareStatement("SELECT * FROM card WHERE card_number=?");
+            getClientsQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, c.address, c.telephone FROM user u, client c WHERE c.id=u.id");
+            editClientQuery=conn.prepareStatement("UPDATE client SET address=?, telephone=? WHERE id=?");
+            editUserQuery=conn.prepareStatement("UPDATE user SET first_name=?, last_name=?, email=?, username=?, password=? WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -309,6 +312,17 @@ public class RentACarDAO {
         }
         return card;
     }
+    public ArrayList<Client>getClients(){
+        ArrayList<Client>clients=new ArrayList<>();
+        try{
+            ResultSet rs=getClientsQuery.executeQuery();
+            while(rs.next())
+                clients.add(new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return clients;
+    }
     public LocalDate stringToDate(String date){
         String []temp=date.split("\\.");
         DateTimeFormatter formatter=DateTimeFormatter.ofPattern("d/MM/yyyy");
@@ -319,6 +333,23 @@ public class RentACarDAO {
         d+=temp[1]+"/"+temp[2];
         LocalDate localDate=LocalDate.parse(d, formatter);
         return localDate;
+    }
+    public void editClient(Client client){
+        try{
+            editUserQuery.setString(1, client.getFirstName());
+            editUserQuery.setString(2, client.getLastName());
+            editUserQuery.setString(3, client.getEmail());
+            editUserQuery.setString(4, client.getUsername());
+            editUserQuery.setString(5, client.getPassword());
+            editUserQuery.setInt(6, client.getId());
+            editUserQuery.executeUpdate();
+            editClientQuery.setString(1, client.getAddress());
+            editClientQuery.setString(2, client.getTelephone());
+            editClientQuery.setInt(3, client.getId());
+            editClientQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     /*public Client getClient(int id){
         Client client=null;

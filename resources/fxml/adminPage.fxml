@@ -72,7 +72,40 @@
           </Tab>
             <Tab text="Klijenti">
                 <content>
-                    <GridPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <GridPane minHeight="0.0" minWidth="0.0" prefHeight="299.0" prefWidth="781.0">
+                        <columnConstraints>
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                        <children>
+                            <HBox prefHeight="42.0" prefWidth="907.0" spacing="5.0">
+                                <children>
+                                    <Button fx:id="btnAddClient" mnemonicParsing="false" onAction="#addClientAction" text="Dodaj " />
+                                    <Button fx:id="btnEditClient" mnemonicParsing="false" onAction="#editClientAction" text="Izmijeni" />
+                                    <Button fx:id="btnDeleteClient" mnemonicParsing="false" onAction="#deleteClientAction" text="Obriši" />
+                                </children>
+                                <GridPane.margin>
+                                    <Insets top="10.0" />
+                                </GridPane.margin>
+                            </HBox>
+                            <TableView fx:id="tableViewClients" prefHeight="212.0" prefWidth="932.0" GridPane.rowIndex="1">
+                                <columns>
+                                    <TableColumn fx:id="colIdClient" prefWidth="51.999969482421875" text="ID" />
+                                    <TableColumn fx:id="colFirstName" prefWidth="51.999969482421875" text="Ime" />
+                                    <TableColumn fx:id="colLastName" prefWidth="57.0" text="Prezime" />
+                                    <TableColumn fx:id="colEmail" prefWidth="72.0" text="Email" />
+                                    <TableColumn fx:id="colUsername" prefWidth="69.0" text="Username" />
+                                    <TableColumn fx:id="colPassword" prefWidth="65.0" text="Password" />
+                                    <TableColumn fx:id="colAddress" prefWidth="74.0" text="Adresa" />
+                                    <TableColumn fx:id="colTelephone" prefWidth="76.0" text="Telefon" />
+                                </columns>
+                            </TableView>
+                        </children></GridPane>
                 </content>
             </Tab>
         </tabs>

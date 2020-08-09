@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
+    private PreparedStatement deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
 
     private RentACarDAO() {
         try {
@@ -54,6 +54,8 @@ public class RentACarDAO {
             getClientsQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, c.address, c.telephone FROM user u, client c WHERE c.id=u.id");
             editClientQuery=conn.prepareStatement("UPDATE client SET address=?, telephone=? WHERE id=?");
             editUserQuery=conn.prepareStatement("UPDATE user SET first_name=?, last_name=?, email=?, username=?, password=? WHERE id=?");
+            deleteClientQuery=conn.prepareStatement("DELETE FROM client WHERE id=?");
+            deleteUserQuery=conn.prepareStatement("DELETE FROM user WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -347,6 +349,17 @@ public class RentACarDAO {
             editClientQuery.setString(2, client.getTelephone());
             editClientQuery.setInt(3, client.getId());
             editClientQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteClient(Client client){
+        int id=client.getId();
+        try{
+            deleteClientQuery.setInt(1, id);
+            deleteClientQuery.executeUpdate();
+            deleteUserQuery.setInt(1, id);
+            deleteUserQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

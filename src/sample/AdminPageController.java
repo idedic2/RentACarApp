@@ -214,6 +214,19 @@ public class AdminPageController {
     }
 
     public void deleteClientAction(ActionEvent actionEvent) {
-        
+        Client client = tableViewClients.getSelectionModel().getSelectedItem();
+        if (client == null) {
+            showAlert("Upozorenje", "Odaberite klijenta kojeg želite obrisati", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potvrda brisanja");
+        alert.setHeaderText("Brisanje klijenta "+client.getFirstName()+" "+client.getLastName());
+        alert.setContentText("Da li ste sigurni da želite obrisati klijenta " +client.getFirstName()+" "+client.getLastName()+"?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            rentACarDAO.deleteClient(client);
+            listClients.setAll(rentACarDAO.getClients());
+        }
     }
 }

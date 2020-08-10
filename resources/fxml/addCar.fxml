@@ -40,7 +40,7 @@
         <Label text="Mjenjač:" GridPane.rowIndex="5" />
         <Label text="Potrošnja goriva:" GridPane.rowIndex="6" />
         <Label text="Broj sjedišta:" GridPane.rowIndex="7" />
-        <Label text="Broj vozila:" GridPane.rowIndex="8" />
+        <Label text="Broj vrata:" GridPane.rowIndex="8" />
         <Label text="Gorivo:" GridPane.rowIndex="9" />
         <Label text="Boja:" GridPane.rowIndex="10" />
         <TextField fx:id="fldBrand" GridPane.columnIndex="1" GridPane.rowIndex="1" />

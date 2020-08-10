@@ -128,6 +128,16 @@ public class AddCarController {
     private boolean allLetters(String str){
         return  str.chars().allMatch(Character::isLetter);
     }
+    private boolean validationForDouble(String str){
+       for(int i=0;i<str.length();i++){
+           if(!(str.charAt(i)=='.' || (str.charAt(i)>='0' && str.charAt(i)<='9')))
+               return false;
+       }
+       return true;
+    }
+    private boolean allDigits(String str){
+        return  str.chars().allMatch(Character::isDigit);
+    }
 
     private void showAlert(String title, String headerText, Alert.AlertType type) {
         Alert error = new Alert(type);
@@ -162,9 +172,19 @@ public class AddCarController {
                 showAlert("Greška", "Boja mora sadržavati isključivo slova", Alert.AlertType.ERROR);
                 return;
             }
-
+            if(!allDigits(comboYear.getValue())){
+                showAlert("Greška", "Godina mora sadržavati isključivo brojeve", Alert.AlertType.ERROR);
+                return;
+            }
+        if(!validationForDouble(comboFuelConsumption.getValue())){
+            showAlert("Greška", "Potrošnja mora sadržavati isključivo brojeve", Alert.AlertType.ERROR);
+            return;
+        }
+        if(!validationForDouble(comboPrice.getValue())){
+            showAlert("Greška", "Cijena mora sadržavati isključivo brojeve", Alert.AlertType.ERROR);
+            return;
+        }
         if (!sveOk) return;
-
         if (vehicle == null) vehicle = new Vehicle();
         vehicle.setName(fldName.getText());
         vehicle.setBrand(fldBrand.getText());

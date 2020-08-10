@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement getVehicleFromReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
+    private PreparedStatement deleteCardQuery, deleteReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
 
     private RentACarDAO() {
         try {
@@ -58,6 +58,8 @@ public class RentACarDAO {
             deleteUserQuery=conn.prepareStatement("DELETE FROM user WHERE id=?");
             getReservationsQuery=conn.prepareStatement("SELECT * FROM reservation");
             getClientPerIdQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, c.address, c.telephone FROM user u, client c WHERE c.id=u.id AND u.id=?");
+            deleteCardQuery=conn.prepareStatement("DELETE FROM card WHERE id=?");
+            deleteReservationQuery=conn.prepareStatement("DELETE FROM reservation WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -429,6 +431,25 @@ public class RentACarDAO {
             e.printStackTrace();
         }
         return reservations;
+    }
+    public void deleteCard(Card card){
+        try{
+            deleteCardQuery.setInt(1, card.getId());
+            deleteCardQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteReservation(Reservation reservation){
+        try{
+            //obrisati karticu, reci da je vozilo dostupno, klijenta ne brisemo
+            if(reservation.getCard()!=null)deleteCard(reservation.getCard());
+            editVehicle(reservation.getVehicle());
+            deleteReservationQuery.setInt(1, reservation.getId());
+            deleteReservationQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     /*public Client getClient(int id){
         Client client=null;

@@ -9,14 +9,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import sun.util.cldr.CLDRLocaleDataMetaInfo;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -108,8 +107,55 @@ public class AdminPageController {
         colReturnDate.setCellValueFactory(new PropertyValueFactory("returnDate"));
         colPickupTime.setCellValueFactory(new PropertyValueFactory("pickupTime"));
         colReturnTime.setCellValueFactory(new PropertyValueFactory("returnTime"));
+        addButtonToTable();
     }
+    private void addButtonToTable() {
+        TableColumn<Reservation, Void> colBtn = new TableColumn("Brisanje");
 
+        Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>> cellFactory = new Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>>() {
+            @Override
+            public TableCell<Reservation, Void> call(final TableColumn<Reservation, Void> param) {
+                final TableCell<Reservation, Void> cell = new TableCell<Reservation, Void>() {
+                    private final Button btn = new Button("Obriši");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Reservation data = getTableView().getItems().get(getIndex());
+                            //System.out.println("selectedData: " + data);
+                            //System.out.println(data.getReturnTime());
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Potvrda brisanja");
+                            alert.setHeaderText("Brisanje rezervacije");
+                            alert.setContentText("Da li ste sigurni da želite obrisati rezervaciju?");
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK){
+                                //System.out.println(data.getReturnTime());
+                                data.getVehicle().setAvailability("DA");
+                                rentACarDAO.deleteReservation(data);
+                                listVehicles.setAll(rentACarDAO.getVehicles());
+                                listReservations.setAll(rentACarDAO.getReservations());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        tableViewReservations.getColumns().add(colBtn);
+
+    }
     public void addVehicle(ActionEvent actionEvent) {
         Stage stage = new Stage();
         Parent root = null;

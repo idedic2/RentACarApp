@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import sun.util.cldr.CLDRLocaleDataMetaInfo;
@@ -58,19 +60,23 @@ public class AdminPageController {
     public TableColumn colReturnDate;
     public TableColumn colPickupTime;
     public TableColumn colReturnTime;
+    public Label lblWelcome;
     private RentACarDAO rentACarDAO;
     private ObservableList<Vehicle> listVehicles;
     private ObservableList<Client> listClients;
     private ObservableList<Reservation>listReservations;
-    public AdminPageController() {
+    private String username;
+
+    public AdminPageController(String username) {
         rentACarDAO = RentACarDAO.getInstance();
         listVehicles = FXCollections.observableArrayList(rentACarDAO.getVehicles());
         listClients=FXCollections.observableArrayList(rentACarDAO.getClients());
         listReservations=FXCollections.observableArrayList(rentACarDAO.getReservations());
+        this.username=username;
     }
-
     @FXML
     public void initialize() {
+        lblWelcome.setText(lblWelcome.getText()+" "+username);
         tableViewVehicles.setItems(listVehicles);
         colId.setCellValueFactory(new PropertyValueFactory("id"));
         colName.setCellValueFactory(new PropertyValueFactory("name"));
@@ -301,6 +307,22 @@ public class AdminPageController {
         if (result.get() == ButtonType.OK){
             rentACarDAO.deleteClient(client);
             listClients.setAll(rentACarDAO.getClients());
+        }
+    }
+    public void logOutAction(ActionEvent actionEvent){
+        Parent root = null;
+        try {
+            Stage stage = (Stage) lblWelcome.getScene().getWindow();
+            stage.close();
+            Stage primaryStage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
+            root = loader.load();
+            primaryStage.setScene(new Scene(root, Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
+            primaryStage.initModality(Modality.APPLICATION_MODAL);
+            primaryStage.setResizable(false);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

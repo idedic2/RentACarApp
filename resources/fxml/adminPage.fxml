@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="957.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AdminPageController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="957.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" >
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="904.0" minWidth="10.0" prefWidth="904.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="738.0" minWidth="0.0" prefWidth="43.0" />
@@ -145,11 +145,16 @@
             </Tab>
         </tabs>
       </TabPane>
-      <Label text="Dobrodošli">
+      <Label fx:id="lblWelcome" text="Dobrodošli">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
+      <Button cancelButton="true" mnemonicParsing="false" onAction="#logOutAction" prefHeight="25.0" prefWidth="91.0" text="Odjavi se">
+         <GridPane.margin>
+            <Insets left="830.0" />
+         </GridPane.margin>
+      </Button>
    </children>
    <opaqueInsets>
       <Insets />

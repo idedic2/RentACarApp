@@ -123,6 +123,12 @@ public class ReservationController {
         fldPrice.setVisible(false);
         fldName.setText(client.getFirstName()+" "+client.getLastName());
         fldEmail.setText(client.getEmail());
+        if(!client.getAddress().equals("")){
+            fldAddress.setText(client.getAddress());
+            fldTelephone.setText(client.getTelephone());
+            fldAddress.setDisable(true);
+            fldTelephone.setDisable(true);
+        }
         fldName.setDisable(true);
         fldEmail.setDisable(true);
         //((client=rentACarDAO.getClient(user.getId());

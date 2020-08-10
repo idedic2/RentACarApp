@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,13 +47,27 @@ public class AdminPageController {
     public TableColumn colPassword;
     public TableColumn colAddress;
     public TableColumn colTelephone;
+    public TableView<Reservation> tableViewReservations;
+    public TableColumn colIdReservation;
+    public TableColumn<Reservation, Integer> colIdVehicle;
+    public TableColumn<Reservation, String> colNameVehicle;
+    public TableColumn<Reservation, String> colFirstNameClient;
+    public TableColumn<Reservation, String> colLastNameClient;
+    public TableColumn<Reservation, String> colUsernameClient;
+    public TableColumn colCardNumber;
+    public TableColumn colPickupDate;
+    public TableColumn colReturnDate;
+    public TableColumn colPickupTime;
+    public TableColumn colReturnTime;
     private RentACarDAO rentACarDAO;
     private ObservableList<Vehicle> listVehicles;
     private ObservableList<Client> listClients;
+    private ObservableList<Reservation>listReservations;
     public AdminPageController() {
         rentACarDAO = RentACarDAO.getInstance();
         listVehicles = FXCollections.observableArrayList(rentACarDAO.getVehicles());
         listClients=FXCollections.observableArrayList(rentACarDAO.getClients());
+        listReservations=FXCollections.observableArrayList(rentACarDAO.getReservations());
     }
 
     @FXML
@@ -80,6 +96,18 @@ public class AdminPageController {
         colPassword.setCellValueFactory(new PropertyValueFactory("password"));
         colAddress.setCellValueFactory(new PropertyValueFactory("address"));
         colTelephone.setCellValueFactory(new PropertyValueFactory("telephone"));
+        tableViewReservations.setItems(listReservations);
+        colIdReservation.setCellValueFactory(new PropertyValueFactory("id"));
+        colIdVehicle.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getVehicle().getId()).asObject());
+        colNameVehicle.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getVehicle().getName()));
+        colFirstNameClient.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getClient().getFirstName()));
+        colLastNameClient.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getClient().getLastName()));
+        colUsernameClient.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getClient().getUsername()));
+        colCardNumber.setCellValueFactory(new PropertyValueFactory("cardNumber"));
+        colPickupDate.setCellValueFactory(new PropertyValueFactory("pickUpDate"));
+        colReturnDate.setCellValueFactory(new PropertyValueFactory("returnDate"));
+        colPickupTime.setCellValueFactory(new PropertyValueFactory("pickupTime"));
+        colReturnTime.setCellValueFactory(new PropertyValueFactory("returnTime"));
     }
 
     public void addVehicle(ActionEvent actionEvent) {

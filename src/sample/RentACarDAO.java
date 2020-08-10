@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
+    private PreparedStatement getVehicleFromReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
 
     private RentACarDAO() {
         try {
@@ -56,6 +56,8 @@ public class RentACarDAO {
             editUserQuery=conn.prepareStatement("UPDATE user SET first_name=?, last_name=?, email=?, username=?, password=? WHERE id=?");
             deleteClientQuery=conn.prepareStatement("DELETE FROM client WHERE id=?");
             deleteUserQuery=conn.prepareStatement("DELETE FROM user WHERE id=?");
+            getReservationsQuery=conn.prepareStatement("SELECT * FROM reservation");
+            getClientPerIdQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, c.address, c.telephone FROM user u, client c WHERE c.id=u.id AND u.id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -244,6 +246,18 @@ public class RentACarDAO {
         }
         return client;
     }
+    public Client getClientPerId(int id){
+        Client client=null;
+        try{
+            getClientPerIdQuery.setInt(1, id);
+            ResultSet rs=getClientPerIdQuery.executeQuery();
+            if(!rs.next())return null;
+            client=new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return client;
+    }
     public void addReservation(Reservation reservation){
         int cardId=0;
         if(reservation.getCard()!=null)cardId=reservation.getCard().getId();
@@ -275,7 +289,7 @@ public class RentACarDAO {
             addCardQuery.setInt(1, id);
             addCardQuery.setString(2, card.getCardNumber());
             addCardQuery.setString(3, card.getCode());
-            addCardQuery.setString(4, card.getExpirationDate().getMonth()+"/"+card.getExpirationDate().getYear());
+            addCardQuery.setString(4, card.getExpirationDate().getDayOfMonth()+"/"+getMonth(card.getExpirationDate().getMonth().toString())+"/"+card.getExpirationDate().getYear());
             addCardQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -301,11 +315,38 @@ public class RentACarDAO {
             e.printStackTrace();
         }
     }
+    private int getMonth(String month){
+        if(month.equals("JANUARY"))return 1;
+        if(month.equals("FEBRUARY"))return 2;
+        if(month.equals("MARCH"))return 3;
+        if(month.equals("APRIL"))return 4;
+        if(month.equals("MAY"))return 5;
+        if(month.equals("JUNE"))return 6;
+        if(month.equals("JULY"))return 7;
+        if(month.equals("AUGUST"))return 8;
+        if(month.equals("SEPTEMBER"))return 9;
+        if(month.equals("OCTOBER"))return 10;
+        if(month.equals("NOVEMBER"))return 11;
+        return 12;
+    }
     public Card getCard(String cardNumber){
         Card card=null;
         try{
             doesExistCardQuery.setString(1, cardNumber);
             ResultSet rs=doesExistCardQuery.executeQuery();
+            if(!rs.next())return null;
+            LocalDate expireDate=stringToDate(rs.getString(4));
+            card=new Card(rs.getInt(1), rs.getString(2), rs.getString(3), expireDate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return card;
+    }
+    public Card getCardPerId(int id){
+        Card card=null;
+        try{
+            getCardQuery.setInt(1, id);
+            ResultSet rs=getCardQuery.executeQuery();
             if(!rs.next())return null;
             LocalDate expireDate=stringToDate(rs.getString(4));
             card=new Card(rs.getInt(1), rs.getString(2), rs.getString(3), expireDate);
@@ -325,8 +366,15 @@ public class RentACarDAO {
         }
         return clients;
     }
+    private boolean allLetters(String str){
+        return  str.chars().allMatch(Character::isLetter);
+    }
     public LocalDate stringToDate(String date){
-        String []temp=date.split("\\.");
+        String []temp=date.split("/");
+        if(allLetters(temp[1])){
+            int pom=getMonth(temp[1]);
+            temp[1]=Integer.toString(pom);
+        }
         DateTimeFormatter formatter=DateTimeFormatter.ofPattern("d/MM/yyyy");
         String d="";
         if(Integer.parseInt(temp[0])>=1 && Integer.parseInt(temp[0])<=9)d+="0";
@@ -363,6 +411,24 @@ public class RentACarDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public ArrayList<Reservation> getReservations(){
+        ArrayList<Reservation>reservations=new ArrayList<>();
+        try{
+            ResultSet rs=getReservationsQuery.executeQuery();
+            while(rs.next()) {
+                Vehicle vehicle=getVehiclePerId(rs.getInt(2));
+                if(vehicle==null)return null;
+                Client client=getClientPerId(rs.getInt(3));
+                if(client==null)return null;
+                Card card=null;
+                if(rs.getInt(8)!=0)card=getCardPerId(rs.getInt(8));
+                reservations.add(new Reservation(rs.getInt(1), vehicle, client, stringToDate(rs.getString(4)), stringToDate(rs.getString(5)), rs.getString(6), rs.getString(7), card));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservations;
     }
     /*public Client getClient(int id){
         Client client=null;

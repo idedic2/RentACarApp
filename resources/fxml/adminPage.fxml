@@ -67,7 +67,42 @@
           </Tab>
           <Tab text="Rezervacije">
             <content>
-              <GridPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <GridPane minHeight="0.0" minWidth="0.0" prefHeight="299.0" prefWidth="781.0">
+                    <columnConstraints>
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                    <children>
+                        <TableView fx:id="tableViewReservations" prefHeight="212.0" prefWidth="932.0" GridPane.rowIndex="1">
+                            <columns>
+                                <TableColumn fx:id="colIdReservation" prefWidth="40.99998474121094" text="ID" />
+                                <TableColumn fx:id="colIdVehicle" prefWidth="63.0" text="ID vozila" />
+                                <TableColumn fx:id="colNameVehicle" prefWidth="74.0" text="Naziv vozila" />
+                                <TableColumn fx:id="colFirstNameClient" text="Ime klijenta" />
+                                <TableColumn fx:id="colLastNameClient" prefWidth="103.0" text="Prezime klijenta" />
+                                <TableColumn fx:id="colUsernameClient" minWidth="6.0" prefWidth="64.0" text="Username" />
+                                <TableColumn fx:id="colCardNumber" minWidth="0.0" prefWidth="0.0" text="Broj kartice" />
+                                <TableColumn fx:id="colPickupDate" prefWidth="135.0" text="Datum preuzimanja" />
+                                <TableColumn fx:id="colReturnDate" prefWidth="97.0" text="Datum vraćanja" />
+                                <TableColumn fx:id="colPickupTime" prefWidth="126.0" text="Vrijeme preuzimanja" />
+                                <TableColumn fx:id="colReturnTime" prefWidth="120.0" text="Vrijeme vraćanja" />
+                            </columns>
+                           <opaqueInsets>
+                              <Insets top="10.0" />
+                           </opaqueInsets>
+                        </TableView>
+                    </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding></GridPane>
             </content>
           </Tab>
             <Tab text="Klijenti">
@@ -116,4 +151,7 @@
          </font>
       </Label>
    </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </GridPane>

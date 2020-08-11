@@ -4,3 +4,10 @@
 .neispravnoPolje{
     -fx-background-color: coral;
 }
+#image{
+    -fx-background-image: url("/images/startPage.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+    -fx-background-size: cover, cover;
+}

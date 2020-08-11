@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class AddReservationController {
 
     public ListView<Vehicle> listVehicles;
@@ -48,7 +50,7 @@ public class AddReservationController {
             return;
         }
         if(!dateOk){
-            showAlert("Greška", "Odaberite datum rentanja/vraćanja vozila", Alert.AlertType.ERROR);
+            showAlert("Greška", "Odaberite ispravan datum rentanja/vraćanja vozila", Alert.AlertType.ERROR);
             return;
         }
         Vehicle vehicle=listVehicles.getSelectionModel().getSelectedItem();
@@ -127,6 +129,15 @@ public class AddReservationController {
                 //lblTotalPrice.setVisible(true);
                 //fldPrice.setVisible(true);
                 //fldPrice.setText(priceForRenting() + " KM");
+                if(DAYS.between(LocalDate.now(), datePickup.getValue())>14){
+                    dateOk=false;
+                    showAlert("Greška", "Najkasniji datum preuzimanja vozila je dvije sedmice od današnjeg dana", Alert.AlertType.ERROR);
+                    datePickup.getStyleClass().removeAll("ispravnoPolje");
+                    datePickup.getStyleClass().add("neispravnoPolje");
+                    dateReturn.getStyleClass().removeAll("ispravnoPolje");
+                    dateReturn.getStyleClass().add("neispravnoPolje");
+                    return;
+                }
 
             } else {
                 dateOk=false;

@@ -216,7 +216,8 @@ public class ReservationController {
                     }
                 }
             });
-        } else {
+        }
+        else {
             lblTotalPrice.setVisible(false);
             fldPrice.setVisible(false);
             fldName.setText(client.getFirstName() + " " + client.getLastName());
@@ -408,7 +409,7 @@ public class ReservationController {
            }
        }
         if(!dateOk){
-            showAlert("Greška", "Odaberite datum rentanja/vraćanja vozila", Alert.AlertType.ERROR);
+            showAlert("Greška", "Odaberite ispravan datum rentanja/vraćanja vozila", Alert.AlertType.ERROR);
             return;
         }
         /*if(!checkBoxNow.isSelected()) {
@@ -594,6 +595,15 @@ public class ReservationController {
                     lblTotalPrice.setVisible(true);
                     fldPrice.setVisible(true);
                     fldPrice.setText(priceForRenting() + " KM");
+                    if(DAYS.between(LocalDate.now(), datePickup.getValue())>14){
+                        dateOk=false;
+                        showAlert("Greška", "Najkasniji datum preuzimanja vozila je dvije sedmice od današnjeg dana", Alert.AlertType.ERROR);
+                        datePickup.getStyleClass().removeAll("ispravnoPolje");
+                        datePickup.getStyleClass().add("neispravnoPolje");
+                        dateReturn.getStyleClass().removeAll("ispravnoPolje");
+                        dateReturn.getStyleClass().add("neispravnoPolje");
+                        return;
+                    }
 
             } else {
                 dateOk=false;
@@ -606,6 +616,7 @@ public class ReservationController {
                 showAlert("Greška", "Datum povratka mora biti nakon datuma rentanja", Alert.AlertType.ERROR);
 
             }
+
         }
     public void backAction(ActionEvent actionEvent){
         Stage stage= (Stage) fldName.getScene().getWindow();

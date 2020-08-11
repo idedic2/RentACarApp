@@ -35,6 +35,7 @@ public class ReservationController {
     public Label lblCardData;
     public Label lblTotalPrice;
     public TextField fldPrice;
+    public Label lblHeader;
     public ChoiceBox<String>choicePickupHour;
     public ChoiceBox<String>choicePickupMinute;
     public ChoiceBox<String>choiceReturnHour;
@@ -42,14 +43,18 @@ public class ReservationController {
     private Vehicle vehicle;
     private Client client;
     private RentACarDAO rentACarDAO;
+    private Reservation reservation;
     private boolean existClient=false;
     //private  boolean sveOk=false;
     private boolean dateOk=false;
-    public ReservationController(Vehicle vehicle, Client client) {
+    public ReservationController(Vehicle vehicle, Client client, Reservation reservation) {
         this.vehicle=vehicle;
         this.client=client;
+        this.reservation=reservation;
         rentACarDAO=RentACarDAO.getInstance();
     }
+
+
     private boolean allDigits(String str){
         return  str.chars().allMatch(Character::isDigit);
     }
@@ -118,23 +123,116 @@ public class ReservationController {
         return true;
     }
     @FXML
-    public void initialize(){
-        lblTotalPrice.setVisible(false);
-        fldPrice.setVisible(false);
-        fldName.setText(client.getFirstName()+" "+client.getLastName());
-        fldEmail.setText(client.getEmail());
-        if(!client.getAddress().equals("")){
-            fldAddress.setText(client.getAddress());
-            fldTelephone.setText(client.getTelephone());
+    public void initialize() {
+        lblHeader.setText(lblHeader.getText()+ ": "+vehicle.getName());
+        if (reservation != null) {
+            fldName.setText(reservation.getClient().getFirstName() + " " + reservation.getClient().getLastName());
+            fldEmail.setText(reservation.getClient().getEmail());
+            fldAddress.setText(reservation.getClient().getAddress());
+            fldTelephone.setText(reservation.getClient().getTelephone());
+            fldName.setDisable(true);
+            fldEmail.setDisable(true);
             fldAddress.setDisable(true);
             fldTelephone.setDisable(true);
-        }
-        fldName.setDisable(true);
-        fldEmail.setDisable(true);
-        //((client=rentACarDAO.getClient(user.getId());
-        //if(client!=null)existClient=true;
-        //datePickup.getStyleClass().add("neispravnoPolje");
-        //dateReturn.getStyleClass().add("neispravnoPolje");
+            datePickup.setValue(reservation.getPickUpDate());
+            dateReturn.setValue(reservation.getReturnDate());
+            String []tmp=reservation.getPickupTime().split(":");
+            choicePickupHour.setValue(tmp[0]);
+            choicePickupMinute.setValue(tmp[1]);
+            String []tmp2=reservation.getReturnTime().split(":");
+            choiceReturnHour.setValue(tmp2[0]);
+            choiceReturnMinute.setValue(tmp2[1]);
+            fldPrice.setText(priceForRenting() + " KM");
+            if(reservation.getCard()!=null){
+                checkBoxNow.setSelected(true);
+                fldNmbCard.setText(reservation.getCard().getCardNumber());
+                fldCode.setText(reservation.getCard().getCode());
+                LocalDate date=reservation.getCard().getExpirationDate();
+                fldYear.setText(Integer.toString(date.getYear()));
+                choiceMonth.setValue(date.getMonth().toString().substring(0, 2));
+                checkBoxNow.setDisable(true);
+            }
+            lblNmbCard.setDisable(true);
+            fldNmbCard.setDisable(true);
+            lblExpireDate.setDisable(true);
+            choiceMonth.setDisable(true);
+            fldYear.setDisable(true);
+            lblCode.setDisable(true);
+            fldCode.setDisable(true);
+            fldNmbCard.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                    if (!fldNmbCard.getText().trim().isEmpty()) {
+                        if (allDigits(fldNmbCard.getText()) && fldNmbCard.getText().length() == 16) {
+                            fldNmbCard.getStyleClass().removeAll("neispravnoPolje");
+                            fldNmbCard.getStyleClass().add("ispravnoPolje");
+                        } else {
+                            fldNmbCard.getStyleClass().removeAll("ispravnoPolje");
+                            fldNmbCard.getStyleClass().add("neispravnoPolje");
+                        }
+                    } else {
+                        fldNmbCard.getStyleClass().removeAll("ispravnoPolje");
+                        fldNmbCard.getStyleClass().add("neispravnoPolje");
+                    }
+                }
+            });
+            fldCode.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                    if (!fldCode.getText().trim().isEmpty()) {
+                        if (allDigits(fldCode.getText()) && (fldCode.getText().length() == 3 || fldCode.getText().length() == 4)) {
+                            fldCode.getStyleClass().removeAll("neispravnoPolje");
+                            fldCode.getStyleClass().add("ispravnoPolje");
+                        } else {
+                            fldCode.getStyleClass().removeAll("ispravnoPolje");
+                            fldCode.getStyleClass().add("neispravnoPolje");
+                        }
+                    } else {
+                        fldCode.getStyleClass().removeAll("ispravnoPolje");
+                        fldCode.getStyleClass().add("neispravnoPolje");
+                    }
+                }
+            });
+            fldYear.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                    if (!fldYear.getText().trim().isEmpty()) {
+                        if (allDigits(fldYear.getText()) && fldYear.getText().length() == 4) {
+                            fldYear.getStyleClass().removeAll("neispravnoPolje");
+                            fldYear.getStyleClass().add("ispravnoPolje");
+                            choiceMonth.getStyleClass().removeAll("neispravnoPolje");
+                            choiceMonth.getStyleClass().add("ispravnoPolje");
+                        } else {
+                            fldYear.getStyleClass().removeAll("ispravnoPolje");
+                            fldYear.getStyleClass().add("neispravnoPolje");
+                            choiceMonth.getStyleClass().removeAll("ispravnoPolje");
+                            choiceMonth.getStyleClass().add("neispravnoPolje");
+                        }
+                    } else {
+                        fldYear.getStyleClass().removeAll("ispravnoPolje");
+                        fldYear.getStyleClass().add("neispravnoPolje");
+                        choiceMonth.getStyleClass().removeAll("ispravnoPolje");
+                        choiceMonth.getStyleClass().add("neispravnoPolje");
+                    }
+                }
+            });
+        } else {
+            lblTotalPrice.setVisible(false);
+            fldPrice.setVisible(false);
+            fldName.setText(client.getFirstName() + " " + client.getLastName());
+            fldEmail.setText(client.getEmail());
+            if (!client.getAddress().equals("")) {
+                fldAddress.setText(client.getAddress());
+                fldTelephone.setText(client.getTelephone());
+                fldAddress.setDisable(true);
+                fldTelephone.setDisable(true);
+            }
+            fldName.setDisable(true);
+            fldEmail.setDisable(true);
+            //((client=rentACarDAO.getClient(user.getId());
+            //if(client!=null)existClient=true;
+            //datePickup.getStyleClass().add("neispravnoPolje");
+            //dateReturn.getStyleClass().add("neispravnoPolje");
             lblNmbCard.setDisable(true);
             fldNmbCard.setDisable(true);
             lblExpireDate.setDisable(true);
@@ -172,47 +270,45 @@ public class ReservationController {
             }
         });
 */
-        fldTelephone.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
-                if (!fldTelephone.getText().trim().isEmpty()) {
-                    if(!allDigits(fldTelephone.getText()) || fldTelephone.getText().length()<9){
+            fldTelephone.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                    if (!fldTelephone.getText().trim().isEmpty()) {
+                        if (!allDigits(fldTelephone.getText()) || fldTelephone.getText().length() < 9) {
+                            fldTelephone.getStyleClass().removeAll("ispravnoPolje");
+                            fldTelephone.getStyleClass().add("neispravnoPolje");
+                        } else {
+                            fldTelephone.getStyleClass().removeAll("neispravnoPolje");
+                            fldTelephone.getStyleClass().add("ispravnoPolje");
+                        }
+                    } else {
                         fldTelephone.getStyleClass().removeAll("ispravnoPolje");
                         fldTelephone.getStyleClass().add("neispravnoPolje");
                     }
-                    else{
-                        fldTelephone.getStyleClass().removeAll("neispravnoPolje");
-                        fldTelephone.getStyleClass().add("ispravnoPolje");
+                }
+            });
+            fldAddress.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String n) {
+                    if (fldAddress.getText().trim().isEmpty()) {
+                        fldAddress.getStyleClass().removeAll("ispravnoPolje");
+                        fldAddress.getStyleClass().add("neispravnoPolje");
+                        //returnDateValidate = true;
+                    } else {
+                        fldAddress.getStyleClass().removeAll("neispravnoPolje");
+                        fldAddress.getStyleClass().add("ispravnoPolje");
+                        //returnDateValidate = false;
                     }
-                } else {
-                    fldTelephone.getStyleClass().removeAll("ispravnoPolje");
-                    fldTelephone.getStyleClass().add("neispravnoPolje");
                 }
-            }
-        });
-        fldAddress.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String n) {
-                if (fldAddress.getText().trim().isEmpty()) {
-                    fldAddress.getStyleClass().removeAll("ispravnoPolje");
-                    fldAddress.getStyleClass().add("neispravnoPolje");
-                    //returnDateValidate = true;
-                } else {
-                    fldAddress.getStyleClass().removeAll("neispravnoPolje");
-                    fldAddress.getStyleClass().add("ispravnoPolje");
-                    //returnDateValidate = false;
-                }
-            }
-        });
+            });
             fldNmbCard.textProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
                     if (!fldNmbCard.getText().trim().isEmpty()) {
-                        if(allDigits(fldNmbCard.getText()) && fldNmbCard.getText().length()==16){
+                        if (allDigits(fldNmbCard.getText()) && fldNmbCard.getText().length() == 16) {
                             fldNmbCard.getStyleClass().removeAll("neispravnoPolje");
                             fldNmbCard.getStyleClass().add("ispravnoPolje");
-                        }
-                        else{
+                        } else {
                             fldNmbCard.getStyleClass().removeAll("ispravnoPolje");
                             fldNmbCard.getStyleClass().add("neispravnoPolje");
                         }
@@ -222,49 +318,48 @@ public class ReservationController {
                     }
                 }
             });
-        fldCode.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
-                if (!fldCode.getText().trim().isEmpty()) {
-                    if(allDigits(fldCode.getText()) && (fldCode.getText().length()==3 || fldCode.getText().length()==4)){
-                        fldCode.getStyleClass().removeAll("neispravnoPolje");
-                        fldCode.getStyleClass().add("ispravnoPolje");
-                    }
-                    else{
+            fldCode.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                    if (!fldCode.getText().trim().isEmpty()) {
+                        if (allDigits(fldCode.getText()) && (fldCode.getText().length() == 3 || fldCode.getText().length() == 4)) {
+                            fldCode.getStyleClass().removeAll("neispravnoPolje");
+                            fldCode.getStyleClass().add("ispravnoPolje");
+                        } else {
+                            fldCode.getStyleClass().removeAll("ispravnoPolje");
+                            fldCode.getStyleClass().add("neispravnoPolje");
+                        }
+                    } else {
                         fldCode.getStyleClass().removeAll("ispravnoPolje");
                         fldCode.getStyleClass().add("neispravnoPolje");
                     }
-                } else {
-                    fldCode.getStyleClass().removeAll("ispravnoPolje");
-                    fldCode.getStyleClass().add("neispravnoPolje");
                 }
-            }
-        });
-        fldYear.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
-                if (!fldYear.getText().trim().isEmpty()) {
-                    if(allDigits(fldYear.getText()) && fldYear.getText().length()==4){
-                        fldYear.getStyleClass().removeAll("neispravnoPolje");
-                        fldYear.getStyleClass().add("ispravnoPolje");
-                        choiceMonth.getStyleClass().removeAll("neispravnoPolje");
-                        choiceMonth.getStyleClass().add("ispravnoPolje");
-                    }
-                    else{
+            });
+            fldYear.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                    if (!fldYear.getText().trim().isEmpty()) {
+                        if (allDigits(fldYear.getText()) && fldYear.getText().length() == 4) {
+                            fldYear.getStyleClass().removeAll("neispravnoPolje");
+                            fldYear.getStyleClass().add("ispravnoPolje");
+                            choiceMonth.getStyleClass().removeAll("neispravnoPolje");
+                            choiceMonth.getStyleClass().add("ispravnoPolje");
+                        } else {
+                            fldYear.getStyleClass().removeAll("ispravnoPolje");
+                            fldYear.getStyleClass().add("neispravnoPolje");
+                            choiceMonth.getStyleClass().removeAll("ispravnoPolje");
+                            choiceMonth.getStyleClass().add("neispravnoPolje");
+                        }
+                    } else {
                         fldYear.getStyleClass().removeAll("ispravnoPolje");
                         fldYear.getStyleClass().add("neispravnoPolje");
                         choiceMonth.getStyleClass().removeAll("ispravnoPolje");
                         choiceMonth.getStyleClass().add("neispravnoPolje");
                     }
-                } else {
-                    fldYear.getStyleClass().removeAll("ispravnoPolje");
-                    fldYear.getStyleClass().add("neispravnoPolje");
-                    choiceMonth.getStyleClass().removeAll("ispravnoPolje");
-                    choiceMonth.getStyleClass().add("neispravnoPolje");
                 }
-            }
-        });
+            });
 
+        }
     }
     public void changePayingAction(ActionEvent actionEvent){
         if(checkBoxNow.isSelected()){
@@ -294,22 +389,24 @@ public class ReservationController {
     }
     public void reservationConfirmAction(ActionEvent actionEvent) {
        boolean sveOk=true;
-        if(fldAddress.getText().trim().isEmpty()){
-            sveOk=false;
-            showAlert("Greška", "Unesite adresu", Alert.AlertType.ERROR);
-            return;
-        }
-        if(fldTelephone.getText().trim().isEmpty()){
-            sveOk=false;
-            showAlert("Greška", "Unesite kontakt telefon", Alert.AlertType.ERROR);
-            return;
-        }
-        if(!(allDigits(fldTelephone.getText()) && fldTelephone.getText().length()>=9)){
-                sveOk=false;
-                showAlert("Greška", "Nevalidan broj telefona", Alert.AlertType.ERROR);
-                return;
+       if(reservation==null) {
+           if (fldAddress.getText().trim().isEmpty()) {
+               sveOk = false;
+               showAlert("Greška", "Unesite adresu", Alert.AlertType.ERROR);
+               return;
+           }
+           if (fldTelephone.getText().trim().isEmpty()) {
+               sveOk = false;
+               showAlert("Greška", "Unesite kontakt telefon", Alert.AlertType.ERROR);
+               return;
+           }
+           if (!(allDigits(fldTelephone.getText()) && fldTelephone.getText().length() >= 9)) {
+               sveOk = false;
+               showAlert("Greška", "Nevalidan broj telefona", Alert.AlertType.ERROR);
+               return;
 
-        }
+           }
+       }
         if(!dateOk){
             showAlert("Greška", "Odaberite datum rentanja/vraćanja vozila", Alert.AlertType.ERROR);
             return;
@@ -329,106 +426,116 @@ public class ReservationController {
                 listVehicles.setAll(rentACarDAO.getVehicles());
             }
         }*/
-
-
-        if(checkBoxNow.isSelected()){
-            boolean cardOk=false;
-            if(fldNmbCard.getText().trim().isEmpty()){
-                cardOk=false;
-                showAlert("Greška", "Unesite broj kartice", Alert.AlertType.ERROR);
+        if(reservation!=null){
+            long daysBetween = DAYS.between(datePickup.getValue(), reservation.getPickUpDate());
+            if(daysBetween>7 && datePickup.getValue().isAfter(reservation.getPickUpDate())){
+                showAlert("Greška", "Datum preuzimanja vozila možete odgoditi za maksimalno 7 dana", Alert.AlertType.ERROR);
                 return;
             }
 
-                if(!(allDigits(fldNmbCard.getText()) && fldNmbCard.getText().length()==16)){
-                    cardOk=false;
+        }
+        if(reservation==null || reservation.getCard()==null) {
+            if (checkBoxNow.isSelected()) {
+                boolean cardOk = false;
+                if (fldNmbCard.getText().trim().isEmpty()) {
+                    cardOk = false;
+                    showAlert("Greška", "Unesite broj kartice", Alert.AlertType.ERROR);
+                    return;
+                }
+
+                if (!(allDigits(fldNmbCard.getText()) && fldNmbCard.getText().length() == 16)) {
+                    cardOk = false;
                     showAlert("Greška", "Nevalidan broj kartice", Alert.AlertType.ERROR);
                     return;
-
-            }
-            if(fldYear.getText().trim().isEmpty()){
-                cardOk=false;
-                showAlert("Greška", "Unesite godinu isticanja kartice", Alert.AlertType.ERROR);
-                return;
-            }
-            if(!(allDigits(fldYear.getText()) && fldYear.getText().length()==4)){
-                cardOk=false;
-                showAlert("Greška", "Neispravna format godine isticanja kartice", Alert.AlertType.ERROR);
-                return;
-            }
-            if(!checkExpirationDate()){
-                cardOk=false;
-                showAlert("Greška", "Kartica je istekla", Alert.AlertType.ERROR);
-                fldYear.getStyleClass().removeAll("ispravnoPolje");
-                fldYear.getStyleClass().add("neispravnoPolje");
-                choiceMonth.getStyleClass().removeAll("ispravnoPolje");
-                choiceMonth.getStyleClass().add("neispravnoPolje");
-                return;
-            }
-            if(checkExpirationDate()){
-                fldYear.getStyleClass().removeAll("neispravnoPolje");
-                fldYear.getStyleClass().add("ispravnoPolje");
-                choiceMonth.getStyleClass().removeAll("neispravnoPolje");
-                choiceMonth.getStyleClass().add("ispravnoPolje");
-            }
-            if(fldCode.getText().trim().isEmpty()){
-                cardOk=false;
-                showAlert("Greška", "Unesite kod", Alert.AlertType.ERROR);
-                return;
-            }
-                if(!(allDigits(fldCode.getText()) && (fldCode.getText().length()==3 || fldCode.getText().length()==4))){
-                    cardOk=false;
+                }
+                if (fldYear.getText().trim().isEmpty()) {
+                    cardOk = false;
+                    showAlert("Greška", "Unesite godinu isticanja kartice", Alert.AlertType.ERROR);
+                    return;
+                }
+                if (!(allDigits(fldYear.getText()) && fldYear.getText().length() == 4)) {
+                    cardOk = false;
+                    showAlert("Greška", "Neispravna format godine isticanja kartice", Alert.AlertType.ERROR);
+                    return;
+                }
+                if (!checkExpirationDate()) {
+                    cardOk = false;
+                    showAlert("Greška", "Kartica je istekla", Alert.AlertType.ERROR);
+                    fldYear.getStyleClass().removeAll("ispravnoPolje");
+                    fldYear.getStyleClass().add("neispravnoPolje");
+                    choiceMonth.getStyleClass().removeAll("ispravnoPolje");
+                    choiceMonth.getStyleClass().add("neispravnoPolje");
+                    return;
+                }
+                if (checkExpirationDate()) {
+                    fldYear.getStyleClass().removeAll("neispravnoPolje");
+                    fldYear.getStyleClass().add("ispravnoPolje");
+                    choiceMonth.getStyleClass().removeAll("neispravnoPolje");
+                    choiceMonth.getStyleClass().add("ispravnoPolje");
+                }
+                if (fldCode.getText().trim().isEmpty()) {
+                    cardOk = false;
+                    showAlert("Greška", "Unesite kod", Alert.AlertType.ERROR);
+                    return;
+                }
+                if (!(allDigits(fldCode.getText()) && (fldCode.getText().length() == 3 || fldCode.getText().length() == 4))) {
+                    cardOk = false;
                     showAlert("Greška", "Nevalidan kod", Alert.AlertType.ERROR);
                     return;
 
+                }
             }
         }
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Potvrda rezervisanja");
-        alert.setHeaderText("Rezervisanje vozila  "+vehicle.getName());
-        alert.setContentText("Da li ste sigurni da želite rezervisati vozilo " +vehicle.getName()+"?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            vehicle.setAvailability("NE");
-            rentACarDAO.editVehicle(vehicle);
-            Card card=null;
-            if(checkBoxNow.isSelected()){
-                String expire=getDays(choiceMonth.getValue())+"."+getMonth(choiceMonth.getValue())+"."+fldYear.getText();
-                LocalDate expireDate=stringToDate(expire);
-                card=new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
-                rentACarDAO.addCard(card);
-                //dobavi ponovo karticu iz baze
-                card=rentACarDAO.getCard(fldNmbCard.getText());
-            }
-            Reservation reservation=new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue()+":"+choicePickupMinute.getValue(), choiceReturnHour.getValue()+":"+choiceReturnMinute.getValue(), card);
-            rentACarDAO.addReservation(reservation);
-            //listVehicles.setAll(rentACarDAO.getVehicles());
+        if (reservation == null) {
 
-            //svaki put se pravi kartica nema provjera, imamo klijneta i npravit rezervaciju
-            //Card card=null;
-            /*if(!checkBoxNow.isSelected()){
-                Card card=null;
-                //Client clientPaysNotNow=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(),fldAddress.getText(), fldTelephone.getText(), null);
-            }*/
-            //Client client=new Client();
-            /*boolean payingNow=false;
-            if(checkBoxNow.isSelected()){//zeli odmah platiti
-                String expire=getDays(choiceMonth.getValue())+"."+getMonth(choiceMonth.getValue())+"."+fldYear.getText();
-                LocalDate expireDate=stringToDate(expire);
-                card=new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
-                /*if(rentACarDAO.(fldNmbCard.getText()))
-                rentACarDAO.addCard(card);
-                payingNow=true;
-                //client=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(), fldAddress.getText(), fldTelephone.getText(), card);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Potvrda rezervisanja");
+            alert.setHeaderText("Rezervisanje vozila  " + vehicle.getName());
+            alert.setContentText("Da li ste sigurni da želite rezervisati vozilo " + vehicle.getName() + "?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                vehicle.setAvailability("NE");
+                rentACarDAO.editVehicle(vehicle);
+                Card card = null;
+                if (checkBoxNow.isSelected()) {
+                    String expire = getDays(choiceMonth.getValue()) + "." + getMonth(choiceMonth.getValue()) + "." + fldYear.getText();
+                    LocalDate expireDate = stringToDate(expire);
+                    card = new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
+                    rentACarDAO.addCard(card);
+                    //dobavi ponovo karticu iz baze
+                    card = rentACarDAO.getCard(fldNmbCard.getText());
+                }
+                Reservation reservation = new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue() + ":" + choicePickupMinute.getValue(), choiceReturnHour.getValue() + ":" + choiceReturnMinute.getValue(), card);
+                rentACarDAO.addReservation(reservation);
             }
-            Client client=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(), fldAddress.getText(), fldTelephone.getText(), card);
-            if(!existClient)
-            rentACarDAO.addClient(client, payingNow);
-            String pickup=getDays(choiceMonth.getValue())+"."+getMonth(choiceMonth.getValue())+"."+fldYear.getText();
-            rentACarDAO.addReservation(new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue()+":"+choicePickupMinute.getValue(), choiceReturnHour.getValue()+":"+choiceReturnMinute.getValue()));*/
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Potvrda izmjene");
+            alert.setHeaderText("Izmjena rezervacije vozila " + vehicle.getName());
+            alert.setContentText("Da li ste sigurni da želite izmijeniti rezervaciju vozila " + vehicle.getName() + "?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                reservation.setPickUpDate(datePickup.getValue());
+                reservation.setReturnDate(dateReturn.getValue());
+                reservation.setPickupTime(choicePickupHour.getValue() + ":" + choicePickupMinute.getValue());
+                reservation.setReturnTime(choiceReturnHour.getValue() + ":" + choiceReturnMinute.getValue());
+                if(checkBoxNow.isSelected()){
+                    String expire = getDays(choiceMonth.getValue()) + "." + getMonth(choiceMonth.getValue()) + "." + fldYear.getText();
+                    LocalDate expireDate = stringToDate(expire);
+                    Card card = new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
+                    rentACarDAO.addCard(card);
+                    //dobavi ponovo karticu iz baze
+                    card = rentACarDAO.getCard(fldNmbCard.getText());
+                    reservation.setCard(card);
+                }
+                rentACarDAO.editReservation(reservation);
+            }
+        }
             Stage stage = (Stage) lblTotalPrice.getScene().getWindow();
             stage.close();
         }
-    }
+
     private Double priceForRenting(){
         long daysBetween = DAYS.between(datePickup.getValue(), dateReturn.getValue());
         return daysBetween*vehicle.getPricePerDay();

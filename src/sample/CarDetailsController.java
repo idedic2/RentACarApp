@@ -70,7 +70,7 @@ public class CarDetailsController {
             Parent root = null;
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/reservation.fxml"));
-                ReservationController reservationController = new ReservationController(vehicle, client);
+                ReservationController reservationController = new ReservationController(vehicle, client, null);
                 loader.setController(reservationController);
                 root = loader.load();
                 stage.setTitle("Rezerviši");

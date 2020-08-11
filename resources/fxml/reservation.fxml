@@ -36,7 +36,7 @@
       <RowConstraints maxHeight="50.0" minHeight="14.0" prefHeight="50.0" />
   </rowConstraints>
    <children>
-      <Label text="Rezervacija">
+      <Label fx:id="lblHeader" text="Rezervacija" GridPane.columnSpan="3">
          <font>
             <Font size="22.0" />
          </font>

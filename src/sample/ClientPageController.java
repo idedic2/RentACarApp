@@ -9,11 +9,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
@@ -28,6 +31,7 @@ public class ClientPageController {
     public TableColumn colPrice;
     public TableColumn colId;
     public ChoiceBox<String>choiceType;
+    private Client client;
     private RentACarDAO rentACarDAO;
     private ObservableList<Vehicle>listVehicles;
     private ObservableList<Vehicle>chosedVehicles;
@@ -39,6 +43,7 @@ public class ClientPageController {
         listVehicles=FXCollections.observableArrayList(rentACarDAO.getVehicles());
         chosedVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
         this.username=username;
+        client=rentACarDAO.getClientPerUsername(username);
     }
     @FXML
     public void initialize() {
@@ -185,6 +190,10 @@ public class ClientPageController {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Vehicle vehicle = getTableView().getItems().get(getIndex());
+                            if(vehicle.getAvailability().equals("NE")){
+                                showAlert("Upozorenje", "Odabrano vozilo nije dostupno", Alert.AlertType.WARNING);
+                                return;
+                            }
                             //System.out.println("selectedData: " + data);
                             //System.out.println(data.getReturnTime());
                             Stage stage = new Stage();
@@ -196,7 +205,7 @@ public class ClientPageController {
                                     showAlert("Greška", "Nije pronađen user", Alert.AlertType.ERROR);
                                     return;
                                 }
-                                ReservationController reservationController = new ReservationController(vehicle,client);
+                                ReservationController reservationController = new ReservationController(vehicle,client, null);
                                 loader.setController(reservationController);
                                 root = loader.load();
                                 stage.setTitle("Rezerviši vozilo");
@@ -232,6 +241,55 @@ public class ClientPageController {
         error.setHeaderText(headerText);
         error.show();
     }
+    public void seeReservationAction(ActionEvent actionEvent){
+            ArrayList<Reservation> clientReservations=rentACarDAO.getClientReservations(client);
+            if(clientReservations.size()==0){
+                showAlert("Greška", "Klijent nema rezervaciju", Alert.AlertType.ERROR);
+                return;
+            }
+        List<String> choices = new ArrayList<>();
+        for(Reservation r:clientReservations)
+            choices.add("#"+r.getId()+" "+r.getVehicle().getName()+" ( iznajmljivanje: "+r.getPickUpDate().toString()+" vraćanje: "+r.getReturnDate().toString()+" )");
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+        dialog.setTitle("Rezervacije");
+        dialog.setHeaderText("Odaberite rezervaciju");
+        dialog.setContentText("Vaše rezervacije:");
+// Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            //System.out.println("Your choice: " + result.get());
+            String choosen = result.get();
+            String tmp = "";
+            //broj poslije # treba jer je on id rezervacije
+            for (int i = 1; i < choosen.length(); i++) {
+                if (choosen.charAt(i) == ' ') break;
+                tmp += choosen.charAt(i);
+            }
+            int idReservation=Integer.parseInt(tmp);
+            Reservation reservation=null;
+            for(Reservation r:clientReservations){
+                if(idReservation==r.getId())
+                    reservation=r;
+            }
+            Vehicle vehicle=rentACarDAO.getVehiclePerId(reservation.getVehicle().getId());
+            Stage stage = new Stage();
+            Parent root = null;
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/reservation.fxml"));
+                ReservationController reservationController = new ReservationController(vehicle, client, reservation);
+                loader.setController(reservationController);
+                root = loader.load();
+                stage.setTitle("Rezerviši vozilo");
+                stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                stage.setResizable(true);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        }
+
     /*public void reservationClientAction(ActionEvent actionEvent) {
         if(tableViewCars.getSelectionModel().getSelectedItem()==null){
             showAlert("Upozorenje", "Odaberite vozilo koje želite rezervisati", Alert.AlertType.WARNING);
@@ -361,5 +419,21 @@ public class ClientPageController {
 */
     public void changeType(ActionEvent actionEvent) {
         chosedVehicles.setAll(rentACarDAO.getVehiclesPerType(choiceType.getValue()));
+    }
+    public void logOutAction(ActionEvent actionEvent){
+        Parent root = null;
+        try {
+            Stage stage = (Stage) choiceType.getScene().getWindow();
+            stage.close();
+            Stage primaryStage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
+            root = loader.load();
+            primaryStage.setScene(new Scene(root, Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
+            primaryStage.initModality(Modality.APPLICATION_MODAL);
+            primaryStage.setResizable(false);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

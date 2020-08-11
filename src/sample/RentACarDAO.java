@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement getVehiclesPerAvailabilityQuery, deleteCardQuery, deleteReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
+    private PreparedStatement editReservationQuery, getVehiclesPerAvailabilityQuery, deleteCardQuery, deleteReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
 
     private RentACarDAO() {
         try {
@@ -61,6 +61,7 @@ public class RentACarDAO {
             deleteCardQuery=conn.prepareStatement("DELETE FROM card WHERE id=?");
             deleteReservationQuery=conn.prepareStatement("DELETE FROM reservation WHERE id=?");
             getVehiclesPerAvailabilityQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE availability=?");
+            editReservationQuery=conn.prepareStatement("UPDATE reservation SET vehicle_id=?, client_id=?, pickup_date=?, return_date=?, pickup_time=?, return_time=?, card_id=? WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -281,6 +282,23 @@ public class RentACarDAO {
             e.printStackTrace();
         }
     }
+    public void editReservation(Reservation reservation){
+        int cardId=0;
+        if(reservation.getCard()!=null)cardId=reservation.getCard().getId();
+        try{
+            editReservationQuery.setInt(1, reservation.getVehicle().getId());
+            editReservationQuery.setInt(2, reservation.getClient().getId());
+            editReservationQuery.setString(3, reservation.getPickUpDate().getDayOfMonth()+"/"+reservation.getPickUpDate().getMonth()+"/"+reservation.getPickUpDate().getYear());
+            editReservationQuery.setString(4, reservation.getReturnDate().getDayOfMonth()+"/"+reservation.getReturnDate().getMonth()+"/"+reservation.getReturnDate().getYear());
+            editReservationQuery.setString(5, reservation.getPickupTime());
+            editReservationQuery.setString(6, reservation.getReturnTime());
+            editReservationQuery.setInt(7, cardId);
+            editReservationQuery.setInt(8, reservation.getId());
+            editReservationQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public void addCard(Card card){
         try{
             doesExistCardQuery.setString(1, card.getCardNumber());
@@ -432,6 +450,22 @@ public class RentACarDAO {
             e.printStackTrace();
         }
         return reservations;
+    }
+
+    //vraca listu rezervacija jer jedan klijent moze imati vise rezervacija
+    public ArrayList<Reservation> getClientReservations(Client client){
+        ArrayList<Reservation>reservations=new ArrayList<>();
+        ArrayList<Reservation>clientReservations=new ArrayList<>();
+        try{
+            reservations=getReservations();
+            for(Reservation reservation: reservations){
+                if(reservation.getClient().getId()==client.getId())
+                    clientReservations.add(reservation);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return clientReservations;
     }
     public void deleteCard(Card card){
         try{

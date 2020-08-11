@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import java.net.URL?>
-<GridPane fx:controller="sample.RegistrationController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@/css/rentacar.css" />
     </stylesheets>
@@ -20,6 +20,9 @@
     <RowConstraints maxHeight="232.0" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="215.0" minHeight="21.0" prefHeight="50.0" />
       <RowConstraints maxHeight="153.0" minHeight="30.0" prefHeight="50.0" />
+      <RowConstraints maxHeight="130.0" minHeight="30.0" prefHeight="50.0" />
+      <RowConstraints maxHeight="130.0" minHeight="30.0" prefHeight="50.0" />
+      <RowConstraints maxHeight="130.0" minHeight="30.0" prefHeight="50.0" />
       <RowConstraints maxHeight="130.0" minHeight="30.0" prefHeight="50.0" />
       <RowConstraints maxHeight="130.0" minHeight="30.0" prefHeight="50.0" />
   </rowConstraints>
@@ -39,11 +42,17 @@
         <Label text="Lozinka:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
         <TextField fx:id="fldUsername" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <PasswordField fx:id="fldPassword" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
         <buttons>
           <Button fx:id="btnRegistrationConfirm" mnemonicParsing="false" onAction="#registrationConfirmAction" text="OK" />
         </buttons>
       </ButtonBar>
+      <Label text="Ponovi lozinku:" GridPane.rowIndex="6" />
+      <PasswordField fx:id="fldRetypePassword" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label fx:id="lblAddress" text="Adresa:" GridPane.rowIndex="7" />
+      <TextField fx:id="fldAddress" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label fx:id="lblTelephone" text="Telefon:" GridPane.rowIndex="8" />
+      <TextField fx:id="fldTelephone" GridPane.columnIndex="1" GridPane.rowIndex="8" />
     </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

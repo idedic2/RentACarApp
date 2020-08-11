@@ -12,11 +12,13 @@
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="93.0" minHeight="0.0" prefHeight="42.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="313.0" minHeight="10.0" prefHeight="273.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="tableViewCars" prefHeight="180.0" prefWidth="354.0" GridPane.rowIndex="2">
+      <TableView fx:id="tableViewCars" prefHeight="180.0" prefWidth="354.0" GridPane.rowIndex="4">
         <columns>
             <TableColumn fx:id="colId" minWidth="0.0" prefWidth="0.0" text="ID" />
           <TableColumn fx:id="colName" prefWidth="93.99999237060547" text="Naziv" />
@@ -27,7 +29,7 @@
             <TableColumn fx:id="colPrice" prefWidth="109.0" text="Cijena po danu" />
         </columns>
       </TableView>
-      <ChoiceBox fx:id="choiceType" onAction="#changeType" prefWidth="150.0" value="Putnicki automobil" GridPane.rowIndex="1">
+      <ChoiceBox fx:id="choiceType" onAction="#changeType" prefWidth="150.0" value="Putnicki automobil" GridPane.rowIndex="3">
           <items>
               <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Putnicki automobil" />
@@ -36,10 +38,15 @@
               </FXCollections>
           </items>
       </ChoiceBox>
-      <ButtonBar>
+      <ButtonBar prefHeight="43.0" prefWidth="212.0">
+         <buttons>
+            <Button mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
+         </buttons>
+      </ButtonBar>
+      <ButtonBar GridPane.rowIndex="2">
          <buttons>
              <Button mnemonicParsing="false" onAction="#seeReservationAction" text="Rezervacija" />
-            <Button mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
+            <Button mnemonicParsing="false" onAction="#profileAction" text="Profil" />
          </buttons>
       </ButtonBar>
    </children>

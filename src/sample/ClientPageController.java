@@ -417,6 +417,22 @@ public class ClientPageController {
         }
     }
 */
+   public void profileAction(ActionEvent actionEvent){
+       Stage stage = new Stage();
+       Parent root = null;
+       try {
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
+           RegistrationController registrationController = new RegistrationController(client);
+           loader.setController(registrationController);
+           root = loader.load();
+           stage.setTitle("Rezerviši vozilo");
+           stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+           stage.setResizable(true);
+           stage.show();
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+   }
     public void changeType(ActionEvent actionEvent) {
         chosedVehicles.setAll(rentACarDAO.getVehiclesPerType(choiceType.getValue()));
     }

@@ -9,10 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -28,17 +25,74 @@ public class RegistrationController {
     public TextField fldEmail;
     public TextField fldUsername;
     public PasswordField fldPassword;
+    public PasswordField fldRetypePassword;
+    public TextField fldAddress;
+    public TextField fldTelephone;
+    public Label lblAddress;
+    public Label lblTelephone;
     public RentACarDAO rentACarDAO;
-
-    public RegistrationController() {
+    private Client client;
+    public RegistrationController(Client client) {
         rentACarDAO = RentACarDAO.getInstance();
+        this.client=client;
     }
     private boolean allLetters(String str){
         return  str.chars().allMatch(Character::isLetter);
     }
-
+    private boolean allDigits(String str){
+        return  str.chars().allMatch(Character::isDigit);
+    }
     @FXML
     public void initialize(){
+        if(client!=null){
+            fldFirstName.setText(client.getFirstName());
+            fldLastName.setText(client.getLastName());
+            fldEmail.setText(client.getEmail());
+            fldUsername.setText(client.getUsername());
+            fldPassword.setText(client.getPassword());
+            fldRetypePassword.setText(client.getPassword());
+            fldAddress.setText(client.getAddress());
+            fldTelephone.setText(client.getTelephone());
+        }
+        if(client==null){
+            lblAddress.setVisible(false);
+            lblTelephone.setVisible(false);
+            fldAddress.setVisible(false);
+            fldTelephone.setVisible(false);
+        }
+        if(client!=null){
+            fldTelephone.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                    if (!fldTelephone.getText().trim().isEmpty()) {
+                        if (!allDigits(fldTelephone.getText()) || fldTelephone.getText().length() < 9) {
+                            fldTelephone.getStyleClass().removeAll("ispravnoPolje");
+                            fldTelephone.getStyleClass().add("neispravnoPolje");
+                        } else {
+                            fldTelephone.getStyleClass().removeAll("neispravnoPolje");
+                            fldTelephone.getStyleClass().add("ispravnoPolje");
+                        }
+                    } else {
+                        fldTelephone.getStyleClass().removeAll("ispravnoPolje");
+                        fldTelephone.getStyleClass().add("neispravnoPolje");
+                    }
+                }
+            });
+            fldAddress.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String n) {
+                    if (fldAddress.getText().trim().isEmpty()) {
+                        fldAddress.getStyleClass().removeAll("ispravnoPolje");
+                        fldAddress.getStyleClass().add("neispravnoPolje");
+                        //returnDateValidate = true;
+                    } else {
+                        fldAddress.getStyleClass().removeAll("neispravnoPolje");
+                        fldAddress.getStyleClass().add("ispravnoPolje");
+                        //returnDateValidate = false;
+                    }
+                }
+            });
+        }
         fldFirstName.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
@@ -126,6 +180,19 @@ public class RegistrationController {
                 }
             }
         });
+        fldRetypePassword.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                if (!fldRetypePassword.getText().trim().isEmpty()) {
+                    fldRetypePassword.getStyleClass().removeAll("neispravnoPolje");
+                    fldRetypePassword.getStyleClass().add("ispravnoPolje");
+
+                } else {
+                    fldRetypePassword.getStyleClass().removeAll("ispravnoPolje");
+                    fldRetypePassword.getStyleClass().add("neispravnoPolje");
+                }
+            }
+        });
     }
     private boolean isValidUsername(String str){
         Pattern pattern = Pattern.compile("[A-Za-z0-9_]+");
@@ -151,7 +218,6 @@ public class RegistrationController {
             showAlert("Greška", "Unesite ime", Alert.AlertType.ERROR);
             return;
         }
-        else{
             if(!allLetters(fldFirstName.getText())){
                 sveOk=false;
                 showAlert("Greška", "Ime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
@@ -161,7 +227,6 @@ public class RegistrationController {
                 sveOk=false;
                 showAlert("Greška", "Ime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
                 return;
-            }
         }
 
         if(fldLastName.getText().trim().isEmpty()){
@@ -169,7 +234,7 @@ public class RegistrationController {
             showAlert("Greška", "Unesite prezime", Alert.AlertType.ERROR);
             return;
         }
-        else{
+
             if(!allLetters(fldLastName.getText())){
                 sveOk=false;
                 showAlert("Greška", "Prezime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
@@ -180,26 +245,25 @@ public class RegistrationController {
                 showAlert("Greška", "Prezime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
                 return;
             }
-        }
 
         if(fldEmail.getText().trim().isEmpty()){
             sveOk=false;
             showAlert("Greška", "Unesite email adresu", Alert.AlertType.ERROR);
             return;
         }
-        else{
+
             if(!isValidEmailAddress(fldEmail.getText())){
                 sveOk=false;
                 showAlert("Greška", "Nevalidna email adresa", Alert.AlertType.ERROR);
                 return;
             }
-        }
+
         if(fldUsername.getText().trim().isEmpty()){
             sveOk=false;
             showAlert("Greška", "Unesite korisničko ime", Alert.AlertType.ERROR);
             return;
         }
-        else{
+
             if(!isValidUsername(fldUsername.getText())){
                 sveOk=false;
                 showAlert("Greška", "Korisničko ime mora sadržavati samo brojeve i/ili slova", Alert.AlertType.ERROR);
@@ -210,14 +274,59 @@ public class RegistrationController {
                 showAlert("Greška", "Korisničko ime mora biti duže od jednog znaka", Alert.AlertType.ERROR);
                 return;
             }
-        }
+
         if(fldPassword.getText().trim().isEmpty()){
             sveOk=false;
             showAlert("Greška", "Unesite lozinku", Alert.AlertType.ERROR);
             return;
         }
+        if(fldRetypePassword.getText().trim().isEmpty()){
+            sveOk=false;
+            showAlert("Greška", "Potvrdite lozinku", Alert.AlertType.ERROR);
+            return;
+        }
+        if(!fldPassword.getText().equals(fldRetypePassword.getText())){
+            showAlert("Greška", "Lozinke se ne podudaraju", Alert.AlertType.ERROR);
+            return;
+        }
+        if(client!=null){
+            if (fldAddress.getText().trim().isEmpty()) {
+                sveOk = false;
+                showAlert("Greška", "Unesite adresu", Alert.AlertType.ERROR);
+                return;
+            }
+            if (fldTelephone.getText().trim().isEmpty()) {
+                sveOk = false;
+                showAlert("Greška", "Unesite kontakt telefon", Alert.AlertType.ERROR);
+                return;
+            }
+            if (!(allDigits(fldTelephone.getText()) && fldTelephone.getText().length() >= 9)) {
+                sveOk = false;
+                showAlert("Greška", "Nevalidan broj telefona", Alert.AlertType.ERROR);
+                return;
 
+            }
+        }
         if(sveOk){
+            if(client!=null){
+                if(!fldUsername.getText().equals(client.getUsername())){
+                    if(rentACarDAO.getClientPerUsername(fldUsername.getText())!=null){
+                        showAlert("Greška", "Korisničko ime je zauzeto", Alert.AlertType.ERROR);
+                        fldUsername.getStyleClass().removeAll("ispravnoPolje");
+                        fldUsername.getStyleClass().add("neispravnoPolje");
+                        return;
+                    }
+                }
+                client.setFirstName(fldFirstName.getText());
+                client.setLastName(fldLastName.getText());
+                client.setAddress(fldAddress.getText());
+                client.setUsername(fldUsername.getText());
+                client.setPassword(fldPassword.getText());
+                client.setAddress(fldAddress.getText());
+                client.setTelephone(fldTelephone.getText());
+                rentACarDAO.editClient(client);
+                return;
+            }
             //treba provjeriti postoji li korisnik u bazi, ako ne dodat ga
             //pitat korisnika zeli li nastaviti i ako potvrdi onda slj prozor
             if(rentACarDAO.getClientPerUsername(fldUsername.getText())!=null){
@@ -226,7 +335,6 @@ public class RegistrationController {
                 fldUsername.getStyleClass().add("neispravnoPolje");
                 return;
             }
-            else {
                 Client client=new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), "", "");
                 rentACarDAO.addClient(client);
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -253,11 +361,9 @@ public class RegistrationController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    // ... user chose CANCEL or closed the dialog
                 }
             }
 
-        }
+
     }
 }

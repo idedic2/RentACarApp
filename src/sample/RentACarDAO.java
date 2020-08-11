@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement deleteCardQuery, deleteReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
+    private PreparedStatement getVehiclesPerAvailabilityQuery, deleteCardQuery, deleteReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
 
     private RentACarDAO() {
         try {
@@ -60,6 +60,7 @@ public class RentACarDAO {
             getClientPerIdQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, c.address, c.telephone FROM user u, client c WHERE c.id=u.id AND u.id=?");
             deleteCardQuery=conn.prepareStatement("DELETE FROM card WHERE id=?");
             deleteReservationQuery=conn.prepareStatement("DELETE FROM reservation WHERE id=?");
+            getVehiclesPerAvailabilityQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE availability=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -450,6 +451,45 @@ public class RentACarDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public ArrayList<Vehicle>getVehiclesPerAvailability(){
+        ArrayList<Vehicle>vehicles=new ArrayList<>();
+        try{
+            getVehiclesPerAvailabilityQuery.setString(1, "DA");
+            ResultSet rs=getVehiclesPerAvailabilityQuery.executeQuery();
+            if(!rs.next())return null;
+            while(rs.next())
+                vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicles;
+    }
+    public boolean isVehicleReserved(Vehicle vehicle){
+        ArrayList<Reservation>reservations=new ArrayList<>();
+        try{
+            reservations=getReservations();
+            for(Reservation r:reservations){
+                if(r.getVehicle().getId()==vehicle.getId())
+                    return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean clientInReservations(Client client){
+        ArrayList<Reservation>reservations=new ArrayList<>();
+        try{
+            reservations=getReservations();
+            for(Reservation r:reservations){
+                if(r.getClient().getId()==client.getId())
+                    return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     /*public Client getClient(int id){
         Client client=null;

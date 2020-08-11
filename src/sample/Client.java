@@ -10,7 +10,10 @@ public class Client extends User{
         this.telephone = telephone;
 
     }
-
+    @Override
+    public String toString(){
+        return super.getFirstName()+" "+super.getLastName()+": "+super.getUsername()+", "+getAddress();
+    }
 
     public Client() {
         super();

@@ -49,7 +49,7 @@ public class ClientPageController {
         colNmbDoors.setCellValueFactory(new PropertyValueFactory("doorsNumber"));
         colEngine.setCellValueFactory(new PropertyValueFactory("engine"));
         colTransmission.setCellValueFactory(new PropertyValueFactory("transmission"));
-        colId.setVisible(false);
+        //colId.setVisible(false);
 
     }
     private void showAlert(String title, String headerText, Alert.AlertType type) {
@@ -69,7 +69,9 @@ public class ClientPageController {
         //selected = selected.substring(1, selected.indexOf(","));
         String[] parts = selected.split(",");
         //parts[0]
+        System.out.println(Integer.parseInt(parts[0]));
         Vehicle vehicle=rentACarDAO.getVehiclePerId(Integer.parseInt(parts[0]));
+
         if(vehicle.getAvailability().equals("NE")){
             showAlert("Upozorenje", "Odabrano vozilo nije dostupno", Alert.AlertType.WARNING);
             return;

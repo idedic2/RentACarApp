@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="697.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@/css/rentacar.css" />
+    </stylesheets>
+  <columnConstraints>
+    <ColumnConstraints />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="95.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.0" minWidth="10.0" prefWidth="242.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="95.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="242.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="128.0" minHeight="0.0" prefHeight="53.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="351.0" minHeight="10.0" prefHeight="240.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label text="Vozilo:" GridPane.columnIndex="1" />
+       <TextField fx:id="fldSearchVehicle" promptText="search" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <ListView fx:id="listVehicles" prefHeight="225.0" prefWidth="214.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="15.0" />
+         </GridPane.margin>
+      </Separator>
+      <Label text="Klijent:" GridPane.columnIndex="4" />
+      <ListView fx:id="listClients" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="3" />
+      <Label text="Datum preuzimanja:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin></Label>
+      <DatePicker fx:id="datePickup" onAction="#changeData" prefHeight="25.0" prefWidth="144.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+      <ChoiceBox fx:id="hourPickup" prefWidth="50.0" value="10" GridPane.columnIndex="1" GridPane.rowIndex="8">
+       <items>
+           <FXCollections fx:factory="observableArrayList">
+               <String fx:value="08" />
+               <String fx:value="09" />
+               <String fx:value="10" />
+               <String fx:value="11" />
+               <String fx:value="12" />
+               <String fx:value="13" />
+               <String fx:value="14" />
+               <String fx:value="15" />
+               <String fx:value="16" />
+               <String fx:value="17" />
+           </FXCollections>
+       </items>
+      </ChoiceBox>
+      <ChoiceBox fx:id="minutePickup" prefWidth="50.0" value="00" GridPane.columnIndex="2" GridPane.rowIndex="8">
+       <items>
+           <FXCollections fx:factory="observableArrayList">
+               <String fx:value="00" />
+               <String fx:value="15" />
+               <String fx:value="30" />
+               <String fx:value="45" />
+           </FXCollections>
+       </items>
+      </ChoiceBox>
+      <Label text="Vrijeme preuzimanja:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+      <Label text="Datum vraćanja:" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+      <DatePicker fx:id="dateReturn" onAction="#changeData" prefWidth="144.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+      <Label text="Vrijeme vraćanja:" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+      <ChoiceBox fx:id="hourReturn" prefWidth="50.0" value="10" GridPane.columnIndex="4" GridPane.rowIndex="8">
+       <items>
+           <FXCollections fx:factory="observableArrayList">
+               <String fx:value="08" />
+               <String fx:value="09" />
+               <String fx:value="10" />
+               <String fx:value="11" />
+               <String fx:value="12" />
+               <String fx:value="13" />
+               <String fx:value="14" />
+               <String fx:value="15" />
+               <String fx:value="16" />
+               <String fx:value="17" />
+           </FXCollections>
+       </items>
+      </ChoiceBox>
+      <ChoiceBox fx:id="minuteReturn" prefWidth="50.0" value="00" GridPane.columnIndex="5" GridPane.rowIndex="8">
+       <items>
+           <FXCollections fx:factory="observableArrayList">
+               <String fx:value="00" />
+               <String fx:value="15" />
+               <String fx:value="30" />
+               <String fx:value="45" />
+           </FXCollections>
+       </items>
+      </ChoiceBox>
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="10">
+        <buttons>
+          <Button mnemonicParsing="false" onAction="#confirmAddReservationAction" text="OK" />
+            <Button mnemonicParsing="false" onAction="#cancelAddReservationAction" text="Odustani" />
+        </buttons>
+      </ButtonBar>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</GridPane>

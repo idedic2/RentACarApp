@@ -28,12 +28,15 @@ public class AddCarController {
     public ComboBox<String> comboPrice;
     public CheckBox checkAvailability;
     public Vehicle vehicle;
+    private boolean edit;
     private boolean sveOk=true;
     public Vehicle getVehicle() {
         return vehicle;
     }
     public AddCarController(Vehicle vehicle) {
         this.vehicle=vehicle;
+        if(vehicle!=null)
+        this.edit=true;
     }
     @FXML
     public void initialize() {
@@ -184,13 +187,13 @@ public class AddCarController {
             showAlert("Greška", "Cijena mora sadržavati isključivo brojeve", Alert.AlertType.ERROR);
             return;
         }
+        
         if (!sveOk) return;
         if (vehicle == null) vehicle = new Vehicle();
         vehicle.setName(fldName.getText());
         vehicle.setBrand(fldBrand.getText());
         vehicle.setModel(fldModel.getText());
         vehicle.setColor(fldColor.getText());
-        vehicle.setAvailability("DA");
         vehicle.setEngine(choiceEngine.getValue());
         vehicle.setTransmission(choiceTransmission.getValue());
         vehicle.setType(choiceType.getValue());
@@ -199,7 +202,10 @@ public class AddCarController {
         vehicle.setYear(Integer.parseInt(comboYear.getValue()));
         vehicle.setFuelConsumption(Double.parseDouble(comboFuelConsumption.getValue()));
         vehicle.setPricePerDay(Double.parseDouble(comboPrice.getValue()));
-        if(checkAvailability.isSelected())vehicle.setAvailability("DA");
+        if(checkAvailability.isSelected()){
+            // da bi stavili dostupnost da je "da" moramo se uvjerit da to auto nije trenutno na listi rezervacija
+            vehicle.setAvailability("DA");
+        }
         else vehicle.setAvailability("NE");
         Stage stage = (Stage) fldName.getScene().getWindow();
         stage.close();

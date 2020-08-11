@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="957.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" >
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="957.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="904.0" minWidth="10.0" prefWidth="904.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="738.0" minWidth="0.0" prefWidth="43.0" />
@@ -72,12 +72,13 @@
                         <ColumnConstraints />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints />
-                        <RowConstraints />
+                        <RowConstraints maxHeight="43.0" minHeight="30.0" prefHeight="34.0" />
+                        <RowConstraints maxHeight="207.0" minHeight="194.0" prefHeight="203.0" />
                         <RowConstraints />
                         <RowConstraints />
                     </rowConstraints>
                     <children>
+                        <Button fx:id="btnAddReseervation" mnemonicParsing="false" onAction="#addReservationAction" text="Dodaj " />
                         <TableView fx:id="tableViewReservations" prefHeight="212.0" prefWidth="932.0" GridPane.rowIndex="1">
                             <columns>
                                 <TableColumn fx:id="colIdReservation" prefWidth="40.99998474121094" text="ID" />

@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -140,6 +141,7 @@ public class AdminPageController {
                                 rentACarDAO.deleteReservation(data);
                                 listVehicles.setAll(rentACarDAO.getVehicles());
                                 listReservations.setAll(rentACarDAO.getReservations());
+                                AddReservationController addReservationController=new AddReservationController();
                             }
                         });
                     }
@@ -195,7 +197,11 @@ public class AdminPageController {
     public void editVehicleAction(ActionEvent actionEvent) {
         Vehicle vehicle = tableViewVehicles.getSelectionModel().getSelectedItem();
         if (vehicle == null) {
-            showAlert("Upozorenje", "Odaberite vozilo koje želite izmijeniti", Alert.AlertType.CONFIRMATION);
+            showAlert("Upozorenje", "Odaberite vozilo koje želite izmijeniti", Alert.AlertType.WARNING);
+            return;
+        }
+        if(rentACarDAO.isVehicleReserved(vehicle)){
+            showAlert("Greška", "Odabrano vozilo je rezervisano i ne može se trenutno mijenjati", Alert.AlertType.ERROR);
             return;
         }
         Stage stage = new Stage();
@@ -213,8 +219,10 @@ public class AdminPageController {
             stage.setOnHiding( event -> {
                 Vehicle newVehicle = addCarController.getVehicle();
                 if (newVehicle != null) {
-                    rentACarDAO.editVehicle(newVehicle);
-                    listVehicles.setAll(rentACarDAO.getVehicles());
+                    //ako je vozilo rezervisano trenutno ne smije se mijenjati
+                        rentACarDAO.editVehicle(newVehicle);
+                        listVehicles.setAll(rentACarDAO.getVehicles());
+
                 }
             } );
         } catch (IOException e) {
@@ -228,14 +236,18 @@ public class AdminPageController {
             showAlert("Upozorenje", "Odaberite vozilo koje želite obrisati", Alert.AlertType.CONFIRMATION);
             return;
         }
+        if(rentACarDAO.isVehicleReserved(vehicle)){
+            showAlert("Greška", "Odabrano vozilo je rezervisano i ne može se trenutno obrisati", Alert.AlertType.ERROR);
+            return;
+        }
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Potvrda brisanja");
         alert.setHeaderText("Brisanje grada "+vehicle.getName());
         alert.setContentText("Da li ste sigurni da želite obrisati grad " +vehicle.getName()+"?");
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            rentACarDAO.deleteVehicle(vehicle);
-            listVehicles.setAll(rentACarDAO.getVehicles());
+        if (result.get() == ButtonType.OK) {
+                rentACarDAO.deleteVehicle(vehicle);
+                listVehicles.setAll(rentACarDAO.getVehicles());
         }
     }
 
@@ -299,15 +311,19 @@ public class AdminPageController {
             showAlert("Upozorenje", "Odaberite klijenta kojeg želite obrisati", Alert.AlertType.CONFIRMATION);
             return;
         }
+        if(rentACarDAO.clientInReservations(client)){
+            showAlert("Greška", "Odabrani klijent je iznajmio vozilo i trenutno se ne može obrisati", Alert.AlertType.ERROR);
+            return;
+        }
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Potvrda brisanja");
         alert.setHeaderText("Brisanje klijenta "+client.getFirstName()+" "+client.getLastName());
         alert.setContentText("Da li ste sigurni da želite obrisati klijenta " +client.getFirstName()+" "+client.getLastName()+"?");
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            rentACarDAO.deleteClient(client);
-            listClients.setAll(rentACarDAO.getClients());
-        }
+        if (result.get() == ButtonType.OK) {
+                rentACarDAO.deleteClient(client);
+                listClients.setAll(rentACarDAO.getClients());
+            }
     }
     public void logOutAction(ActionEvent actionEvent){
         Parent root = null;
@@ -321,6 +337,31 @@ public class AdminPageController {
             primaryStage.initModality(Modality.APPLICATION_MODAL);
             primaryStage.setResizable(false);
             primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void addReservationAction(ActionEvent actionEvent){
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addReservation.fxml"));
+            AddReservationController addReservationController= new AddReservationController();
+            loader.setController(addReservationController);
+            root = loader.load();
+            stage.getIcons().add(new Image("/images/admin.png"));
+            stage.setTitle("Dodavanje nove rezervacije");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+            stage.setOnHiding( event -> {
+                /*Client client = addClientController.getClient();
+                if (client != null) {
+                    rentACarDAO.addClient(client);
+                    listClients.setAll(rentACarDAO.getClients());
+                }*/
+                listReservations.setAll(rentACarDAO.getReservations());
+            } );
         } catch (IOException e) {
             e.printStackTrace();
         }

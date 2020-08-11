@@ -443,9 +443,9 @@ public class ReservationController {
             dateReturn.getStyleClass().removeAll("neispravnoPolje");
             dateReturn.getStyleClass().add("ispravnoPolje");
             //showAlert("Upozorenje", "Odaberite datum rentanja vozila", Alert.AlertType.WARNING);
-            //return;
+            return;
         }
-        else if(dateReturn.getValue()==null){
+        if(dateReturn.getValue()==null){
             dateOk=false;
             lblTotalPrice.setVisible(false);
             fldPrice.setVisible(false);
@@ -454,9 +454,9 @@ public class ReservationController {
             dateReturn.getStyleClass().removeAll("ispravnoPolje");
             dateReturn.getStyleClass().add("neispravnoPolje");
             //showAlert("Upozorenje", "Odaberite datum vraćanja vozila", Alert.AlertType.WARNING);
-            //return;
+            return;
         }
-        /*if(datePickup.getValue().isBefore(LocalDate.now()) || dateReturn.getValue().isBefore(LocalDate.now())){
+        if(datePickup.getValue().isBefore(LocalDate.now()) || dateReturn.getValue().isBefore(LocalDate.now())){
             dateOk=false;
             datePickup.getStyleClass().removeAll("ispravnoPolje");
             datePickup.getStyleClass().add("neispravnoPolje");
@@ -466,8 +466,7 @@ public class ReservationController {
             fldPrice.setVisible(false);
             showAlert("Greška", "Odabrani datum/datumi iz prošlosti", Alert.AlertType.ERROR);
             return;
-        }*/
-        else{
+        }
             if(datePickup.getValue().isEqual(dateReturn.getValue())){
                 dateOk=false;
                 datePickup.getStyleClass().removeAll("ispravnoPolje");
@@ -501,8 +500,6 @@ public class ReservationController {
 
             }
         }
-
-    }
     public void backAction(ActionEvent actionEvent){
         Stage stage= (Stage) fldName.getScene().getWindow();
         stage.close();

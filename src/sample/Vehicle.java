@@ -34,7 +34,7 @@ public class Vehicle {
     }
     @Override
     public String toString(){
-        return getId()+","+getName()+","+getBrand()+","+getModel()+","+getType()+","+getYear()+","+getSeatsNumber()+","+getDoorsNumber()+","+getEngine()+","+getTransmission()+","+getFuelConsumption()+","+getColor()+","+getPricePerDay()+","+getAvailability();
+        return getName()+" ("+getModel()+")";
     }
     public Vehicle() {
     }

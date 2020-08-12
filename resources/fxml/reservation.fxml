@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:controller="sample.ReservationController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@/css/rentacar.css" />
     </stylesheets>
@@ -125,12 +125,13 @@
             <Insets left="10.0" />
          </GridPane.margin>
       </Separator>
-      <ButtonBar GridPane.columnIndex="9">
+      <ButtonBar GridPane.columnIndex="8" GridPane.columnSpan="3">
          <buttons>
+             <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteReservationAction" text="Obriši" />
        <Button fx:id="btnBack" mnemonicParsing="false" onAction="#backAction" text="Nazad" />
          </buttons>
       </ButtonBar>
-      <ButtonBar GridPane.columnIndex="9" GridPane.rowIndex="6">
+      <ButtonBar GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.rowIndex="6">
          <buttons>
           <Button fx:id="btnReservationConfirm" mnemonicParsing="false" onAction="#reservationConfirmAction" prefHeight="25.0" prefWidth="60.0" text="OK" />
          </buttons>

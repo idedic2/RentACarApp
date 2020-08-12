@@ -308,24 +308,46 @@ public class RegistrationController {
             }
         }
         if(sveOk){
-            if(client!=null){
-                if(!fldUsername.getText().equals(client.getUsername())){
-                    if(rentACarDAO.getClientPerUsername(fldUsername.getText())!=null){
+            if(client!=null) {
+                if (!fldUsername.getText().equals(client.getUsername())) {
+                    if (rentACarDAO.getClientPerUsername(fldUsername.getText()) != null) {
                         showAlert("Greška", "Korisničko ime je zauzeto", Alert.AlertType.ERROR);
                         fldUsername.getStyleClass().removeAll("ispravnoPolje");
                         fldUsername.getStyleClass().add("neispravnoPolje");
                         return;
                     }
                 }
-                client.setFirstName(fldFirstName.getText());
-                client.setLastName(fldLastName.getText());
-                client.setAddress(fldAddress.getText());
-                client.setUsername(fldUsername.getText());
-                client.setPassword(fldPassword.getText());
-                client.setAddress(fldAddress.getText());
-                client.setTelephone(fldTelephone.getText());
-                rentACarDAO.editClient(client);
-                return;
+                if(client.getFirstName().equals(fldFirstName.getText()) && client.getLastName().equals(fldLastName.getText()) && client.getEmail().equals(fldEmail.getText()) && client.getUsername().equals(fldUsername.getText()) && client.getPassword().equals(fldPassword.getText()) && client.getPassword().equals(fldRetypePassword.getText()) && client.getAddress().equals(fldAddress.getText()) && client.getTelephone().equals(fldTelephone.getText())){
+                    try {
+                        Stage stage = (Stage) fldFirstName.getScene().getWindow();
+                        stage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("");
+                alert.setHeaderText("Odaberite opciju");
+                alert.setContentText("Jeste li sigurni da želite izmijeniti Vaše podatke");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    client.setFirstName(fldFirstName.getText());
+                    client.setLastName(fldLastName.getText());
+                    client.setAddress(fldAddress.getText());
+                    client.setUsername(fldUsername.getText());
+                    client.setPassword(fldPassword.getText());
+                    client.setAddress(fldAddress.getText());
+                    client.setTelephone(fldTelephone.getText());
+                    rentACarDAO.editClient(client);
+                    try {
+                        Stage stage = (Stage) fldFirstName.getScene().getWindow();
+                        stage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
             }
             //treba provjeriti postoji li korisnik u bazi, ako ne dodat ga
             //pitat korisnika zeli li nastaviti i ako potvrdi onda slj prozor

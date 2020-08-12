@@ -244,7 +244,7 @@ public class ClientPageController {
     public void seeReservationAction(ActionEvent actionEvent){
             ArrayList<Reservation> clientReservations=rentACarDAO.getClientReservations(client);
             if(clientReservations.size()==0){
-                showAlert("Greška", "Klijent nema rezervaciju", Alert.AlertType.ERROR);
+                showAlert("Greška", "Nemate rezervaciju", Alert.AlertType.ERROR);
                 return;
             }
         List<String> choices = new ArrayList<>();
@@ -425,7 +425,7 @@ public class ClientPageController {
            RegistrationController registrationController = new RegistrationController(client);
            loader.setController(registrationController);
            root = loader.load();
-           stage.setTitle("Rezerviši vozilo");
+           stage.setTitle("Vaš profil");
            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
            stage.setResizable(true);
            stage.show();
@@ -443,12 +443,14 @@ public class ClientPageController {
             stage.close();
             Stage primaryStage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
+            StartController startController = new StartController();
+            loader.setController(startController);
             root = loader.load();
-            primaryStage.setScene(new Scene(root, Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
-            primaryStage.initModality(Modality.APPLICATION_MODAL);
+            primaryStage.setTitle("Dobrodošli");
+            primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             primaryStage.setResizable(false);
             primaryStage.show();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

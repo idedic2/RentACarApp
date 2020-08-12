@@ -40,6 +40,7 @@ public class ReservationController {
     public ChoiceBox<String>choicePickupMinute;
     public ChoiceBox<String>choiceReturnHour;
     public ChoiceBox<String>choiceReturnMinute;
+    public Button btnDelete;
     private Vehicle vehicle;
     private Client client;
     private RentACarDAO rentACarDAO;
@@ -125,6 +126,7 @@ public class ReservationController {
     @FXML
     public void initialize() {
         lblHeader.setText(lblHeader.getText()+ ": "+vehicle.getName());
+        if(reservation==null)btnDelete.setDisable(true);
         if (reservation != null) {
             fldName.setText(reservation.getClient().getFirstName() + " " + reservation.getClient().getLastName());
             fldEmail.setText(reservation.getClient().getEmail());
@@ -387,6 +389,20 @@ public class ReservationController {
         error.setTitle(title);
         error.setHeaderText(headerText);
         error.show();
+    }
+    public void deleteReservationAction(ActionEvent actionEvent){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potvrda brisanja");
+        alert.setHeaderText("Brisanje rezervacije");
+        alert.setContentText("Da li ste sigurni da želite obrisati rezervaciju?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            //System.out.println(data.getReturnTime());
+            reservation.getVehicle().setAvailability("DA");
+            rentACarDAO.deleteReservation(reservation);
+           Stage stage= (Stage) fldName.getScene().getWindow();
+           stage.close();
+        }
     }
     public void reservationConfirmAction(ActionEvent actionEvent) {
        boolean sveOk=true;

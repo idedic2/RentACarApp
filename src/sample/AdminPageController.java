@@ -93,6 +93,8 @@ public class AdminPageController {
         colColor.setCellValueFactory(new PropertyValueFactory("color"));
         colPrice.setCellValueFactory(new PropertyValueFactory("pricePerDay"));
         colAvailability.setCellValueFactory(new PropertyValueFactory("availability"));
+        editVehicle();
+        deleteVehicle();
         tableViewClients.setItems(listClients);
         colIdClient.setCellValueFactory(new PropertyValueFactory("id"));
         colFirstName.setCellValueFactory(new PropertyValueFactory("firstName"));
@@ -102,6 +104,8 @@ public class AdminPageController {
         colPassword.setCellValueFactory(new PropertyValueFactory("password"));
         colAddress.setCellValueFactory(new PropertyValueFactory("address"));
         colTelephone.setCellValueFactory(new PropertyValueFactory("telephone"));
+        editClient();
+        deleteClient();
         tableViewReservations.setItems(listReservations);
         colIdReservation.setCellValueFactory(new PropertyValueFactory("id"));
         colIdVehicle.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getVehicle().getId()).asObject());
@@ -114,9 +118,9 @@ public class AdminPageController {
         colReturnDate.setCellValueFactory(new PropertyValueFactory("returnDate"));
         colPickupTime.setCellValueFactory(new PropertyValueFactory("pickupTime"));
         colReturnTime.setCellValueFactory(new PropertyValueFactory("returnTime"));
-        addButtonToTable();
+        deleteReservation();
     }
-    private void addButtonToTable() {
+    private void deleteReservation() {
         TableColumn<Reservation, Void> colBtn = new TableColumn("Brisanje");
 
         Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>> cellFactory = new Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>>() {
@@ -164,7 +168,7 @@ public class AdminPageController {
         tableViewReservations.getColumns().add(colBtn);
 
     }
-    public void addVehicle(ActionEvent actionEvent) {
+   public void addVehicle(ActionEvent actionEvent) {
         Stage stage = new Stage();
         Parent root = null;
         try {
@@ -188,6 +192,218 @@ public class AdminPageController {
             e.printStackTrace();
         }
     }
+    private void editVehicle() {
+        TableColumn<Vehicle, Void> colBtn = new TableColumn("Mijenjanje");
+        Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>> cellFactory = new Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>>() {
+            @Override
+            public TableCell<Vehicle, Void> call(final TableColumn<Vehicle, Void> param) {
+                final TableCell<Vehicle, Void> cell = new TableCell<Vehicle, Void>() {
+                    private final Button btn = new Button("Izmijeni");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Vehicle vehicle = getTableView().getItems().get(getIndex());
+                            //System.out.println("selectedData: " + data);
+                            //System.out.println(data.getReturnTime());
+                            if(rentACarDAO.isVehicleReserved(vehicle)){
+                                showAlert("Greška", "Odabrano vozilo je rezervisano i ne može se trenutno mijenjati", Alert.AlertType.ERROR);
+                                return;
+                            }
+                            Stage stage = new Stage();
+                            Parent root = null;
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addCar.fxml"));
+                                AddCarController addCarController = new AddCarController(vehicle);
+                                loader.setController(addCarController);
+                                root = loader.load();
+                                stage.setTitle("Izmijeni vozilo");
+                                stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                                stage.setResizable(true);
+                                stage.show();
+
+                                stage.setOnHiding( event2 -> {
+                                    Vehicle newVehicle = addCarController.getVehicle();
+                                    if (newVehicle != null) {
+                                        //ako je vozilo rezervisano trenutno ne smije se mijenjati
+                                        rentACarDAO.editVehicle(newVehicle);
+                                        listVehicles.setAll(rentACarDAO.getVehicles());
+
+                                    }
+                                } );
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        tableViewVehicles.getColumns().add(colBtn);
+
+    }
+    private void deleteVehicle() {
+        TableColumn<Vehicle, Void> colBtn = new TableColumn("Brisanje");
+        Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>> cellFactory = new Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>>() {
+            @Override
+            public TableCell<Vehicle, Void> call(final TableColumn<Vehicle, Void> param) {
+                final TableCell<Vehicle, Void> cell = new TableCell<Vehicle, Void>() {
+                    private final Button btn = new Button("Obriši");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Vehicle vehicle = getTableView().getItems().get(getIndex());
+                            //System.out.println("selectedData: " + data);
+                            //System.out.println(data.getReturnTime());
+                            if(rentACarDAO.isVehicleReserved(vehicle)){
+                                showAlert("Greška", "Odabrano vozilo je rezervisano i ne može se trenutno obrisati", Alert.AlertType.ERROR);
+                                return;
+                            }
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Potvrda brisanja");
+                            alert.setHeaderText("Brisanje grada "+vehicle.getName());
+                            alert.setContentText("Da li ste sigurni da želite obrisati grad " +vehicle.getName()+"?");
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                rentACarDAO.deleteVehicle(vehicle);
+                                listVehicles.setAll(rentACarDAO.getVehicles());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        tableViewVehicles.getColumns().add(colBtn);
+
+    }
+    private void editClient() {
+        TableColumn<Client, Void> colBtn = new TableColumn("Mijenjanje");
+        Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory = new Callback<TableColumn<Client, Void>, TableCell<Client, Void>>() {
+            @Override
+            public TableCell<Client, Void> call(final TableColumn<Client, Void> param) {
+                final TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+                    private final Button btn = new Button("Izmijeni");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Client client = getTableView().getItems().get(getIndex());
+                            //System.out.println("selectedData: " + data);
+                            //System.out.println(data.getReturnTime());
+                            Stage stage = new Stage();
+                            Parent root = null;
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addClient.fxml"));
+                                AddClientController addClientController = new AddClientController(client, false);
+                                loader.setController(addClientController);
+                                root = loader.load();
+                                stage.setTitle("Izmijeni klijenta");
+                                stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                                stage.setResizable(true);
+                                stage.show();
+
+                                stage.setOnHiding( event2 -> {
+                                    Client newClient = addClientController.getClient();
+                                    if (newClient != null) {
+                                        rentACarDAO.editClient(newClient);
+                                        listClients.setAll(rentACarDAO.getClients());
+                                    }
+                                } );
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        tableViewClients.getColumns().add(colBtn);
+
+    }
+    private void deleteClient() {
+        TableColumn<Client, Void> colBtn = new TableColumn("Brisanje");
+        Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory = new Callback<TableColumn<Client, Void>, TableCell<Client, Void>>() {
+            @Override
+            public TableCell<Client, Void> call(final TableColumn<Client, Void> param) {
+                final TableCell<Client, Void> cell = new TableCell<Client, Void>() {
+                    private final Button btn = new Button("Obriši");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Client client = getTableView().getItems().get(getIndex());
+                            //System.out.println("selectedData: " + data);
+                            //System.out.println(data.getReturnTime());
+                            if(rentACarDAO.clientInReservations(client)){
+                                showAlert("Greška", "Odabrani klijent je iznajmio vozilo i trenutno se ne može obrisati", Alert.AlertType.ERROR);
+                                return;
+                            }
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Potvrda brisanja");
+                            alert.setHeaderText("Brisanje klijenta "+client.getFirstName()+" "+client.getLastName());
+                            alert.setContentText("Da li ste sigurni da želite obrisati klijenta " +client.getFirstName()+" "+client.getLastName()+"?");
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                rentACarDAO.deleteClient(client);
+                                listClients.setAll(rentACarDAO.getClients());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        tableViewClients.getColumns().add(colBtn);
+
+    }
     private void showAlert(String title, String headerText, Alert.AlertType type) {
         Alert error = new Alert(type);
         error.setTitle(title);
@@ -195,6 +411,10 @@ public class AdminPageController {
         error.show();
     }
     public void editVehicleAction(ActionEvent actionEvent) {
+        if(listVehicles.isEmpty()){
+            showAlert("Upozorenje", "Trenutno nema vozila", Alert.AlertType.CONFIRMATION);
+            return;
+        }
         Vehicle vehicle = tableViewVehicles.getSelectionModel().getSelectedItem();
         if (vehicle == null) {
             showAlert("Upozorenje", "Odaberite vozilo koje želite izmijeniti", Alert.AlertType.WARNING);
@@ -231,6 +451,10 @@ public class AdminPageController {
     }
 
     public void deleteVehicleAction(ActionEvent actionEvent) {
+        if(listVehicles.isEmpty()){
+            showAlert("Upozorenje", "Trenutno nema vozila", Alert.AlertType.CONFIRMATION);
+            return;
+        }
         Vehicle vehicle = tableViewVehicles.getSelectionModel().getSelectedItem();
         if (vehicle == null) {
             showAlert("Upozorenje", "Odaberite vozilo koje želite obrisati", Alert.AlertType.CONFIRMATION);
@@ -276,6 +500,10 @@ public class AdminPageController {
     }
 
     public void editClientAction(ActionEvent actionEvent) {
+        if(listClients.isEmpty()){
+            showAlert("Upozorenje", "Trenutno nema klijenata", Alert.AlertType.CONFIRMATION);
+            return;
+        }
         Client client = tableViewClients.getSelectionModel().getSelectedItem();
         if (client == null) {
             showAlert("Upozorenje", "Odaberite klijenta kojeg želite izmijeniti", Alert.AlertType.CONFIRMATION);
@@ -306,6 +534,10 @@ public class AdminPageController {
     }
 
     public void deleteClientAction(ActionEvent actionEvent) {
+        if(listClients.isEmpty()){
+            showAlert("Upozorenje", "Trenutno nema klijenata", Alert.AlertType.CONFIRMATION);
+            return;
+        }
         Client client = tableViewClients.getSelectionModel().getSelectedItem();
         if (client == null) {
             showAlert("Upozorenje", "Odaberite klijenta kojeg želite obrisati", Alert.AlertType.CONFIRMATION);
@@ -332,12 +564,14 @@ public class AdminPageController {
             stage.close();
             Stage primaryStage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
+            StartController startController = new StartController();
+            loader.setController(startController);
             root = loader.load();
-            primaryStage.setScene(new Scene(root, Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE));
-            primaryStage.initModality(Modality.APPLICATION_MODAL);
+            primaryStage.setTitle("Dobrodošli");
+            primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             primaryStage.setResizable(false);
             primaryStage.show();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -361,9 +595,40 @@ public class AdminPageController {
                     listClients.setAll(rentACarDAO.getClients());
                 }*/
                 listReservations.setAll(rentACarDAO.getReservations());
+                listVehicles.setAll(rentACarDAO.getVehicles());
             } );
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    public void deleteReservationAction(ActionEvent a){
+        if(listReservations.isEmpty()){
+            showAlert("Upozorenje", "Trenutno nema rezervacija", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Reservation reservation = tableViewReservations.getSelectionModel().getSelectedItem();
+        if (reservation == null) {
+            showAlert("Upozorenje", "Odaberite rezervaciju koju želite obrisati", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potvrda brisanja");
+        alert.setHeaderText("Brisanje rezervacije");
+        alert.setContentText("Da li ste sigurni da želite obrisati rezervaciju?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            //System.out.println(data.getReturnTime());
+            reservation.getVehicle().setAvailability("DA");
+            rentACarDAO.deleteReservation(reservation);
+            listVehicles.setAll(rentACarDAO.getVehicles());
+            listReservations.setAll(rentACarDAO.getReservations());
+            AddReservationController addReservationController=new AddReservationController();
+        }
+    }
+    public void editReservationAction(ActionEvent actionEvent){
+        if(listReservations.isEmpty()){
+            showAlert("Upozorenje", "Trenutno nema rezervacija", Alert.AlertType.CONFIRMATION);
+            return;
         }
     }
 }

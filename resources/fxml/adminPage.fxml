@@ -78,7 +78,16 @@
                         <RowConstraints />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="btnAddReseervation" mnemonicParsing="false" onAction="#addReservationAction" text="Dodaj " />
+                        <HBox prefHeight="42.0" prefWidth="907.0" spacing="5.0">
+                           <children>
+                              <Button fx:id="btnAddReservation" mnemonicParsing="false" onAction="#addReservationAction" text="Dodaj " />
+                              <Button mnemonicParsing="false" onAction="#editReservationAction" text="Izmijeni" />
+                              <Button mnemonicParsing="false" onAction="#deleteReservationAction" text="Obriši" />
+                           </children>
+                            <GridPane.margin>
+                                <Insets top="10.0" />
+                            </GridPane.margin>
+                        </HBox>
                         <TableView fx:id="tableViewReservations" prefHeight="212.0" prefWidth="932.0" GridPane.rowIndex="1">
                             <columns>
                                 <TableColumn fx:id="colIdReservation" prefWidth="40.99998474121094" text="ID" />
@@ -100,10 +109,7 @@
                     </children>
                      <opaqueInsets>
                         <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding></GridPane>
+                     </opaqueInsets></GridPane>
             </content>
           </Tab>
             <Tab text="Klijenti">

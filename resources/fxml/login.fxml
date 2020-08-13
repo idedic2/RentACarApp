@@ -31,7 +31,7 @@
       <Label text="Lozinka:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
       <PasswordField fx:id="fldPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="fldUsername" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <RadioButton fx:id="radioClient" mnemonicParsing="false" text="Client" GridPane.rowIndex="3">
+      <RadioButton fx:id="radioClient" mnemonicParsing="false" text="Klijent" GridPane.rowIndex="3">
          <toggleGroup>
             <ToggleGroup fx:id="toggleGroup" />
          </toggleGroup>

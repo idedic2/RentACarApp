@@ -82,7 +82,7 @@ public class LoginController {
                     loader.setController(adminPageController);
                     //mainStage.setOnHidden(event -> writeAdminView(controller.getTabsConfig()));
                     break;
-                case "Client":
+                case "Klijent":
                     loader = new FXMLLoader(getClass().getResource("/fxml/clientPage.fxml"));
                     mainStage.getIcons().add(new Image("/images/client.jpg"));
                     ClientPageController clientController = new ClientPageController(fldUsername.getText());

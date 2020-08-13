@@ -5,20 +5,23 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="377.0" prefWidth="518.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="957.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="503.0" minWidth="10.0" prefWidth="480.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="503.0" minWidth="10.0" prefWidth="480.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="93.0" minHeight="0.0" prefHeight="42.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="93.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="93.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="313.0" minHeight="10.0" prefHeight="273.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="tableViewCars" prefHeight="180.0" prefWidth="354.0" GridPane.rowIndex="4">
+      <TableView fx:id="tableViewCars" prefHeight="253.0" prefWidth="527.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
         <columns>
             <TableColumn fx:id="colId" minWidth="0.0" prefWidth="0.0" text="ID" />
           <TableColumn fx:id="colName" prefWidth="93.99999237060547" text="Naziv" />
@@ -26,29 +29,34 @@
             <TableColumn fx:id="colNmbDoors" prefWidth="76.0" text="Broj vrata" />
             <TableColumn fx:id="colEngine" prefWidth="65.0" text="Gorivo" />
             <TableColumn fx:id="colTransmission" minWidth="0.0" prefWidth="77.0" text="Mjenjač" />
-            <TableColumn fx:id="colPrice" prefWidth="109.0" text="Cijena po danu" />
+            <TableColumn fx:id="colPrice" prefWidth="133.0" text="Cijena po danu (KM)" />
         </columns>
       </TableView>
-      <ChoiceBox fx:id="choiceType" onAction="#changeType" prefWidth="150.0" value="Putnicki automobil" GridPane.rowIndex="3">
+      <ChoiceBox fx:id="choiceType" onAction="#changeType" prefWidth="150.0" value="Sva vozila" GridPane.rowIndex="3">
           <items>
               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Sva vozila" />
                   <String fx:value="Putnicki automobil" />
                   <String fx:value="Luksuzni automobil" />
                   <String fx:value="Transportno vozilo" />
               </FXCollections>
           </items>
       </ChoiceBox>
-      <ButtonBar prefHeight="43.0" prefWidth="212.0">
+      <ButtonBar prefHeight="43.0" prefWidth="212.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <buttons>
             <Button mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
          </buttons>
       </ButtonBar>
-      <ButtonBar GridPane.rowIndex="2">
+      <ButtonBar GridPane.columnIndex="1" GridPane.rowIndex="3">
          <buttons>
-             <Button mnemonicParsing="false" onAction="#seeReservationAction" text="Rezervacija" />
+             <Button mnemonicParsing="false" onAction="#seeReservationAction" text="Moje rezervacije" />
             <Button mnemonicParsing="false" onAction="#profileAction" text="Profil" />
          </buttons>
       </ButtonBar>
+      <Label fx:id="lblWelcome" text="Dobrodošli" GridPane.rowIndex="1">
+         <font>
+            <Font size="19.0" />
+         </font></Label>
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import java.net.URL?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="177.0" prefWidth="612.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="194.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@/css/rentacar.css" />
     </stylesheets>
@@ -16,23 +17,29 @@
       <ColumnConstraints />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="66.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="74.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="80.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-       <Label text="Datum preuzimanja vozila:" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-       <Label text="Datum vraćanja vozila:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-       <DatePicker fx:id="datePickup" onAction="#changeDate" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-       <DatePicker fx:id="dateReturn" onAction="#changeDate" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+       <Label text="Datum preuzimanja vozila:" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+       <Label text="Datum vraćanja vozila:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+       <DatePicker fx:id="datePickup" onAction="#changeDate" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+       <DatePicker fx:id="dateReturn" onAction="#changeDate" prefHeight="25.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
         <buttons>
           <Button fx:id="btnReservation" mnemonicParsing="false" onAction="#reservationAction" text="Rezerviši" />
             <Button fx:id="btnBack" mnemonicParsing="false" onAction="#backAction" text="Nazad" />
         </buttons>
       </ButtonBar>
-      <Label fx:id="lblPrice" text="Ukupna cijena iznosi:" GridPane.rowIndex="2" />
-      <TextField fx:id="fldPrice" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="102.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label fx:id="lblPrice" text="Ukupna cijena iznosi:" GridPane.rowIndex="3" />
+      <TextField fx:id="fldPrice" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="102.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label fx:id="lblVehicleName">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="55.0" top="5.0" />

@@ -21,6 +21,8 @@ public class PriceRentingController {
     private Client client;
     private Vehicle vehicle;
     public Button btnReservation;
+    public Label lblVehicleName;
+
     public PriceRentingController(Vehicle vehicle, Client client) {
         this.vehicle=vehicle;
         this.client=client;
@@ -31,6 +33,7 @@ public class PriceRentingController {
             showAlert("Greška", "Vozilo nije odabrano", Alert.AlertType.ERROR);
             return;
         }
+        lblVehicleName.setText(vehicle.getName());
         if (vehicle.getAvailability().equals("NE")) btnReservation.setDisable(true);
     }
     public void reservationAction(ActionEvent actionEvent) {

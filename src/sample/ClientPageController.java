@@ -30,24 +30,26 @@ public class ClientPageController {
     public TableColumn colTransmission;
     public TableColumn colPrice;
     public TableColumn colId;
+    public Label lblWelcome;
     public ChoiceBox<String>choiceType;
     private Client client;
     private RentACarDAO rentACarDAO;
     private ObservableList<Vehicle>listVehicles;
-    private ObservableList<Vehicle>chosedVehicles;
+    //private ObservableList<Vehicle>chosedVehicles;
     private String username;
 
     public ClientPageController(String username){
         rentACarDAO=RentACarDAO.getInstance();
         //listVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
         listVehicles=FXCollections.observableArrayList(rentACarDAO.getVehicles());
-        chosedVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
+        //chosedVehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerType("Putnicki automobil"));
         this.username=username;
         client=rentACarDAO.getClientPerUsername(username);
     }
     @FXML
     public void initialize() {
-        tableViewCars.setItems(chosedVehicles);
+        lblWelcome.setText(lblWelcome.getText()+" "+client.getUsername());
+        tableViewCars.setItems(listVehicles);
         //choiceType.setValue("Putnicki automobil");
         //colId.setCellValueFactory(new PropertyValueFactory("id"));
         colName.setCellValueFactory(new PropertyValueFactory("name"));
@@ -434,7 +436,9 @@ public class ClientPageController {
        }
    }
     public void changeType(ActionEvent actionEvent) {
-        chosedVehicles.setAll(rentACarDAO.getVehiclesPerType(choiceType.getValue()));
+       if(choiceType.getValue().equals("Sva vozila")) listVehicles.setAll(rentACarDAO.getVehicles());
+        else
+            listVehicles.setAll(rentACarDAO.getVehiclesPerType(choiceType.getValue()));
     }
     public void logOutAction(ActionEvent actionEvent){
         Parent root = null;

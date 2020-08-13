@@ -110,7 +110,7 @@ public class RentACarDAO {
 
     public boolean doesExistUser(String username, String password, String radioText) {
         boolean temp=false;
-        if (radioText.equals("Client")) {
+        if (radioText.equals("Klijent")) {
             try {
                 getClientQuery.setString(1, username);
                 getClientQuery.setString(2, password);

@@ -45,6 +45,8 @@ public class ReservationController {
     private Client client;
     private RentACarDAO rentACarDAO;
     private Reservation reservation;
+    public Button btnReservationConfirm;
+    public Button btnBack;
     private boolean existClient=false;
     //private  boolean sveOk=false;
     private boolean dateOk=false;

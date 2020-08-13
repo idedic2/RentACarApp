@@ -72,7 +72,7 @@
                         <ColumnConstraints />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints maxHeight="43.0" minHeight="30.0" prefHeight="34.0" />
+                        <RowConstraints />
                         <RowConstraints maxHeight="207.0" minHeight="194.0" prefHeight="203.0" />
                         <RowConstraints />
                         <RowConstraints />
@@ -102,9 +102,9 @@
                                 <TableColumn fx:id="colPickupTime" prefWidth="126.0" text="Vrijeme preuzimanja" />
                                 <TableColumn fx:id="colReturnTime" prefWidth="120.0" text="Vrijeme vraćanja" />
                             </columns>
-                           <opaqueInsets>
-                              <Insets top="10.0" />
-                           </opaqueInsets>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
                         </TableView>
                     </children>
                      <opaqueInsets>

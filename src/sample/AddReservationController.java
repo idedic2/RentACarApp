@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -10,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -26,39 +29,104 @@ public class AddReservationController {
     public TextField fldSearchVehicle;
     private boolean dateOk=false;
     private RentACarDAO rentACarDAO;
+    private Reservation reservation;
     private ObservableList<Vehicle>vehicles;
     private ObservableList<Client>clients;
-    public AddReservationController(){
-        rentACarDAO=RentACarDAO.getInstance();
-        vehicles= FXCollections.observableArrayList(rentACarDAO.getVehiclesPerAvailability());
-        clients=FXCollections.observableArrayList(rentACarDAO.getClients());
-     }
+    private Vehicle currVehicle;
+    public AddReservationController(Reservation reservation) {
+        rentACarDAO = RentACarDAO.getInstance();
+        this.reservation = reservation;
+        vehicles = FXCollections.observableArrayList(rentACarDAO.getVehiclesPerAvailability());
+        if (reservation == null) clients = FXCollections.observableArrayList(rentACarDAO.getClients());
+        else {
+            ArrayList<Client> clientsTemp = new ArrayList<>();
+            clientsTemp.add(reservation.getClient());
+            clients = FXCollections.observableArrayList(clientsTemp);
+            //vehicles.add(reservation.getVehicle());
+        }
+    }
      @FXML
-     public void initialize(){
-        listVehicles.setItems(vehicles);
-        listClients.setItems(clients);
+     public void initialize() {
+         if (reservation != null) {
+             //vehicles.add(reservation.getVehicle());
+             listClients.setDisable(true);
+             //listVehicles.getSelectionModel().select(reservation.getVehicle());
 
+             datePickup.setValue(reservation.getPickUpDate());
+             dateReturn.setValue(reservation.getReturnDate());
+             String[] tmpPickup = reservation.getPickupTime().split(":");
+             hourPickup.setValue(tmpPickup[0]);
+             minutePickup.setValue(tmpPickup[1]);
+             String[] tmpReturn = reservation.getReturnTime().split(":");
+             hourPickup.setValue(tmpReturn[0]);
+             minutePickup.setValue(tmpReturn[1]);
+         }
+         listClients.setItems(clients);
+         listVehicles.setItems(vehicles);
+
+         listVehicles.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Vehicle>() {
+             @Override
+             public void changed(ObservableValue<? extends Vehicle> observable, Vehicle oldValue, Vehicle newValue) {
+                 currVehicle=newValue;
+                 System.out.println(newValue);
+             }
+         });
      }
 
+     public Reservation getReservation(){
+        return reservation;
+     }
     public void confirmAddReservationAction(ActionEvent actionEvent) {
         if(listVehicles.getSelectionModel().getSelectedItem()==null){
             showAlert("Greška", "Odaberite vozilo", Alert.AlertType.ERROR);
             return;
         }
-        if(listClients.getSelectionModel().getSelectedItem()==null){
-            showAlert("Greška", "Odaberite klijenta", Alert.AlertType.ERROR);
-            return;
+        if(reservation==null) {
+            if (listClients.getSelectionModel().getSelectedItem() == null) {
+                showAlert("Greška", "Odaberite klijenta", Alert.AlertType.ERROR);
+                return;
+            }
+        }
+        if(reservation!=null) {
+            if (reservation.getPickUpDate().isEqual(datePickup.getValue()) && reservation.getReturnDate().isEqual(dateReturn.getValue())) {
+                dateOk = true;
+            }
         }
         if(!dateOk){
             showAlert("Greška", "Odaberite ispravan datum rentanja/vraćanja vozila", Alert.AlertType.ERROR);
             return;
         }
-        Vehicle vehicle=listVehicles.getSelectionModel().getSelectedItem();
-        Client client=listClients.getSelectionModel().getSelectedItem();
-        vehicle.setAvailability("NE");
-        rentACarDAO.editVehicle(vehicle);
-        Reservation reservation=new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), hourPickup.getValue()+":"+minutePickup.getValue(), hourReturn.getValue()+":"+minuteReturn.getValue(), null);
-        rentACarDAO.addReservation(reservation);
+        if(reservation==null) {
+            reservation = new Reservation();
+            Vehicle vehicle = listVehicles.getSelectionModel().getSelectedItem();
+            Client client = listClients.getSelectionModel().getSelectedItem();
+            vehicle.setAvailability("NE");
+            rentACarDAO.editVehicle(vehicle);
+            Reservation reservation = new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), hourPickup.getValue() + ":" + minutePickup.getValue(), hourReturn.getValue() + ":" + minuteReturn.getValue(), null);
+            rentACarDAO.addReservation(reservation);
+        }
+        else{
+            if(reservation.getVehicle().getId()!=currVehicle.getId()){
+                //listVehicles.getSelectionModel().getSelectedItem().setAvailability("NE");
+                //rentACarDAO.editVehicle(listVehicles.getSelectionModel().getSelectedItem());
+                currVehicle.setAvailability("NE");
+                rentACarDAO.editVehicle(currVehicle);
+                reservation.getVehicle().setAvailability("DA");
+
+                rentACarDAO.editVehicle(reservation.getVehicle());
+                reservation.setVehicle(currVehicle);
+                vehicles.setAll(rentACarDAO.getVehiclesPerAvailability());
+                //listVehicles.refresh();
+            }
+
+           reservation.setPickUpDate(datePickup.getValue());
+           reservation.setReturnDate(dateReturn.getValue());
+           reservation.setPickupTime(hourPickup.getValue()+":"+minutePickup.getValue());
+           reservation.setReturnTime(hourReturn.getValue()+":"+minuteReturn.getValue());
+           rentACarDAO.editReservation(reservation);
+           System.out.println(reservation.getVehicle().getName());
+
+        }
         Stage stage = (Stage) fldSearchVehicle.getScene().getWindow();
         stage.close();
     }
@@ -154,6 +222,7 @@ public class AddReservationController {
 
 
     public void cancelAddReservationAction(ActionEvent actionEvent) {
+        reservation=null;
         Stage stage= (Stage) hourPickup.getScene().getWindow();
         stage.close();
     }

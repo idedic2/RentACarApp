@@ -491,7 +491,7 @@ public class RentACarDAO {
         try{
             getVehiclesPerAvailabilityQuery.setString(1, "DA");
             ResultSet rs=getVehiclesPerAvailabilityQuery.executeQuery();
-            if(!rs.next())return null;
+            //if(!rs.next())return null;
             while(rs.next())
                 vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
         } catch (SQLException e) {

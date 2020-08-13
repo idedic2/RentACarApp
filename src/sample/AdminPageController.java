@@ -118,6 +118,7 @@ public class AdminPageController {
         colReturnDate.setCellValueFactory(new PropertyValueFactory("returnDate"));
         colPickupTime.setCellValueFactory(new PropertyValueFactory("pickupTime"));
         colReturnTime.setCellValueFactory(new PropertyValueFactory("returnTime"));
+        editReservation();
         deleteReservation();
     }
     private void deleteReservation() {
@@ -145,7 +146,7 @@ public class AdminPageController {
                                 rentACarDAO.deleteReservation(data);
                                 listVehicles.setAll(rentACarDAO.getVehicles());
                                 listReservations.setAll(rentACarDAO.getReservations());
-                                AddReservationController addReservationController=new AddReservationController();
+                                AddReservationController addReservationController=new AddReservationController(null);
                             }
                         });
                     }
@@ -580,7 +581,7 @@ public class AdminPageController {
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addReservation.fxml"));
-            AddReservationController addReservationController= new AddReservationController();
+            AddReservationController addReservationController= new AddReservationController(null);
             loader.setController(addReservationController);
             root = loader.load();
             stage.getIcons().add(new Image("/images/admin.png"));
@@ -622,7 +623,7 @@ public class AdminPageController {
             rentACarDAO.deleteReservation(reservation);
             listVehicles.setAll(rentACarDAO.getVehicles());
             listReservations.setAll(rentACarDAO.getReservations());
-            AddReservationController addReservationController=new AddReservationController();
+            //AddReservationController addReservationController=new AddReservationController(null);
         }
     }
     public void editReservationAction(ActionEvent actionEvent){
@@ -630,5 +631,87 @@ public class AdminPageController {
             showAlert("Upozorenje", "Trenutno nema rezervacija", Alert.AlertType.CONFIRMATION);
             return;
         }
+        Reservation reservation = tableViewReservations.getSelectionModel().getSelectedItem();
+        if (reservation == null) {
+            showAlert("Upozorenje", "Odaberite rezervaciju koju želite izmijeniti", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addReservation.fxml"));
+             AddReservationController addReservationController = new AddReservationController(reservation);
+            loader.setController(addReservationController);
+            root = loader.load();
+            stage.setTitle("Izmijeni rezervaciju");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+            stage.setOnHiding( event -> {
+                Reservation newReservation = addReservationController.getReservation();
+                if (newReservation != null) {
+                    listReservations.setAll(rentACarDAO.getReservations());
+                    listVehicles.setAll(rentACarDAO.getVehicles());
+                }
+            } );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void editReservation() {
+        TableColumn<Reservation, Void> colBtn = new TableColumn("Mijenjanje");
+        Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>> cellFactory = new Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>>() {
+            @Override
+            public TableCell<Reservation, Void> call(final TableColumn<Reservation, Void> param) {
+                final TableCell<Reservation, Void> cell = new TableCell<Reservation, Void>() {
+                    private final Button btn = new Button("Izmijeni");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Reservation reservation = getTableView().getItems().get(getIndex());
+                            //System.out.println("selectedData: " + data);
+                            //System.out.println(data.getReturnTime());
+                            Stage stage = new Stage();
+                            Parent root = null;
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addReservation.fxml"));
+                                AddReservationController addReservationController = new AddReservationController(reservation);
+                                loader.setController(addReservationController);
+                                root = loader.load();
+                                stage.setTitle("Izmijeni rezervaciju");
+                                stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                                stage.setResizable(true);
+                                stage.show();
+                                stage.setOnHiding( event2 -> {
+                                    Reservation newReservation = addReservationController.getReservation();
+                                    if (newReservation != null) {
+                                        //rentACarDAO.editReservation(newReservation);
+                                        listReservations.setAll(rentACarDAO.getReservations());
+                                        listVehicles.setAll(rentACarDAO.getVehicles());
+                                    }
+                                } );
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        tableViewReservations.getColumns().add(colBtn);
+
     }
 }

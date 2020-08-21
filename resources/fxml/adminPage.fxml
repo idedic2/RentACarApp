@@ -5,10 +5,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="957.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="904.0" minWidth="10.0" prefWidth="904.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="738.0" minWidth="0.0" prefWidth="43.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="999.0" minWidth="10.0" prefWidth="999.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="738.0" minWidth="0.0" prefWidth="0.0" />
       <ColumnConstraints />
   </columnConstraints>
   <rowConstraints>
@@ -23,7 +23,7 @@
         <tabs>
           <Tab text="Vozila">
             <content>
-              <GridPane minHeight="0.0" minWidth="0.0" prefHeight="299.0" prefWidth="781.0">
+              <GridPane minHeight="0.0" minWidth="0.0" prefHeight="268.0" prefWidth="888.0">
                      <columnConstraints>
                         <ColumnConstraints />
                      </columnConstraints>
@@ -39,12 +39,13 @@
                               <Button fx:id="btnAddVehicle" mnemonicParsing="false" onAction="#addVehicle" text="Dodaj " />
                               <Button fx:id="btnEditVehicle" mnemonicParsing="false" onAction="#editVehicleAction" text="Izmijeni" />
                               <Button fx:id="btnDeleteVehicle" mnemonicParsing="false" onAction="#deleteVehicleAction" text="Obriši" />
+                              <Button mnemonicParsing="false" onAction="#vehicleReportAction" text="Izvještaj" />
                            </children>
                            <GridPane.margin>
                               <Insets top="10.0" />
                            </GridPane.margin>
                         </HBox>
-                        <TableView fx:id="tableViewVehicles" prefHeight="212.0" prefWidth="932.0" GridPane.rowIndex="1">
+                        <TableView fx:id="tableViewVehicles" prefHeight="209.0" prefWidth="980.0" GridPane.rowIndex="1">
                           <columns>
                               <TableColumn fx:id="colId" prefWidth="51.999969482421875" text="ID" />
                               <TableColumn fx:id="colName" prefWidth="51.999969482421875" text="Naziv" />
@@ -59,7 +60,7 @@
                               <TableColumn fx:id="colEngine" prefWidth="68.0" text="Mjenjač" />
                               <TableColumn fx:id="colColor" prefWidth="40.0" text="Boja" />
                               <TableColumn fx:id="colPrice" prefWidth="58.0" text="Cijena" />
-                              <TableColumn fx:id="colAvailability" prefWidth="74.0" text="Dostupnost" />
+                              <TableColumn fx:id="colAvailability" prefWidth="83.0" text="Dostupnost" />
                           </columns>
                         </TableView>
                      </children></GridPane>
@@ -78,17 +79,18 @@
                         <RowConstraints />
                     </rowConstraints>
                     <children>
-                        <HBox prefHeight="42.0" prefWidth="907.0" spacing="5.0">
+                        <HBox prefHeight="45.0" prefWidth="1006.0" spacing="5.0">
                            <children>
                               <Button fx:id="btnAddReservation" mnemonicParsing="false" onAction="#addReservationAction" text="Dodaj " />
                               <Button mnemonicParsing="false" onAction="#editReservationAction" text="Izmijeni" />
                               <Button mnemonicParsing="false" onAction="#deleteReservationAction" text="Obriši" />
+                              <Button mnemonicParsing="false" onAction="#reservationReportAction" text="Izvještaj" />
                            </children>
                             <GridPane.margin>
                                 <Insets top="10.0" />
                             </GridPane.margin>
                         </HBox>
-                        <TableView fx:id="tableViewReservations" prefHeight="212.0" prefWidth="932.0" GridPane.rowIndex="1">
+                        <TableView fx:id="tableViewReservations" prefHeight="203.0" prefWidth="908.0" GridPane.rowIndex="1">
                             <columns>
                                 <TableColumn fx:id="colIdReservation" prefWidth="40.99998474121094" text="ID" />
                                 <TableColumn fx:id="colIdVehicle" prefWidth="63.0" text="ID vozila" />
@@ -130,6 +132,7 @@
                                     <Button fx:id="btnAddClient" mnemonicParsing="false" onAction="#addClientAction" text="Dodaj " />
                                     <Button fx:id="btnEditClient" mnemonicParsing="false" onAction="#editClientAction" text="Izmijeni" />
                                     <Button fx:id="btnDeleteClient" mnemonicParsing="false" onAction="#deleteClientAction" text="Obriši" />
+                              <Button mnemonicParsing="false" onAction="#clientReportAction" text="Izvještaj" />
                                 </children>
                                 <GridPane.margin>
                                     <Insets top="10.0" />

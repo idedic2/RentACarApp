@@ -77,6 +77,10 @@ public class RentACarDAO {
         instance = null;
     }
 
+    public Connection getConn() {
+        return conn;
+    }
+
     public void close() {
         try {
             conn.close();

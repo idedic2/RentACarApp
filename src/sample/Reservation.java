@@ -1,6 +1,8 @@
 package sample;
 
 
+import javafx.beans.property.BooleanProperty;
+
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -24,7 +26,10 @@ public class Reservation {
         this.returnTime = returnTime;
         this.card=card;
     }
-
+    public  boolean isOnline(){
+        if(card!=null)return true;
+        return false;
+    }
     public Client getClient() {
         return client;
     }

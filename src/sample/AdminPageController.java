@@ -1,7 +1,11 @@
 package sample;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,16 +14,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import net.sf.jasperreports.engine.JRException;
 import sun.util.cldr.CLDRLocaleDataMetaInfo;
 
 import javax.xml.crypto.Data;
+import java.awt.*;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
@@ -118,8 +128,41 @@ public class AdminPageController {
         colReturnDate.setCellValueFactory(new PropertyValueFactory("returnDate"));
         colPickupTime.setCellValueFactory(new PropertyValueFactory("pickupTime"));
         colReturnTime.setCellValueFactory(new PropertyValueFactory("returnTime"));
+        //colPaying.setCellFactory(column -> new CheckBoxTableCell<>());
+        paying();
         editReservation();
         deleteReservation();
+    }
+    
+    public void paying(){
+        TableColumn select = new TableColumn("Plaćanje karticom");
+        select.setMinWidth(200);
+        select.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Reservation, CheckBox>, ObservableValue<CheckBox>>() {
+
+            @Override
+            public ObservableValue<CheckBox> call(
+                    TableColumn.CellDataFeatures<Reservation, CheckBox> arg0) {
+                Reservation reservation = arg0.getValue();
+
+                CheckBox checkBox = new CheckBox();
+
+                checkBox.selectedProperty().setValue(reservation.isOnline());
+                checkBox.setDisable(true);
+                /*checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                    public void changed(ObservableValue<? extends Boolean> ov,
+                                        Boolean old_val, Boolean new_val) {
+
+                        user.setSelected(new_val);
+
+                    }
+                });
+*/
+                return new SimpleObjectProperty<CheckBox>(checkBox);
+
+            }
+
+        });
+        tableViewReservations.getColumns().addAll( select);
     }
     private void deleteReservation() {
         TableColumn<Reservation, Void> colBtn = new TableColumn("Brisanje");
@@ -713,5 +756,29 @@ public class AdminPageController {
         colBtn.setCellFactory(cellFactory);
         tableViewReservations.getColumns().add(colBtn);
 
+    }
+    public void vehicleReportAction(ActionEvent actionEvent){
+        try {
+
+            new PrintReport().showReport(rentACarDAO.getConn(), "/reports/vehiclesReport.jrxml");
+        } catch (JRException | URISyntaxException e1) {
+            e1.printStackTrace();
+        }
+    }
+    public void clientReportAction(ActionEvent actionEvent){
+        try {
+
+            new PrintReport().showReport(rentACarDAO.getConn(), "/reports/clientsReport.jrxml");
+        } catch (JRException | URISyntaxException e1) {
+            e1.printStackTrace();
+        }
+    }
+    public void reservationReportAction(ActionEvent actionEvent){
+        try {
+
+            new PrintReport().showReport(rentACarDAO.getConn(), "/reports/reservationsReport.jrxml");
+        } catch (JRException | URISyntaxException e1) {
+            e1.printStackTrace();
+        }
     }
 }

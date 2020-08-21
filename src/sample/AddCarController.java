@@ -5,13 +5,22 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+
+import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 public class AddCarController {
     public TextField fldName;
@@ -216,5 +225,26 @@ public class AddCarController {
         stage.close();
     }
 
+   /* public void slika(ActionEvent actionEvent) throws IOException {
+        Stage stage = new Stage();
+        Parent root = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/vehicleImages.fxml"));
+        VehicleImagesController vehicleImagesController = new VehicleImagesController();
+        loader.setController(vehicleImagesController);
+        root = loader.load();
+        stage.setTitle("Slike");
+        stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+        stage.setResizable(true);
+        stage.show();
+    }
+    */
+   /*public void addImageAction(ActionEvent actionEvent){
+       FileChooser fileChooser = new FileChooser();
+       fileChooser.getExtensionFilters().addAll(
+               new FileChooser.ExtensionFilter("png", "*.png")
+               ,new FileChooser.ExtensionFilter("jpg", "*.jpg")
+       );
+       File selectedFile = fileChooser.showOpenDialog(fldBrand.getScene().getWindow());
 
+   }*/
 }

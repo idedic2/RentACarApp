@@ -11,7 +11,8 @@
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
     -fx-background-size: cover, cover;
 }
-
+#btnWriteClientsXML,
+#btnWriteVehiclesXML,
 #btnAddClient,
 #btnEditClient,
 #btnDeleteClient,
@@ -52,4 +53,7 @@
 }
 #btnAddVehicle, #btnAddReservation, #btnAddClient {
     -fx-background-image: url("/images/addIcon.png");
+}
+#btnWriteVehiclesXML, #btnWriteClientsXML{
+    -fx-background-image: url("/images/xmlIcon.png");
 }

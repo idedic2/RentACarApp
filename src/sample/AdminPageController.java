@@ -1,5 +1,6 @@
 package sample;
 
+import com.sun.javaws.jnl.XMLFormat;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -21,16 +22,32 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import net.sf.jasperreports.engine.JRException;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import sun.util.cldr.CLDRLocaleDataMetaInfo;
 
 import javax.xml.crypto.Data;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
@@ -90,7 +107,8 @@ public class AdminPageController {
     public Button btnEditClient;
     public Button btnDeleteClient;
     public Button btnReportClient;
-
+    public Button btnWriteVehiclesXML;
+    public Button btnWriteClientsXML;
     public AdminPageController(String username) {
         rentACarDAO = RentACarDAO.getInstance();
         listVehicles = FXCollections.observableArrayList(rentACarDAO.getVehicles());
@@ -797,4 +815,207 @@ public class AdminPageController {
             e1.printStackTrace();
         }
     }
+    public void writeVehiclesXMLAction(ActionEvent actionEvent){
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Zapiši XML datoteku");
+            Stage stage = (Stage)tableViewVehicles.getScene().getWindow();
+            File file = fileChooser.showSaveDialog(stage);
+            if (file == null) // Kliknuto na cancel
+                return;
+            writeVehicles(file);
+        } catch(Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Wrong file format");
+            alert.setContentText("An error occured during file save.");
+            alert.showAndWait();
+        }
+    }
+    public void writeVehicles(File file)  {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        Document document = null;
+
+        try {
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            document = documentBuilder.newDocument();
+        } catch (ParserConfigurationException err) {
+            err.printStackTrace();
+        }
+
+        Element root = document.createElement("vehicles");
+        document.appendChild(root);
+        for (Vehicle vehicle : listVehicles) {
+            Element eVehicle = document.createElement("vehicle");
+            if (vehicle.getAvailability().equals("DA")) {
+                Attr availabilityAttr = document.createAttribute("availability");
+                availabilityAttr.setValue("true");
+                eVehicle.setAttributeNode(availabilityAttr);
+            }
+
+            Element nameVehicle = document.createElement("name");
+            nameVehicle.appendChild(document.createTextNode(vehicle.getName()));
+            eVehicle.appendChild(nameVehicle);
+
+            Element brandVehicle = document.createElement("brand");
+            brandVehicle.appendChild(document.createTextNode(vehicle.getBrand()));
+            eVehicle.appendChild(brandVehicle);
+
+            Element modelVehicle = document.createElement("model");
+            modelVehicle.appendChild(document.createTextNode(vehicle.getModel()));
+            eVehicle.appendChild(modelVehicle);
+
+            Element typeVehicle = document.createElement("type");
+            typeVehicle.appendChild(document.createTextNode(vehicle.getType()));
+            eVehicle.appendChild(typeVehicle);
+
+            Element yearVehicle = document.createElement("year");
+            yearVehicle.appendChild(document.createTextNode(Integer.toString(vehicle.getYear())));
+            eVehicle.appendChild(yearVehicle);
+
+            Element seatsNumber = document.createElement("seatsNumber");
+            seatsNumber.appendChild(document.createTextNode(Integer.toString(vehicle.getSeatsNumber())));
+            eVehicle.appendChild(seatsNumber);
+
+            Element doorsNumber = document.createElement("doorsNumber");
+            doorsNumber.appendChild(document.createTextNode(Integer.toString(vehicle.getDoorsNumber())));
+            eVehicle.appendChild(doorsNumber);
+
+            Element engine= document.createElement("engine");
+            engine.appendChild(document.createTextNode(vehicle.getEngine()));
+            eVehicle.appendChild(engine);
+
+            Element transmission= document.createElement("transmission");
+            transmission.appendChild(document.createTextNode(vehicle.getTransmission()));
+            eVehicle.appendChild(transmission);
+
+            Element fuelConsumption= document.createElement("fuelConsumption");
+            fuelConsumption.appendChild(document.createTextNode(Double.toString(vehicle.getFuelConsumption())));
+            eVehicle.appendChild(fuelConsumption);
+
+            Element color= document.createElement("color");
+            color.appendChild(document.createTextNode(vehicle.getColor()));
+            eVehicle.appendChild(color);
+
+            Element pricePerDay= document.createElement("pricePerDay");
+            pricePerDay.appendChild(document.createTextNode(Double.toString(vehicle.getPricePerDay())));
+            eVehicle.appendChild(pricePerDay);
+            root.appendChild(eVehicle);
+        }
+
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(document);
+
+            StreamResult streamResult = new StreamResult(file);
+            transformer.transform(source, streamResult);
+        } catch(TransformerException err) {
+            err.printStackTrace();
+        }
+    }
+
+    public void writeClientsXMLAction(ActionEvent actionEvent){
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Zapiši XML datoteku");
+            Stage stage = (Stage)tableViewClients.getScene().getWindow();
+            File file = fileChooser.showSaveDialog(stage);
+            if (file == null) // Kliknuto na cancel
+                return;
+            writeClients(file);
+        } catch(Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Wrong file format");
+            alert.setContentText("An error occured during file save.");
+            alert.showAndWait();
+        }
+    }
+    public void writeClients(File file)  {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        Document document = null;
+
+        try {
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            document = documentBuilder.newDocument();
+        } catch (ParserConfigurationException err) {
+            err.printStackTrace();
+        }
+
+        Element root = document.createElement("clients");
+        document.appendChild(root);
+
+        for (Client client : listClients) {
+            Element eClient = document.createElement("client");
+
+            Element firstName = document.createElement("firstName");
+            firstName.appendChild(document.createTextNode(client.getFirstName()));
+            eClient.appendChild(firstName);
+            Element lastName = document.createElement("lastName");
+            lastName.appendChild(document.createTextNode(client.getLastName()));
+            eClient.appendChild(lastName);
+            Element email = document.createElement("email");
+            email.appendChild(document.createTextNode(client.getEmail()));
+            eClient.appendChild(email);
+            Element username = document.createElement("username");
+            username.appendChild(document.createTextNode(client.getUsername()));
+            eClient.appendChild(username);
+            Element address = document.createElement("address");
+            address.appendChild(document.createTextNode(client.getAddress()));
+            eClient.appendChild(address);
+            Element telephone = document.createElement("telephone");
+            telephone.appendChild(document.createTextNode(client.getTelephone()));
+            eClient.appendChild(telephone);
+            /*ArrayList<Reservation>clientReservations=new ArrayList<>();
+            for(Reservation r: listReservations){
+                if(r.getClient().getUsername().equals(client.getUsername()))
+                    clientReservations.add(r);
+            }*/
+            for (Reservation reservation : listReservations) {
+                if (client.getUsername().equals(reservation.getClient().getUsername())) {
+                    Element eReservation = document.createElement("reservation");
+                    if (reservation.getCard()!=null) {
+                        Attr onlineAttr = document.createAttribute("payingOnline");
+                        onlineAttr.setValue("true");
+                        eReservation.setAttributeNode(onlineAttr);
+                    }
+
+                    Element vehicleName = document.createElement("vehicleName");
+                    vehicleName.appendChild(document.createTextNode(reservation.getVehicle().getName()));
+                    eReservation.appendChild(vehicleName);
+
+                    Element pickupDate = document.createElement("pickupDate");
+                    pickupDate.appendChild(document.createTextNode(reservation.getPickUpDate().getDayOfMonth()+"/"+reservation.getPickUpDate().getMonth()+"/"+reservation.getPickUpDate().getYear()));
+                    eReservation.appendChild(pickupDate);
+
+                    Element returnDate = document.createElement("returnDate");
+                    returnDate.appendChild(document.createTextNode(reservation.getReturnDate().getDayOfMonth()+"/"+reservation.getReturnDate().getMonth()+"/"+reservation.getReturnDate().getYear()));
+                    eReservation.appendChild(returnDate);
+
+                    Element pickupTime = document.createElement("pickupTime");
+                    pickupTime.appendChild(document.createTextNode(reservation.getPickupTime()));
+                    eReservation.appendChild(pickupTime);
+
+                    Element returnTime = document.createElement("returnTime");
+                    returnTime.appendChild(document.createTextNode(reservation.getReturnTime()));
+                    eReservation.appendChild(returnTime);
+
+                    eClient.appendChild(eReservation);
+                }
+            }
+
+            root.appendChild(eClient);
+        }
+
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(document);
+
+            StreamResult streamResult = new StreamResult(file);
+            transformer.transform(source, streamResult);
+        } catch(TransformerException err) {
+            err.printStackTrace();
+        }
+    }
+
 }

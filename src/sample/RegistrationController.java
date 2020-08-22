@@ -33,19 +33,23 @@ public class RegistrationController {
     public RentACarDAO rentACarDAO;
     private Client client;
     public Label lblText;
+
     public RegistrationController(Client client) {
         rentACarDAO = RentACarDAO.getInstance();
-        this.client=client;
+        this.client = client;
     }
-    private boolean allLetters(String str){
-        return  str.chars().allMatch(Character::isLetter);
+
+    private boolean allLetters(String str) {
+        return str.chars().allMatch(Character::isLetter);
     }
-    private boolean allDigits(String str){
-        return  str.chars().allMatch(Character::isDigit);
+
+    private boolean allDigits(String str) {
+        return str.chars().allMatch(Character::isDigit);
     }
+
     @FXML
-    public void initialize(){
-        if(client!=null){
+    public void initialize() {
+        if (client != null) {
             lblText.setText("Vaši podaci");
             fldFirstName.setText(client.getFirstName());
             fldLastName.setText(client.getLastName());
@@ -56,14 +60,14 @@ public class RegistrationController {
             fldAddress.setText(client.getAddress());
             fldTelephone.setText(client.getTelephone());
         }
-        if(client==null){
+        if (client == null) {
             lblText.setText("Kreirajte Vaš račun");
             lblAddress.setVisible(false);
             lblTelephone.setVisible(false);
             fldAddress.setVisible(false);
             fldTelephone.setVisible(false);
         }
-        if(client!=null){
+        if (client != null) {
             fldTelephone.textProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
@@ -100,11 +104,10 @@ public class RegistrationController {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
                 if (!fldFirstName.getText().trim().isEmpty()) {
-                    if(fldFirstName.getText().length()<2 || !allLetters(fldFirstName.getText())){
+                    if (fldFirstName.getText().length() < 2 || !allLetters(fldFirstName.getText())) {
                         fldFirstName.getStyleClass().removeAll("ispravnoPolje");
                         fldFirstName.getStyleClass().add("neispravnoPolje");
-                    }
-                    else{
+                    } else {
                         fldFirstName.getStyleClass().removeAll("neispravnoPolje");
                         fldFirstName.getStyleClass().add("ispravnoPolje");
                     }
@@ -119,11 +122,10 @@ public class RegistrationController {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
                 if (!fldLastName.getText().trim().isEmpty()) {
-                    if(fldLastName.getText().length()<2 || !allLetters(fldLastName.getText())){
+                    if (fldLastName.getText().length() < 2 || !allLetters(fldLastName.getText())) {
                         fldLastName.getStyleClass().removeAll("ispravnoPolje");
                         fldLastName.getStyleClass().add("neispravnoPolje");
-                    }
-                    else{
+                    } else {
                         fldLastName.getStyleClass().removeAll("neispravnoPolje");
                         fldLastName.getStyleClass().add("ispravnoPolje");
                     }
@@ -138,11 +140,10 @@ public class RegistrationController {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
                 if (!fldEmail.getText().trim().isEmpty()) {
-                    if(!isValidEmailAddress(fldEmail.getText())){
+                    if (!isValidEmailAddress(fldEmail.getText())) {
                         fldEmail.getStyleClass().removeAll("ispravnoPolje");
                         fldEmail.getStyleClass().add("neispravnoPolje");
-                    }
-                    else{
+                    } else {
                         fldEmail.getStyleClass().removeAll("neispravnoPolje");
                         fldEmail.getStyleClass().add("ispravnoPolje");
                     }
@@ -156,11 +157,10 @@ public class RegistrationController {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
                 if (!fldUsername.getText().trim().isEmpty()) {
-                    if(!isValidUsername(fldUsername.getText())){
+                    if (!isValidUsername(fldUsername.getText())) {
                         fldUsername.getStyleClass().removeAll("ispravnoPolje");
                         fldUsername.getStyleClass().add("neispravnoPolje");
-                    }
-                    else{
+                    } else {
                         fldUsername.getStyleClass().removeAll("neispravnoPolje");
                         fldUsername.getStyleClass().add("ispravnoPolje");
                     }
@@ -174,8 +174,8 @@ public class RegistrationController {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
                 if (!fldPassword.getText().trim().isEmpty()) {
-                        fldPassword.getStyleClass().removeAll("neispravnoPolje");
-                        fldPassword.getStyleClass().add("ispravnoPolje");
+                    fldPassword.getStyleClass().removeAll("neispravnoPolje");
+                    fldPassword.getStyleClass().add("ispravnoPolje");
 
                 } else {
                     fldPassword.getStyleClass().removeAll("ispravnoPolje");
@@ -197,9 +197,10 @@ public class RegistrationController {
             }
         });
     }
-    private boolean isValidUsername(String str){
+
+    private boolean isValidUsername(String str) {
         Pattern pattern = Pattern.compile("[A-Za-z0-9_]+");
-        return  pattern.matcher(str).matches();
+        return pattern.matcher(str).matches();
     }
 
     public boolean isValidEmailAddress(String email) {
@@ -208,91 +209,93 @@ public class RegistrationController {
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
     }
+
     private void showAlert(String title, String headerText, Alert.AlertType type) {
         Alert error = new Alert(type);
         error.setTitle(title);
         error.setHeaderText(headerText);
         error.show();
     }
+
     public void registrationConfirmAction(ActionEvent actionEvent) {
-        boolean sveOk=true;
-        if(fldFirstName.getText().trim().isEmpty()){
-            sveOk=false;
+        boolean sveOk = true;
+        if (fldFirstName.getText().trim().isEmpty()) {
+            sveOk = false;
             showAlert("Greška", "Unesite ime", Alert.AlertType.ERROR);
             return;
         }
-            if(!allLetters(fldFirstName.getText())){
-                sveOk=false;
-                showAlert("Greška", "Ime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
-                return;
-            }
-            if(fldFirstName.getText().length()<2){
-                sveOk=false;
-                showAlert("Greška", "Ime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
-                return;
+        if (!allLetters(fldFirstName.getText())) {
+            sveOk = false;
+            showAlert("Greška", "Ime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
+            return;
+        }
+        if (fldFirstName.getText().length() < 2) {
+            sveOk = false;
+            showAlert("Greška", "Ime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
+            return;
         }
 
-        if(fldLastName.getText().trim().isEmpty()){
-            sveOk=false;
+        if (fldLastName.getText().trim().isEmpty()) {
+            sveOk = false;
             showAlert("Greška", "Unesite prezime", Alert.AlertType.ERROR);
             return;
         }
 
-            if(!allLetters(fldLastName.getText())){
-                sveOk=false;
-                showAlert("Greška", "Prezime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
-                return;
-            }
-            if(fldLastName.getText().length()<2){
-                sveOk=false;
-                showAlert("Greška", "Prezime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
-                return;
-            }
+        if (!allLetters(fldLastName.getText())) {
+            sveOk = false;
+            showAlert("Greška", "Prezime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
+            return;
+        }
+        if (fldLastName.getText().length() < 2) {
+            sveOk = false;
+            showAlert("Greška", "Prezime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
+            return;
+        }
 
-        if(fldEmail.getText().trim().isEmpty()){
-            sveOk=false;
+        if (fldEmail.getText().trim().isEmpty()) {
+            sveOk = false;
             showAlert("Greška", "Unesite email adresu", Alert.AlertType.ERROR);
             return;
         }
 
-            if(!isValidEmailAddress(fldEmail.getText())){
-                sveOk=false;
-                showAlert("Greška", "Nevalidna email adresa", Alert.AlertType.ERROR);
-                return;
-            }
+        if (!isValidEmailAddress(fldEmail.getText())) {
+            sveOk = false;
+            showAlert("Greška", "Nevalidna email adresa", Alert.AlertType.ERROR);
+            return;
+        }
 
-        if(fldUsername.getText().trim().isEmpty()){
-            sveOk=false;
+        if (fldUsername.getText().trim().isEmpty()) {
+            sveOk = false;
             showAlert("Greška", "Unesite korisničko ime", Alert.AlertType.ERROR);
             return;
         }
 
-            if(!isValidUsername(fldUsername.getText())){
-                sveOk=false;
-                showAlert("Greška", "Korisničko ime mora sadržavati samo brojeve i/ili slova", Alert.AlertType.ERROR);
-                return;
-            }
-            if(fldUsername.getText().length()<2){
-                sveOk=false;
-                showAlert("Greška", "Korisničko ime mora biti duže od jednog znaka", Alert.AlertType.ERROR);
-                return;
-            }
+        if (!isValidUsername(fldUsername.getText())) {
+            sveOk = false;
+            showAlert("Greška", "Korisničko ime mora sadržavati samo brojeve i/ili slova", Alert.AlertType.ERROR);
+            return;
+        }
+        if (fldUsername.getText().length() < 2) {
+            sveOk = false;
+            showAlert("Greška", "Korisničko ime mora biti duže od jednog znaka", Alert.AlertType.ERROR);
+            return;
+        }
 
-        if(fldPassword.getText().trim().isEmpty()){
-            sveOk=false;
+        if (fldPassword.getText().trim().isEmpty()) {
+            sveOk = false;
             showAlert("Greška", "Unesite lozinku", Alert.AlertType.ERROR);
             return;
         }
-        if(fldRetypePassword.getText().trim().isEmpty()){
-            sveOk=false;
+        if (fldRetypePassword.getText().trim().isEmpty()) {
+            sveOk = false;
             showAlert("Greška", "Potvrdite lozinku", Alert.AlertType.ERROR);
             return;
         }
-        if(!fldPassword.getText().equals(fldRetypePassword.getText())){
+        if (!fldPassword.getText().equals(fldRetypePassword.getText())) {
             showAlert("Greška", "Lozinke se ne podudaraju", Alert.AlertType.ERROR);
             return;
         }
-        if(client!=null){
+        if (client != null) {
             if (fldAddress.getText().trim().isEmpty()) {
                 sveOk = false;
                 showAlert("Greška", "Unesite adresu", Alert.AlertType.ERROR);
@@ -310,8 +313,8 @@ public class RegistrationController {
 
             }
         }
-        if(sveOk){
-            if(client!=null) {
+        if (sveOk) {
+            if (client != null) {
                 if (!fldUsername.getText().equals(client.getUsername())) {
                     if (rentACarDAO.getClientPerUsername(fldUsername.getText()) != null) {
                         showAlert("Greška", "Korisničko ime je zauzeto", Alert.AlertType.ERROR);
@@ -320,7 +323,7 @@ public class RegistrationController {
                         return;
                     }
                 }
-                if(client.getFirstName().equals(fldFirstName.getText()) && client.getLastName().equals(fldLastName.getText()) && client.getEmail().equals(fldEmail.getText()) && client.getUsername().equals(fldUsername.getText()) && client.getPassword().equals(fldPassword.getText()) && client.getPassword().equals(fldRetypePassword.getText()) && client.getAddress().equals(fldAddress.getText()) && client.getTelephone().equals(fldTelephone.getText())){
+                if (client.getFirstName().equals(fldFirstName.getText()) && client.getLastName().equals(fldLastName.getText()) && client.getEmail().equals(fldEmail.getText()) && client.getUsername().equals(fldUsername.getText()) && client.getPassword().equals(fldPassword.getText()) && client.getPassword().equals(fldRetypePassword.getText()) && client.getAddress().equals(fldAddress.getText()) && client.getTelephone().equals(fldTelephone.getText())) {
                     try {
                         Stage stage = (Stage) fldFirstName.getScene().getWindow();
                         stage.close();
@@ -354,63 +357,66 @@ public class RegistrationController {
             }
             //treba provjeriti postoji li korisnik u bazi, ako ne dodat ga
             //pitat korisnika zeli li nastaviti i ako potvrdi onda slj prozor
-            if(rentACarDAO.getClientPerUsername(fldUsername.getText())!=null){
+            if (rentACarDAO.getClientPerUsername(fldUsername.getText()) != null) {
                 showAlert("Greška", "Korisničko ime je zauzeto", Alert.AlertType.ERROR);
                 fldUsername.getStyleClass().removeAll("ispravnoPolje");
                 fldUsername.getStyleClass().add("neispravnoPolje");
                 return;
             }
-            try{
-                Client client=new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), "", "");
-            }
-            catch (NegativeNumberException e){
+            try {
+                Client client = new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), "", "");
+            } catch (NegativeNumberException e) {
                 e.printStackTrace();
             }
-                rentACarDAO.addClient(client);
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("");
-                alert.setHeaderText("Odaberite opciju");
-                alert.setContentText("Potvrdite za nastavak");
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK){
-                    // ... user chose OK
-                    Parent root = null;
-                    try {
-                        Stage stage = (Stage) fldFirstName.getScene().getWindow();
-                        stage.close();
-                        Stage primaryStage = new Stage();
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/clientPage.fxml"));
-                        ClientPageController clientPageController = new ClientPageController(client.getUsername());
-                        loader.setController(clientPageController);
-                        root = loader.load();
-                        primaryStage.setTitle("Client File");
-                        primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
-                        primaryStage.initModality(Modality.APPLICATION_MODAL);
-                        primaryStage.setResizable(false);
-                        primaryStage.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            rentACarDAO.addClient(client);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("");
+            alert.setHeaderText("Odaberite opciju");
+            alert.setContentText("Potvrdite za nastavak");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                // ... user chose OK
+                Parent root = null;
+                try {
+                    Stage stage = (Stage) fldFirstName.getScene().getWindow();
+                    stage.close();
+                    Stage primaryStage = new Stage();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/clientPage.fxml"));
+                    ClientPageController clientPageController = new ClientPageController(client.getUsername());
+                    loader.setController(clientPageController);
+                    root = loader.load();
+                    primaryStage.setTitle("Client File");
+                    primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                    primaryStage.initModality(Modality.APPLICATION_MODAL);
+                    primaryStage.setResizable(false);
+                    primaryStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
+        }
 
     }
-    public void backRegistrationAction(ActionEvent actionEvent){
-        Stage stage= (Stage) fldUsername.getScene().getWindow();
+
+    public void backRegistrationAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) fldUsername.getScene().getWindow();
         stage.close();
-        Stage oldstage = new Stage();
-        Parent root = null;
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
-            StartController startController = new StartController();
-            loader.setController(startController);
-            root = loader.load();
-            oldstage.setTitle("Dobrodošli");
-            oldstage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
-            oldstage.setResizable(false);
-            oldstage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (client == null) {
+            Stage oldstage = new Stage();
+            Parent root = null;
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
+                StartController startController = new StartController();
+                loader.setController(startController);
+                root = loader.load();
+                oldstage.setTitle("Dobrodošli");
+                oldstage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                oldstage.setResizable(false);
+                oldstage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

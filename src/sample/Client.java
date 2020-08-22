@@ -4,7 +4,7 @@ public class Client extends User{
     private String address;
     private String telephone;
 //iz klijenta obrisati karitcu, i kartica ce bti u rez,
-    public Client(int id, String firstName, String lastName, String email, String username, String password, String address, String telephone) {
+    public Client(int id, String firstName, String lastName, String email, String username, String password, String address, String telephone) throws NegativeNumberException {
         super(id, firstName, lastName, email, username, password);
         this.address = address;
         this.telephone = telephone;

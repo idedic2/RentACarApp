@@ -102,7 +102,12 @@ public class AddReservationController {
             Client client = listClients.getSelectionModel().getSelectedItem();
             vehicle.setAvailability("NE");
             rentACarDAO.editVehicle(vehicle);
+            try{
             Reservation reservation = new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), hourPickup.getValue() + ":" + minutePickup.getValue(), hourReturn.getValue() + ":" + minuteReturn.getValue(), null);
+            }
+            catch (NegativeNumberException e){
+                e.printStackTrace();
+            }
             rentACarDAO.addReservation(reservation);
         }
         else{

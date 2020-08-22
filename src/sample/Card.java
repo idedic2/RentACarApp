@@ -9,7 +9,8 @@ public class Card {
     private String code;
     private LocalDate expirationDate;
 
-    public Card(int id, String cardNumber, String code, LocalDate expirationDate) {
+    public Card(int id, String cardNumber, String code, LocalDate expirationDate) throws NegativeNumberException {
+        if(id<0) throw new NegativeNumberException("Unijeli ste negativan broj");
         this.id = id;
         this.cardNumber = cardNumber;
         this.code = code;
@@ -23,7 +24,9 @@ public class Card {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id) throws NegativeNumberException {
+        if(id<0) throw new NegativeNumberException("Unijeli ste negativan broj");
+        else
         this.id = id;
     }
 

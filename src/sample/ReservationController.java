@@ -519,12 +519,22 @@ public class ReservationController {
                 if (checkBoxNow.isSelected()) {
                     String expire = getDays(choiceMonth.getValue()) + "." + getMonth(choiceMonth.getValue()) + "." + fldYear.getText();
                     LocalDate expireDate = stringToDate(expire);
+                    try{
                     card = new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
+                    }
+                    catch (NegativeNumberException e){
+                        e.printStackTrace();
+                    }
                     rentACarDAO.addCard(card);
                     //dobavi ponovo karticu iz baze
                     card = rentACarDAO.getCard(fldNmbCard.getText());
                 }
+                try{
                 Reservation reservation = new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue() + ":" + choicePickupMinute.getValue(), choiceReturnHour.getValue() + ":" + choiceReturnMinute.getValue(), card);
+                }
+                catch (NegativeNumberException e){
+                    e.printStackTrace();
+                }
                 rentACarDAO.addReservation(reservation);
             }
         }
@@ -542,7 +552,13 @@ public class ReservationController {
                 if(checkBoxNow.isSelected()){
                     String expire = getDays(choiceMonth.getValue()) + "." + getMonth(choiceMonth.getValue()) + "." + fldYear.getText();
                     LocalDate expireDate = stringToDate(expire);
-                    Card card = new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
+                    Card card=null;
+                    try{
+                    card = new Card(0, fldNmbCard.getText(), fldCode.getText(), expireDate);
+                    }
+                    catch (NegativeNumberException e){
+                        e.printStackTrace();
+                    }
                     rentACarDAO.addCard(card);
                     //dobavi ponovo karticu iz baze
                     card = rentACarDAO.getCard(fldNmbCard.getText());

@@ -133,7 +133,7 @@ public class AdminPageController {
         editReservation();
         deleteReservation();
     }
-    
+
     public void paying(){
         TableColumn select = new TableColumn("Plaćanje karticom");
         select.setMinWidth(200);

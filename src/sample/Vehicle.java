@@ -16,21 +16,25 @@ public class Vehicle {
     private Double pricePerDay;
     private String availability;
 
-    public Vehicle(int id, String name, String brand, String model, String type, int year, int seatsNumber, int doorsNumber, String engine, String transmission, Double fuelConsumption, String color, Double pricePerDay, String availability) {
-        this.id = id;
-        this.name = name;
-        this.brand = brand;
-        this.model = model;
-        this.type = type;
-        this.year = year;
-        this.seatsNumber = seatsNumber;
-        this.doorsNumber = doorsNumber;
-        this.engine = engine;
-        this.transmission = transmission;
-        this.fuelConsumption = fuelConsumption;
-        this.color = color;
-        this.pricePerDay = pricePerDay;
-        this.availability = availability;
+    public Vehicle(int id, String name, String brand, String model, String type, int year, int seatsNumber, int doorsNumber, String engine, String transmission, Double fuelConsumption, String color, Double pricePerDay, String availability) throws NegativeNumberException {
+        if (id < 0 || year < 0 || seatsNumber < 0 || doorsNumber < 0 || fuelConsumption < 0 || pricePerDay < 0)
+            throw new NegativeNumberException("Unijeli ste negativan broj");
+        else {
+            this.id = id;
+            this.name = name;
+            this.brand = brand;
+            this.model = model;
+            this.type = type;
+            this.year = year;
+            this.seatsNumber = seatsNumber;
+            this.doorsNumber = doorsNumber;
+            this.engine = engine;
+            this.transmission = transmission;
+            this.fuelConsumption = fuelConsumption;
+            this.color = color;
+            this.pricePerDay = pricePerDay;
+            this.availability = availability;
+        }
     }
     @Override
     public String toString(){
@@ -43,8 +47,11 @@ public class Vehicle {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int id) throws NegativeNumberException{
+        if(id<0)
+            throw new NegativeNumberException("Unijeli ste negativan broj");
+        else
+            this.id = id;
     }
 
     public String getName() {
@@ -83,7 +90,10 @@ public class Vehicle {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(int year) throws NegativeNumberException{
+        if(year<0)
+            throw new NegativeNumberException("Unijeli ste negativan broj");
+        else
         this.year = year;
     }
 
@@ -91,7 +101,10 @@ public class Vehicle {
         return seatsNumber;
     }
 
-    public void setSeatsNumber(int seatsNumber) {
+    public void setSeatsNumber(int seatsNumber) throws NegativeNumberException{
+        if(seatsNumber<0)
+            throw new NegativeNumberException("Unijeli ste negativan broj");
+        else
         this.seatsNumber = seatsNumber;
     }
 
@@ -99,7 +112,10 @@ public class Vehicle {
         return doorsNumber;
     }
 
-    public void setDoorsNumber(int doorsNumber) {
+    public void setDoorsNumber(int doorsNumber) throws NegativeNumberException{
+        if(doorsNumber<0)
+            throw new NegativeNumberException("Unijeli ste negativan broj");
+        else
         this.doorsNumber = doorsNumber;
     }
 
@@ -123,7 +139,10 @@ public class Vehicle {
         return fuelConsumption;
     }
 
-    public void setFuelConsumption(Double fuelConsumption) {
+    public void setFuelConsumption(Double fuelConsumption) throws NegativeNumberException{
+        if(fuelConsumption<0)
+            throw new NegativeNumberException("Unijeli ste negativan broj");
+        else
         this.fuelConsumption = fuelConsumption;
     }
 
@@ -139,7 +158,10 @@ public class Vehicle {
         return pricePerDay;
     }
 
-    public void setPricePerDay(Double pricePerDay) {
+    public void setPricePerDay(Double pricePerDay) throws NegativeNumberException{
+        if(pricePerDay<0)
+            throw new NegativeNumberException("Unijeli ste negativan broj");
+        else
         this.pricePerDay = pricePerDay;
     }
 

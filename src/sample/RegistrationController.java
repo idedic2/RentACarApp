@@ -357,7 +357,12 @@ public class RegistrationController {
                 fldUsername.getStyleClass().add("neispravnoPolje");
                 return;
             }
+            try{
                 Client client=new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), "", "");
+            }
+            catch (NegativeNumberException e){
+                e.printStackTrace();
+            }
                 rentACarDAO.addClient(client);
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("");

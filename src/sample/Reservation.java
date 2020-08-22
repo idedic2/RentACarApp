@@ -16,7 +16,8 @@ public class Reservation {
     private String pickupTime;
     private String returnTime;
 
-    public Reservation(int id, Vehicle vehicle, Client client, LocalDate pickUpDate, LocalDate returnDate, String pickupTime, String returnTime, Card card) {
+    public Reservation(int id, Vehicle vehicle, Client client, LocalDate pickUpDate, LocalDate returnDate, String pickupTime, String returnTime, Card card) throws NegativeNumberException {
+        if(id<0) throw new NegativeNumberException("Unijeli ste negativan broj");
         this.id = id;
         this.vehicle = vehicle;
         this.client = client;
@@ -62,7 +63,8 @@ public class Reservation {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id) throws NegativeNumberException {
+        if(id<0) throw new NegativeNumberException("Unijeli ste negativan broj");
         this.id = id;
     }
 

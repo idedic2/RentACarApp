@@ -154,13 +154,18 @@ public class RentACarDAO {
             e.printStackTrace();
         }
     }*/
-    public ArrayList<Vehicle> getVehicles(){
+    public ArrayList<Vehicle> getVehicles() {
         ArrayList<Vehicle>vehicles=new ArrayList<>();
         try{
             ResultSet rs=getVehiclesQuery.executeQuery();
-            while(rs.next())
-            vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
-        } catch (SQLException e) {
+            while(rs.next()) {
+                try {
+                    vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+                } catch (NegativeNumberException e) {
+                    e.printStackTrace();
+                }
+            }
+                } catch (SQLException e) {
             e.printStackTrace();
         }
         return vehicles;
@@ -223,8 +228,15 @@ public class RentACarDAO {
         try{
             getVehiclesPerTypeQuery.setString(1, type);
             ResultSet rs=getVehiclesPerTypeQuery.executeQuery();
-            while(rs.next())
-                vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+            while(rs.next()) {
+                try {
+                    vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+                }
+                catch (NegativeNumberException e){
+                    e.printStackTrace();
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -236,7 +248,12 @@ public class RentACarDAO {
             getVehiclePerIdQuery.setInt(1, id);
             ResultSet rs=getVehiclePerIdQuery.executeQuery();
             if(!rs.next())return null;
-            vehicle=new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14));
+            try {
+                vehicle = new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14));
+            }
+            catch (NegativeNumberException e) {
+                e.printStackTrace();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -248,8 +265,13 @@ public class RentACarDAO {
             getClientPerUsername.setString(1, username);
             ResultSet rs=getClientPerUsername.executeQuery();
             if(!rs.next())return null;
-            client=new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
-        } catch (SQLException e) {
+            try {
+                client = new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+            }
+            catch (NegativeNumberException e){
+                e.printStackTrace();
+            }
+            } catch (SQLException e) {
             e.printStackTrace();
         }
         return client;
@@ -260,8 +282,13 @@ public class RentACarDAO {
             getClientPerIdQuery.setInt(1, id);
             ResultSet rs=getClientPerIdQuery.executeQuery();
             if(!rs.next())return null;
-            client=new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
-        } catch (SQLException e) {
+            try {
+                client = new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+            }
+            catch (NegativeNumberException e){
+                e.printStackTrace();
+            }
+            } catch (SQLException e) {
             e.printStackTrace();
         }
         return client;
@@ -361,7 +388,12 @@ public class RentACarDAO {
             ResultSet rs=doesExistCardQuery.executeQuery();
             if(!rs.next())return null;
             LocalDate expireDate=stringToDate(rs.getString(4));
-            card=new Card(rs.getInt(1), rs.getString(2), rs.getString(3), expireDate);
+            try {
+                card = new Card(rs.getInt(1), rs.getString(2), rs.getString(3), expireDate);
+            }
+            catch (NegativeNumberException e){
+                e.printStackTrace();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -374,8 +406,13 @@ public class RentACarDAO {
             ResultSet rs=getCardQuery.executeQuery();
             if(!rs.next())return null;
             LocalDate expireDate=stringToDate(rs.getString(4));
-            card=new Card(rs.getInt(1), rs.getString(2), rs.getString(3), expireDate);
-        } catch (SQLException e) {
+            try {
+                card = new Card(rs.getInt(1), rs.getString(2), rs.getString(3), expireDate);
+            }
+            catch (NegativeNumberException e){
+                e.printStackTrace();
+            }
+            } catch (SQLException e) {
             e.printStackTrace();
         }
         return card;
@@ -384,8 +421,14 @@ public class RentACarDAO {
         ArrayList<Client>clients=new ArrayList<>();
         try{
             ResultSet rs=getClientsQuery.executeQuery();
-            while(rs.next())
-                clients.add(new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
+            while(rs.next()) {
+                try {
+                    clients.add(new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)));
+                }
+                catch (NegativeNumberException e){
+                    e.printStackTrace();
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -442,13 +485,18 @@ public class RentACarDAO {
         try{
             ResultSet rs=getReservationsQuery.executeQuery();
             while(rs.next()) {
-                Vehicle vehicle=getVehiclePerId(rs.getInt(2));
-                if(vehicle==null)return null;
-                Client client=getClientPerId(rs.getInt(3));
-                if(client==null)return null;
-                Card card=null;
-                if(rs.getInt(8)!=0)card=getCardPerId(rs.getInt(8));
-                reservations.add(new Reservation(rs.getInt(1), vehicle, client, stringToDate(rs.getString(4)), stringToDate(rs.getString(5)), rs.getString(6), rs.getString(7), card));
+                Vehicle vehicle = getVehiclePerId(rs.getInt(2));
+                if (vehicle == null) return null;
+                Client client = getClientPerId(rs.getInt(3));
+                if (client == null) return null;
+                Card card = null;
+                if (rs.getInt(8) != 0) card = getCardPerId(rs.getInt(8));
+                try {
+                    reservations.add(new Reservation(rs.getInt(1), vehicle, client, stringToDate(rs.getString(4)), stringToDate(rs.getString(5)), rs.getString(6), rs.getString(7), card));
+                }
+                catch (NegativeNumberException e){
+                    e.printStackTrace();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -496,9 +544,14 @@ public class RentACarDAO {
             getVehiclesPerAvailabilityQuery.setString(1, "DA");
             ResultSet rs=getVehiclesPerAvailabilityQuery.executeQuery();
             //if(!rs.next())return null;
-            while(rs.next())
-                vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
-        } catch (SQLException e) {
+            while(rs.next()) {
+                try {
+                    vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+                } catch (NegativeNumberException e) {
+                    e.printStackTrace();
+                }
+            }
+                } catch (SQLException e) {
             e.printStackTrace();
         }
         return vehicles;

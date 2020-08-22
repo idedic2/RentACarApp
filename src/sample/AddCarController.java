@@ -206,11 +206,36 @@ public class AddCarController {
         vehicle.setEngine(choiceEngine.getValue());
         vehicle.setTransmission(choiceTransmission.getValue());
         vehicle.setType(choiceType.getValue());
-        vehicle.setDoorsNumber(spinnerNmbDoors.getValue());
+        try {
+            vehicle.setDoorsNumber(spinnerNmbDoors.getValue());
+        }
+        catch (NegativeNumberException e){
+            e.printStackTrace();
+        }
+        try{
         vehicle.setSeatsNumber(spinnerNmbSeats.getValue());
+        }
+        catch (NegativeNumberException e){
+            e.printStackTrace();
+        }
+        try{
         vehicle.setYear(Integer.parseInt(comboYear.getValue()));
+        }
+        catch (NegativeNumberException e){
+            e.printStackTrace();
+        }
+        try{
         vehicle.setFuelConsumption(Double.parseDouble(comboFuelConsumption.getValue()));
+        }
+        catch (NegativeNumberException e){
+            e.printStackTrace();
+        }
+        try{
         vehicle.setPricePerDay(Double.parseDouble(comboPrice.getValue()));
+        }
+        catch (NegativeNumberException e){
+            e.printStackTrace();
+        }
         if(checkAvailability.isSelected()){
             // da bi stavili dostupnost da je "da" moramo se uvjerit da to auto nije trenutno na listi rezervacija
             vehicle.setAvailability("DA");

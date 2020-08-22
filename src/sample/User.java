@@ -8,7 +8,8 @@ abstract public class User {
     private String username;
     private String password;
 
-    public User(int id, String firstName, String lastName, String email, String username, String password) {
+    public User(int id, String firstName, String lastName, String email, String username, String password) throws NegativeNumberException {
+        if(id<0) throw new NegativeNumberException("Unijeli ste negativan broj");
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,7 +25,9 @@ abstract public class User {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id) throws NegativeNumberException {
+        if(id<0) throw new NegativeNumberException("Unijeli ste negativan broj");
+        else
         this.id = id;
     }
 

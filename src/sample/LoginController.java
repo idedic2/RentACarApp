@@ -133,4 +133,22 @@ public class LoginController {
         mainStage.show();
 
     }
+    public void backLoginAction(ActionEvent actionEvent){
+        Stage stage= (Stage) fldUsername.getScene().getWindow();
+        stage.close();
+        Stage oldstage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
+            StartController startController = new StartController();
+            loader.setController(startController);
+            root = loader.load();
+            oldstage.setTitle("Dobrodošli");
+            oldstage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            oldstage.setResizable(false);
+            oldstage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

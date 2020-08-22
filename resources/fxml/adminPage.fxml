@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-  <columnConstraints>
+    <stylesheets>
+        <URL value="@/css/rentacar.css" />
+    </stylesheets>
+    <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="999.0" minWidth="10.0" prefWidth="999.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="738.0" minWidth="0.0" prefWidth="0.0" />
       <ColumnConstraints />
@@ -36,10 +40,10 @@
                      <children>
                         <HBox prefHeight="42.0" prefWidth="907.0" spacing="5.0">
                            <children>
-                              <Button fx:id="btnAddVehicle" mnemonicParsing="false" onAction="#addVehicle" text="Dodaj " />
-                              <Button fx:id="btnEditVehicle" mnemonicParsing="false" onAction="#editVehicleAction" text="Izmijeni" />
-                              <Button fx:id="btnDeleteVehicle" mnemonicParsing="false" onAction="#deleteVehicleAction" text="Obriši" />
-                              <Button mnemonicParsing="false" onAction="#vehicleReportAction" text="Izvještaj" />
+                              <Button fx:id="btnAddVehicle" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addVehicle" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnEditVehicle" minHeight="-Infinity" mnemonicParsing="false" onAction="#editVehicleAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnDeleteVehicle" minHeight="-Infinity" mnemonicParsing="false" onAction="#deleteVehicleAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnVehicleReport" minHeight="-Infinity" mnemonicParsing="false" onAction="#vehicleReportAction" prefHeight="45.0" prefWidth="45.0" />
                            </children>
                            <GridPane.margin>
                               <Insets top="10.0" />
@@ -81,10 +85,10 @@
                     <children>
                         <HBox prefHeight="45.0" prefWidth="1006.0" spacing="5.0">
                            <children>
-                              <Button fx:id="btnAddReservation" mnemonicParsing="false" onAction="#addReservationAction" text="Dodaj " />
-                              <Button mnemonicParsing="false" onAction="#editReservationAction" text="Izmijeni" />
-                              <Button mnemonicParsing="false" onAction="#deleteReservationAction" text="Obriši" />
-                              <Button mnemonicParsing="false" onAction="#reservationReportAction" text="Izvještaj" />
+                              <Button fx:id="btnAddReservation" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addReservationAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnEditReservation" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#editReservationAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnDeleteReservation" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteReservationAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnReportReservation" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reservationReportAction" prefHeight="45.0" prefWidth="45.0" />
                            </children>
                             <GridPane.margin>
                                 <Insets top="10.0" />
@@ -129,10 +133,10 @@
                         <children>
                             <HBox prefHeight="42.0" prefWidth="907.0" spacing="5.0">
                                 <children>
-                                    <Button fx:id="btnAddClient" mnemonicParsing="false" onAction="#addClientAction" text="Dodaj " />
-                                    <Button fx:id="btnEditClient" mnemonicParsing="false" onAction="#editClientAction" text="Izmijeni" />
-                                    <Button fx:id="btnDeleteClient" mnemonicParsing="false" onAction="#deleteClientAction" text="Obriši" />
-                              <Button mnemonicParsing="false" onAction="#clientReportAction" text="Izvještaj" />
+                                    <Button fx:id="btnAddClient" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addClientAction" prefHeight="45.0" prefWidth="45.0" />
+                                    <Button fx:id="btnEditClient" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#editClientAction" prefHeight="45.0" prefWidth="45.0" />
+                                    <Button fx:id="btnDeleteClient" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteClientAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnReportClient" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clientReportAction" prefHeight="45.0" prefWidth="45.0" />
                                 </children>
                                 <GridPane.margin>
                                     <Insets top="10.0" />

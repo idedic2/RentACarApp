@@ -32,6 +32,7 @@ public class RegistrationController {
     public Label lblTelephone;
     public RentACarDAO rentACarDAO;
     private Client client;
+    public Label lblText;
     public RegistrationController(Client client) {
         rentACarDAO = RentACarDAO.getInstance();
         this.client=client;
@@ -45,6 +46,7 @@ public class RegistrationController {
     @FXML
     public void initialize(){
         if(client!=null){
+            lblText.setText("Vaši podaci");
             fldFirstName.setText(client.getFirstName());
             fldLastName.setText(client.getLastName());
             fldEmail.setText(client.getEmail());
@@ -55,6 +57,7 @@ public class RegistrationController {
             fldTelephone.setText(client.getTelephone());
         }
         if(client==null){
+            lblText.setText("Kreirajte Vaš račun");
             lblAddress.setVisible(false);
             lblTelephone.setVisible(false);
             fldAddress.setVisible(false);
@@ -391,5 +394,23 @@ public class RegistrationController {
                 }
             }
 
+    }
+    public void backRegistrationAction(ActionEvent actionEvent){
+        Stage stage= (Stage) fldUsername.getScene().getWindow();
+        stage.close();
+        Stage oldstage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
+            StartController startController = new StartController();
+            loader.setController(startController);
+            root = loader.load();
+            oldstage.setTitle("Dobrodošli");
+            oldstage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            oldstage.setResizable(false);
+            oldstage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

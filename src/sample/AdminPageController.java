@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -77,6 +78,18 @@ public class AdminPageController {
     private ObservableList<Client> listClients;
     private ObservableList<Reservation>listReservations;
     private String username;
+    public Button btnAddVehicle;
+    public Button btnEditVehicle;
+    public Button btnDeleteVehicle;
+    public Button btnVehicleReport;
+    public Button btnAddReservation;
+    public Button btnEditReservation;
+    public Button btnDeleteReservation;
+    public Button btnReportReservation;
+    public Button btnAddClient;
+    public Button btnEditClient;
+    public Button btnDeleteClient;
+    public Button btnReportClient;
 
     public AdminPageController(String username) {
         rentACarDAO = RentACarDAO.getInstance();
@@ -105,6 +118,8 @@ public class AdminPageController {
         colAvailability.setCellValueFactory(new PropertyValueFactory("availability"));
         editVehicle();
         deleteVehicle();
+        //Image addVehicleIcon=new Image("/images/addCar.png");
+        //btnAddVehicle.setGraphic(new ImageView(addVehicleIcon));
         tableViewClients.setItems(listClients);
         colIdClient.setCellValueFactory(new PropertyValueFactory("id"));
         colFirstName.setCellValueFactory(new PropertyValueFactory("firstName"));
@@ -172,8 +187,9 @@ public class AdminPageController {
             public TableCell<Reservation, Void> call(final TableColumn<Reservation, Void> param) {
                 final TableCell<Reservation, Void> cell = new TableCell<Reservation, Void>() {
                     private final Button btn = new Button("Obriši");
-
                     {
+                        //btn.getStyleClass().add("deleteButton");
+
                         btn.setOnAction((ActionEvent event) -> {
                             Reservation data = getTableView().getItems().get(getIndex());
                             //System.out.println("selectedData: " + data);

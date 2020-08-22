@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<?import java.net.URL?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="195.0" prefWidth="532.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="219.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
     <stylesheets>
         <URL value="@/css/rentacar.css" />
     </stylesheets>
@@ -15,32 +15,41 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="44.0" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="40.0" minHeight="23.0" prefHeight="50.0" />
       <RowConstraints maxHeight="40.0" minHeight="23.0" prefHeight="50.0" />
   </rowConstraints>
    <children>
-      <Label text="Unesite Vaše pristupne podatke" GridPane.rowIndex="0">
+      <Label prefHeight="55.0" prefWidth="253.0" text="Unesite Vaše pristupne podatke" GridPane.rowIndex="1">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label text="Korisničko ime:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-      <Label text="Lozinka:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-      <PasswordField fx:id="fldPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="fldUsername" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <RadioButton fx:id="radioClient" mnemonicParsing="false" text="Klijent" GridPane.rowIndex="3">
+      <Label text="Korisničko ime:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+      <Label text="Lozinka:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+      <PasswordField fx:id="fldPassword" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="fldUsername" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <RadioButton fx:id="radioClient" mnemonicParsing="false" text="Klijent" GridPane.rowIndex="4">
          <toggleGroup>
             <ToggleGroup fx:id="toggleGroup" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="radioAdmin" mnemonicParsing="false" text="Admin" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <RadioButton fx:id="radioAdmin" mnemonicParsing="false" text="Admin" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
         <buttons>
           <Button fx:id="btnLoginConfirm" mnemonicParsing="false" onAction="#loginConfirmAction" text="OK" />
         </buttons>
+      </ButtonBar>
+      <ButtonBar GridPane.columnIndex="1">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <buttons>
+            <Button mnemonicParsing="false" onAction="#backLoginAction" text="Nazad" />
+         </buttons>
       </ButtonBar>
    </children>
    <padding>

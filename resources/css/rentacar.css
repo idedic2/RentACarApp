@@ -11,3 +11,45 @@
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
     -fx-background-size: cover, cover;
 }
+
+#btnAddClient,
+#btnEditClient,
+#btnDeleteClient,
+#btnReportClient,
+#btnReportReservation,
+#btnDeleteReservation,
+#btnEditReservation,
+#btnAddReservation,
+#btnEditVehicle,
+#btnDeleteVehicle,
+#btnVehicleReport,
+#btnAddVehicle {
+    -fx-background-size: 42 42;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+    -fx-border-style: none;
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+}
+
+.deleteButton {
+    -fx-background-size: 35 35;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+    -fx-border-style: none;
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+}
+
+#btnEditVehicle, #btnEditReservation, #btnEditClient {
+    -fx-background-image: url("/images/editIcon.png");
+}
+#btnDeleteVehicle, #btnDeleteReservation, #btnDeleteClient, .deleteButton {
+    -fx-background-image: url("/images/deleteIcon.png");
+}
+#btnVehicleReport, #btnReportReservation, #btnReportClient  {
+    -fx-background-image: url("/images/reportIcon.png");
+}
+#btnAddVehicle, #btnAddReservation, #btnAddClient {
+    -fx-background-image: url("/images/addIcon.png");
+}

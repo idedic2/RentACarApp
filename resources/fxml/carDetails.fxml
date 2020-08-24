@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="407.0" prefWidth="506.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-  <columnConstraints>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="538.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@/css/rentacar.css" />
+    </stylesheets>
+    <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="133.0" minWidth="0.0" prefWidth="132.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="161.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="102.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
@@ -41,7 +46,6 @@
       <Label text="Dostupnost:" GridPane.rowIndex="12" />
       <Label fx:id="lblBrand" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label fx:id="lblModel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label fx:id="lblType" prefHeight="17.0" prefWidth="6.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Label fx:id="lblYear" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <Label fx:id="lblTransmission" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Label fx:id="lblFuelConsumption" GridPane.columnIndex="1" GridPane.rowIndex="6" />
@@ -63,6 +67,9 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
+      <Label fx:id="lblType" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <ImageView fx:id="imageVehicle" fitHeight="199.0" fitWidth="218.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.rowSpan="7" />
+      <Label fx:id="lblImage" text="Fotografija vozila: " GridPane.columnIndex="2" GridPane.rowIndex="10" />
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

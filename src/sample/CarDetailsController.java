@@ -6,8 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
@@ -29,6 +33,8 @@ public class CarDetailsController {
     public Button btnReservation;
     public Vehicle vehicle;
     public Client client;
+    public ImageView imageVehicle;
+    public Label lblImage;
     public CarDetailsController(Vehicle vehicle, Client client) {
         this.vehicle=vehicle;
         this.client=client;
@@ -40,12 +46,13 @@ public class CarDetailsController {
         error.show();
     }
     @FXML
-    public void initialize() {
+    public void initialize() throws FileNotFoundException {
         if(vehicle==null){
             showAlert("Greška", "Vozilo nije odabrano", Alert.AlertType.ERROR);
             return;
         }
         else{
+            lblImage.setText(lblImage.getText()+vehicle.getName());
             lblName.setText(vehicle.getName());
             lblBrand.setText(vehicle.getBrand());
             lblModel.setText(vehicle.getModel());
@@ -59,6 +66,11 @@ public class CarDetailsController {
             lblAvailability.setText(vehicle.getAvailability());
             lblFuelConsumption.setText(Double.toString(vehicle.getFuelConsumption()));
             lblYear.setText(Integer.toString(vehicle.getYear()));
+            String path="File:"+vehicle.getImage();
+            System.out.println(path);
+            Image image = new Image(path);
+            imageVehicle.setImage(image);
+            //imageVehicle=new ImageView(image);
         }
         if (vehicle.getAvailability().equals("NE")) btnReservation.setDisable(true);
     }

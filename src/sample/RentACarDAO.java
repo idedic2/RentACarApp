@@ -35,9 +35,9 @@ public class RentACarDAO {
             addUserQuery=conn.prepareStatement("INSERT INTO user VALUES(?,?,?,?,?,?)");
             maxIdUserQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM user");
             getVehiclesQuery=conn.prepareStatement("SELECT * FROM vehicle");
-            addVehicleQuery=conn.prepareStatement("INSERT INTO vehicle VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            addVehicleQuery=conn.prepareStatement("INSERT INTO vehicle VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             maxIdVehicleQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM vehicle");
-            editVehicleQuery=conn.prepareStatement("UPDATE vehicle SET name=?,brand=?,model=?,type=?,year=?,seats_number=?,doors_number=?,engine=?,transmission=?,fuel_consumption=?,color=?,price_per_day=?,availability=? WHERE id=?");
+            editVehicleQuery=conn.prepareStatement("UPDATE vehicle SET name=?,brand=?,model=?,type=?,year=?,seats_number=?,doors_number=?,engine=?,transmission=?,fuel_consumption=?,color=?,price_per_day=?,availability=?, image=? WHERE id=?");
             deleteVehicleQuery=conn.prepareStatement("DELETE FROM vehicle WHERE id=?");
             getVehiclesPerTypeQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE type=?");
             getVehiclePerIdQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE id=?");
@@ -160,7 +160,7 @@ public class RentACarDAO {
             ResultSet rs=getVehiclesQuery.executeQuery();
             while(rs.next()) {
                 try {
-                    vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+                    vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14), rs.getString(15)));
                 } catch (NegativeNumberException e) {
                     e.printStackTrace();
                 }
@@ -189,6 +189,7 @@ public class RentACarDAO {
             addVehicleQuery.setString(12, vehicle.getColor());
             addVehicleQuery.setDouble(13, vehicle.getPricePerDay());
             addVehicleQuery.setString(14, vehicle.getAvailability());
+            addVehicleQuery.setString(15, vehicle.getImage());
             addVehicleQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -209,7 +210,8 @@ public class RentACarDAO {
             editVehicleQuery.setString(11, vehicle.getColor());
             editVehicleQuery.setDouble(12, vehicle.getPricePerDay());
             editVehicleQuery.setString(13, vehicle.getAvailability());
-            editVehicleQuery.setInt(14, vehicle.getId());
+            editVehicleQuery.setString(14, vehicle.getImage());
+            editVehicleQuery.setInt(15, vehicle.getId());
             editVehicleQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -230,7 +232,7 @@ public class RentACarDAO {
             ResultSet rs=getVehiclesPerTypeQuery.executeQuery();
             while(rs.next()) {
                 try {
-                    vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+                    vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14), rs.getString(15)));
                 }
                 catch (NegativeNumberException e){
                     e.printStackTrace();
@@ -249,7 +251,7 @@ public class RentACarDAO {
             ResultSet rs=getVehiclePerIdQuery.executeQuery();
             if(!rs.next())return null;
             try {
-                vehicle = new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14));
+                vehicle = new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14), rs.getString(15));
             }
             catch (NegativeNumberException e) {
                 e.printStackTrace();
@@ -546,7 +548,7 @@ public class RentACarDAO {
             //if(!rs.next())return null;
             while(rs.next()) {
                 try {
-                    vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14)));
+                    vehicles.add(new Vehicle(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10), rs.getDouble(11), rs.getString(12), rs.getDouble(13), rs.getString(14), rs.getString(15)));
                 } catch (NegativeNumberException e) {
                     e.printStackTrace();
                 }

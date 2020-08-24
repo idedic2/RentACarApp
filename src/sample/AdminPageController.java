@@ -261,6 +261,7 @@ public class AdminPageController {
 
             stage.setOnHiding( event -> {
                 Vehicle vehicle = addCarController.getVehicle();
+                //System.out.println("prije stavljanja u bazu"+vehicle.getImage());
                 if (vehicle != null) {
                     rentACarDAO.addVehicle(vehicle);
                     listVehicles.setAll(rentACarDAO.getVehicles());

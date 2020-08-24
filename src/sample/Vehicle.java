@@ -15,8 +15,9 @@ public class Vehicle {
     private String color;
     private Double pricePerDay;
     private String availability;
+    private String image;
 
-    public Vehicle(int id, String name, String brand, String model, String type, int year, int seatsNumber, int doorsNumber, String engine, String transmission, Double fuelConsumption, String color, Double pricePerDay, String availability) throws NegativeNumberException {
+    public Vehicle(int id, String name, String brand, String model, String type, int year, int seatsNumber, int doorsNumber, String engine, String transmission, Double fuelConsumption, String color, Double pricePerDay, String availability, String image) throws NegativeNumberException {
         if (id < 0 || year < 0 || seatsNumber < 0 || doorsNumber < 0 || fuelConsumption < 0 || pricePerDay < 0)
             throw new NegativeNumberException("Unijeli ste negativan broj");
         else {
@@ -34,6 +35,7 @@ public class Vehicle {
             this.color = color;
             this.pricePerDay = pricePerDay;
             this.availability = availability;
+            this.image=image;
         }
     }
     @Override
@@ -171,5 +173,13 @@ public class Vehicle {
 
     public void setAvailability(String availability) {
         this.availability = availability;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
@@ -36,7 +38,9 @@ public class AddCarController {
     public ComboBox<String> comboYear;
     public ComboBox<String> comboPrice;
     public CheckBox checkAvailability;
+    public String imagePath;
     public Vehicle vehicle;
+    public ImageView placeholderImage;
     private boolean edit;
     private boolean sveOk=true;
     public Vehicle getVehicle() {
@@ -50,6 +54,10 @@ public class AddCarController {
     @FXML
     public void initialize() {
         if (vehicle != null) {
+            String path="File:"+vehicle.getImage();
+            System.out.println(path);
+            Image image = new Image(path);
+            placeholderImage.setImage(image);
            fldName.setText(vehicle.getName());
            fldBrand.setText(vehicle.getBrand());
            fldModel.setText(vehicle.getModel());
@@ -65,7 +73,12 @@ public class AddCarController {
            if(vehicle.getAvailability().equals("DA"))
                checkAvailability.setSelected(true);
            else checkAvailability.setSelected(false);
+
         } else {
+            String path="/images/placeholderVehicle.png";
+            System.out.println(path);
+            Image image = new Image(path);
+            placeholderImage.setImage(image);
             choiceEngine.getSelectionModel().selectFirst();
             choiceTransmission.getSelectionModel().selectFirst();
             choiceType.getSelectionModel().selectFirst();
@@ -196,7 +209,10 @@ public class AddCarController {
             showAlert("Greška", "Cijena mora sadržavati isključivo brojeve", Alert.AlertType.ERROR);
             return;
         }
-        
+        if(imagePath.equals("")){
+            showAlert("Greška", "Morate dodati fotografiju vozila", Alert.AlertType.ERROR);
+            return;
+        }
         if (!sveOk) return;
         if (vehicle == null) vehicle = new Vehicle();
         vehicle.setName(fldName.getText());
@@ -206,6 +222,8 @@ public class AddCarController {
         vehicle.setEngine(choiceEngine.getValue());
         vehicle.setTransmission(choiceTransmission.getValue());
         vehicle.setType(choiceType.getValue());
+        vehicle.setImage(imagePath);
+        System.out.println("dodavanje u vozilo" +vehicle.getImage());
         try {
             vehicle.setDoorsNumber(spinnerNmbDoors.getValue());
         }
@@ -249,7 +267,34 @@ public class AddCarController {
         Stage stage= (Stage) fldBrand.getScene().getWindow();
         stage.close();
     }
-
+    public void addImageAction(ActionEvent actionEvent){
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/findImage.fxml"));
+            FindImageController findImageController = new FindImageController(null);
+            loader.setController(findImageController);
+            root = loader.load();
+            stage.setTitle("Pretraga datoteka");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+            stage.setOnHiding( event -> {
+                imagePath = findImageController.getImagePath();
+                System.out.println("kod zatvaranja form" +imagePath);
+                if(!imagePath.equals("")) {
+                    Image image = new Image("File:"+imagePath);
+                    placeholderImage.setImage(image);
+                }
+                //if (!imagePath.equals("")) {
+                    //rentACarDAO.editReservation(newReservation);
+                    //vehicle.setImage(imagePath);
+                //}
+            } );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
    /* public void slika(ActionEvent actionEvent) throws IOException {
         Stage stage = new Stage();
         Parent root = null;

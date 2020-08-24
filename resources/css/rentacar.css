@@ -57,3 +57,6 @@
 #btnWriteVehiclesXML, #btnWriteClientsXML{
     -fx-background-image: url("/images/xmlIcon.png");
 }
+#lblName, #lblBrand, #lblModel, #lblColor, #lblEngine, #lblTransmission, #lblYear, #lblType, #lblPrice, #lblFuelConsumption, #lblAvailability, #lblNmbDoors, #lblNmbSeats{
+    -fx-font-weight: bold;
+}

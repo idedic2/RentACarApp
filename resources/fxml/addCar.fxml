@@ -130,7 +130,7 @@
       <CheckBox fx:id="checkAvailability" mnemonicParsing="false" text="DA" GridPane.columnIndex="1" GridPane.rowIndex="12" />
       <Button mnemonicParsing="false" onAction="#addImageAction" text="Dodaj" GridPane.columnIndex="1" GridPane.rowIndex="13" />
       <Label text="Dodaj sliku:" GridPane.rowIndex="13" />
-      <ImageView fx:id="placeholderImage" fitHeight="171.0" fitWidth="242.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.rowSpan="5" />
+      <ImageView fx:id="placeholderImage" fitHeight="171.0" fitWidth="243.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.rowSpan="5" />
     </children>
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -45,6 +45,7 @@
                               <Button fx:id="btnDeleteVehicle" minHeight="-Infinity" mnemonicParsing="false" onAction="#deleteVehicleAction" prefHeight="45.0" prefWidth="45.0" />
                               <Button fx:id="btnVehicleReport" minHeight="-Infinity" mnemonicParsing="false" onAction="#vehicleReportAction" prefHeight="45.0" prefWidth="45.0" />
                               <Button fx:id="btnWriteVehiclesXML" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#writeVehiclesXMLAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnWriteVehiclesJSON" mnemonicParsing="false" onAction="#writeVehiclesJSONAction" prefHeight="45.0" prefWidth="45.0" />
                            </children>
                            <GridPane.margin>
                               <Insets top="10.0" />
@@ -90,6 +91,8 @@
                               <Button fx:id="btnEditReservation" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#editReservationAction" prefHeight="45.0" prefWidth="45.0" />
                               <Button fx:id="btnDeleteReservation" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteReservationAction" prefHeight="45.0" prefWidth="45.0" />
                               <Button fx:id="btnReportReservation" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reservationReportAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnWriteReservationsXML" mnemonicParsing="false" onAction="#writeReservationsXMLAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnWriteReservationsJSON" mnemonicParsing="false" onAction="#writeReservationsJSONAction" prefHeight="45.0" prefWidth="45.0" />
                            </children>
                             <GridPane.margin>
                                 <Insets top="10.0" />
@@ -139,6 +142,7 @@
                                     <Button fx:id="btnDeleteClient" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteClientAction" prefHeight="45.0" prefWidth="45.0" />
                               <Button fx:id="btnReportClient" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clientReportAction" prefHeight="45.0" prefWidth="45.0" />
                               <Button fx:id="btnWriteClientsXML" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#writeClientsXMLAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnWriteClientsJSON" mnemonicParsing="false" onAction="#writeClientsJSONAction" prefHeight="45.0" prefWidth="45.0" />
                                 </children>
                                 <GridPane.margin>
                                     <Insets top="10.0" />

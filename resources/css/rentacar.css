@@ -11,6 +11,11 @@
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
     -fx-background-size: cover, cover;
 }
+
+#btnWriteReservationsXML,
+#btnWriteReservationsJSON,
+#btnWriteClientsJSON,
+#btnWriteVehiclesJSON,
 #btnWriteClientsXML,
 #btnWriteVehiclesXML,
 #btnAddClient,
@@ -54,9 +59,12 @@
 #btnAddVehicle, #btnAddReservation, #btnAddClient {
     -fx-background-image: url("/images/addIcon.png");
 }
-#btnWriteVehiclesXML, #btnWriteClientsXML{
+#btnWriteVehiclesXML, #btnWriteClientsXML, #btnWriteReservationsXML{
     -fx-background-image: url("/images/xmlIcon.png");
 }
 #lblName, #lblBrand, #lblModel, #lblColor, #lblEngine, #lblTransmission, #lblYear, #lblType, #lblPrice, #lblFuelConsumption, #lblAvailability, #lblNmbDoors, #lblNmbSeats{
     -fx-font-weight: bold;
+}
+#btnWriteVehiclesJSON, #btnWriteClientsJSON, #btnWriteReservationsJSON{
+    -fx-background-image: url("/images/jsonIcon.png");
 }

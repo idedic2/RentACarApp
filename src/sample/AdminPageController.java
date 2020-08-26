@@ -122,6 +122,7 @@ public class AdminPageController {
         listReservations=FXCollections.observableArrayList(rentACarDAO.getReservations());
         this.username=username;
     }
+
     @FXML
     public void initialize() {
         lblWelcome.setText(lblWelcome.getText()+" "+username);
@@ -402,9 +403,9 @@ public class AdminPageController {
                             Stage stage = new Stage();
                             Parent root = null;
                             try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addClient.fxml"));
-                                AddClientController addClientController = new AddClientController(client, false);
-                                loader.setController(addClientController);
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
+                                RegistrationController registrationController = new RegistrationController(client, username);
+                                loader.setController(registrationController);
                                 root = loader.load();
                                 stage.setTitle("Izmijeni klijenta");
                                 stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
@@ -412,7 +413,7 @@ public class AdminPageController {
                                 stage.show();
 
                                 stage.setOnHiding( event2 -> {
-                                    Client newClient = addClientController.getClient();
+                                    Client newClient = registrationController.getClient();
                                     if (newClient != null) {
                                         rentACarDAO.editClient(newClient);
                                         listClients.setAll(rentACarDAO.getClients());
@@ -564,16 +565,16 @@ public class AdminPageController {
         Stage stage = new Stage();
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addClient.fxml"));
-            AddClientController addClientController = new AddClientController(null, true);
-            loader.setController(addClientController);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
+            RegistrationController registrationController = new RegistrationController(null, username);
+            loader.setController(registrationController);
             root = loader.load();
             stage.setTitle("Dodavanje novog klijenta");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             stage.setResizable(true);
             stage.show();
             stage.setOnHiding( event -> {
-                Client client = addClientController.getClient();
+                Client client = registrationController.getClient();
                 if (client != null) {
                     rentACarDAO.addClient(client);
                     listClients.setAll(rentACarDAO.getClients());
@@ -597,9 +598,9 @@ public class AdminPageController {
         Stage stage = new Stage();
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addClient.fxml"));
-            AddClientController addClientController = new AddClientController(client, false);
-            loader.setController(addClientController);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
+            RegistrationController registrationController = new RegistrationController(client, username);
+            loader.setController(registrationController);
             root = loader.load();
             stage.setTitle("Izmijeni klijenta");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
@@ -607,7 +608,7 @@ public class AdminPageController {
             stage.show();
 
             stage.setOnHiding( event -> {
-                Client newClient = addClientController.getClient();
+                Client newClient = registrationController.getClient();
                 if (newClient != null) {
                     rentACarDAO.editClient(newClient);
                     listClients.setAll(rentACarDAO.getClients());

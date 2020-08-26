@@ -22,7 +22,22 @@
     <RowConstraints maxHeight="313.0" minHeight="10.0" prefHeight="273.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-
+       <MenuBar prefHeight="25.0" prefWidth="347.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+           <menus>
+               <Menu mnemonicParsing="false" text="Profil">
+                   <items>
+                       <MenuItem mnemonicParsing="false" text="Uredi profil" onAction="#editProfilAction"/>
+                       <MenuItem mnemonicParsing="false" text="Obriši profil" onAction="#deleteProfilAction"/>
+                       <MenuItem mnemonicParsing="false" text="Odjavi se" onAction="#logOutAction"/>
+                   </items>
+               </Menu>
+               <Menu mnemonicParsing="false" text="Rezervacije">
+                   <items>
+                       <MenuItem mnemonicParsing="false" text="Uredi rezervaciju" onAction="#editMyReservationsAction"/>
+                   </items>
+               </Menu>
+           </menus>
+       </MenuBar>
       <TableView fx:id="tableViewCars" prefHeight="253.0" prefWidth="527.0" GridPane.columnSpan="2" GridPane.rowIndex="6">
         <columns>
             <TableColumn fx:id="colId" minWidth="0.0" prefWidth="0.0" text="ID" />
@@ -44,17 +59,7 @@
               </FXCollections>
           </items>
       </ChoiceBox>
-      <ButtonBar prefHeight="43.0" prefWidth="212.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <buttons>
-            <Button mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
-         </buttons>
-      </ButtonBar>
-      <ButtonBar GridPane.columnIndex="1" GridPane.rowIndex="4">
-         <buttons>
-             <Button mnemonicParsing="false" onAction="#seeReservationAction" text="Moje rezervacije" />
-            <Button mnemonicParsing="false" onAction="#profileAction" text="Profil" />
-         </buttons>
-      </ButtonBar>
+
       <Label fx:id="lblWelcome" text="Dobrodošli" GridPane.rowIndex="2">
          <font>
             <Font size="19.0" />

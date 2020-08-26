@@ -33,10 +33,15 @@ public class RegistrationController {
     public RentACarDAO rentACarDAO;
     private Client client;
     public Label lblText;
-
-    public RegistrationController(Client client) {
+    private String username;
+    public RegistrationController(Client client, String username) {
         rentACarDAO = RentACarDAO.getInstance();
         this.client = client;
+        this.username=username;
+    }
+
+    public Client getClient() {
+        return client;
     }
 
     private boolean allLetters(String str) {
@@ -49,8 +54,10 @@ public class RegistrationController {
 
     @FXML
     public void initialize() {
+
         if (client != null) {
-            lblText.setText("Vaši podaci");
+            if(!username.equals("")) lblText.setText("Podaci o klijentu");
+            else lblText.setText("Vaši podaci");
             fldFirstName.setText(client.getFirstName());
             fldLastName.setText(client.getLastName());
             fldEmail.setText(client.getEmail());
@@ -60,14 +67,15 @@ public class RegistrationController {
             fldAddress.setText(client.getAddress());
             fldTelephone.setText(client.getTelephone());
         }
-        if (client == null) {
+        //klijent se sam dodaje
+        if (client == null && username.equals("")) {
             lblText.setText("Kreirajte Vaš račun");
             lblAddress.setVisible(false);
             lblTelephone.setVisible(false);
             fldAddress.setVisible(false);
             fldTelephone.setVisible(false);
         }
-        if (client != null) {
+        if (client != null || !username.equals("")) {
             fldTelephone.textProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
@@ -295,7 +303,7 @@ public class RegistrationController {
             showAlert("Greška", "Lozinke se ne podudaraju", Alert.AlertType.ERROR);
             return;
         }
-        if (client != null) {
+        if (client != null || !username.equals("")) {
             if (fldAddress.getText().trim().isEmpty()) {
                 sveOk = false;
                 showAlert("Greška", "Unesite adresu", Alert.AlertType.ERROR);
@@ -335,7 +343,9 @@ public class RegistrationController {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("");
                 alert.setHeaderText("Odaberite opciju");
-                alert.setContentText("Jeste li sigurni da želite izmijeniti Vaše podatke");
+                if(!username.equals(""))
+                    alert.setContentText("Jeste li sigurni da želite izmijeniti podatke o klijentu");
+                else  alert.setContentText("Jeste li sigurni da želite izmijeniti Vaše podatke");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     client.setFirstName(fldFirstName.getText());
@@ -363,12 +373,29 @@ public class RegistrationController {
                 fldUsername.getStyleClass().add("neispravnoPolje");
                 return;
             }
+            //Client client=null;
             try {
-                Client client = new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), "", "");
+                if(username.equals(""))
+                client = new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), "", "");
+            else  client = new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), fldAddress.getText(), fldTelephone.getText());
             } catch (NegativeNumberException e) {
                 e.printStackTrace();
             }
             rentACarDAO.addClient(client);
+            Client getClient=rentACarDAO.getClientPerUsername(client.getUsername());
+            if(getClient.getUsername().equals(client.getUsername())){
+                if(!username.equals("")){
+                    Stage stage= (Stage) fldUsername.getScene().getWindow();
+                    stage.close();
+                    showAlert("Uspješna registracija", "Uspješno registrovan novi klijent", Alert.AlertType.INFORMATION);
+                    return;
+                }
+                showAlert("Uspješna registracija", "Dobrodošli"+getClient.getUsername(), Alert.AlertType.INFORMATION);
+            }
+            else{
+                showAlert("Greška", "Neuspješna registracija!", Alert.AlertType.ERROR);
+            }
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("");
             alert.setHeaderText("Odaberite opciju");
@@ -401,6 +428,9 @@ public class RegistrationController {
     public void backRegistrationAction(ActionEvent actionEvent) {
         Stage stage = (Stage) fldUsername.getScene().getWindow();
         stage.close();
+        if(!username.equals("")){
+            return;
+        }
         if (client == null) {
             Stage oldstage = new Stage();
             Parent root = null;

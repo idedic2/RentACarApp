@@ -243,12 +243,12 @@ public class ClientPageController {
         error.setHeaderText(headerText);
         error.show();
     }
-    public void seeReservationAction(ActionEvent actionEvent){
-            ArrayList<Reservation> clientReservations=rentACarDAO.getClientReservations(client);
-            if(clientReservations.size()==0){
-                showAlert("Greška", "Nemate rezervaciju", Alert.AlertType.ERROR);
-                return;
-            }
+    public void editMyReservationsAction(ActionEvent actionEvent){
+        ArrayList<Reservation> clientReservations=rentACarDAO.getClientReservations(client);
+        if(clientReservations.size()==0){
+            showAlert("Greška", "Nemate rezervaciju", Alert.AlertType.ERROR);
+            return;
+        }
         List<String> choices = new ArrayList<>();
         for(Reservation r:clientReservations)
             choices.add("#"+r.getId()+" "+r.getVehicle().getName()+" ( iznajmljivanje: "+r.getPickUpDate().toString()+" vraćanje: "+r.getReturnDate().toString()+" )");
@@ -290,7 +290,8 @@ public class ClientPageController {
             }
 
         }
-        }
+    }
+
 
     /*public void reservationClientAction(ActionEvent actionEvent) {
         if(tableViewCars.getSelectionModel().getSelectedItem()==null){
@@ -419,12 +420,12 @@ public class ClientPageController {
         }
     }
 */
-   public void profileAction(ActionEvent actionEvent){
+   public void editProfilAction(ActionEvent actionEvent){
        Stage stage = new Stage();
        Parent root = null;
        try {
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
-           RegistrationController registrationController = new RegistrationController(client);
+           RegistrationController registrationController = new RegistrationController(client, "");
            loader.setController(registrationController);
            root = loader.load();
            stage.setTitle("Vaš profil");
@@ -440,6 +441,7 @@ public class ClientPageController {
         else
             listVehicles.setAll(rentACarDAO.getVehiclesPerType(choiceType.getValue()));
     }
+
     public void logOutAction(ActionEvent actionEvent){
         Parent root = null;
         try {
@@ -456,6 +458,68 @@ public class ClientPageController {
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    public void deleteProfilAction(ActionEvent actionEvent){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Brisanje korisničkog računa");
+        alert.setHeaderText("Jeste li sigurni da želite obrisati korisnički profil");
+        alert.setContentText("Umjesto brisanja, možete se odjaviti");
+
+        ButtonType buttonTypeOne = new ButtonType("Obriši");
+        ButtonType buttonTypeTwo = new ButtonType("Odjavi se");
+        ButtonType buttonTypeCancel = new ButtonType("Zatvori", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            // ... user chose obrisi profil
+            if(rentACarDAO.clientInReservations(client)){
+                showAlert("Greška", "Trenutno imate jednu ili više rezervacija i ne možete obrisati profil.", Alert.AlertType.ERROR);
+                return;
+            }
+                rentACarDAO.deleteClient(client);
+            Parent root = null;
+            try {
+                Stage stage = (Stage) choiceType.getScene().getWindow();
+                stage.close();
+                Stage primaryStage = new Stage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
+                StartController startController = new StartController();
+                loader.setController(startController);
+                root = loader.load();
+                primaryStage.setTitle("Dobrodošli");
+                primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                primaryStage.setResizable(false);
+                primaryStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else if (result.get() == buttonTypeTwo) {
+            // ... user chose odjavi se
+            Parent root = null;
+            try {
+                Stage stage = (Stage) choiceType.getScene().getWindow();
+                stage.close();
+                Stage primaryStage = new Stage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start.fxml"));
+                StartController startController = new StartController();
+                loader.setController(startController);
+                root = loader.load();
+                primaryStage.setTitle("Dobrodošli");
+                primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                primaryStage.setResizable(false);
+                primaryStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        else {
+            // ... user chose CANCEL or closed the dialog
+
         }
     }
 }

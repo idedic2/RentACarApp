@@ -303,7 +303,7 @@ public class RegistrationController {
             showAlert("Greška", "Lozinke se ne podudaraju", Alert.AlertType.ERROR);
             return;
         }
-        if (client != null || !username.equals("")) {
+        if ((client != null && !client.getAddress().equals("")) || !username.equals("")) {
             if (fldAddress.getText().trim().isEmpty()) {
                 sveOk = false;
                 showAlert("Greška", "Unesite adresu", Alert.AlertType.ERROR);
@@ -390,7 +390,7 @@ public class RegistrationController {
                     showAlert("Uspješna registracija", "Uspješno registrovan novi klijent", Alert.AlertType.INFORMATION);
                     return;
                 }
-                showAlert("Uspješna registracija", "Dobrodošli"+getClient.getUsername(), Alert.AlertType.INFORMATION);
+                //showAlert("Uspješna registracija", "Dobrodošli "+getClient.getUsername(), Alert.AlertType.INFORMATION);
             }
             else{
                 showAlert("Greška", "Neuspješna registracija!", Alert.AlertType.ERROR);

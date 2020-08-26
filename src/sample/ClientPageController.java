@@ -432,6 +432,12 @@ public class ClientPageController {
            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
            stage.setResizable(true);
            stage.show();
+           stage.setOnHiding( event -> {
+               Client newClient = registrationController.getClient();
+           if (newClient != null) {
+               lblWelcome.setText("Dobrodošli "+client.getUsername());
+           }
+           } );
        } catch (IOException e) {
            e.printStackTrace();
        }

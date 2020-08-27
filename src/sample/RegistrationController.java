@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,6 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 
+import javax.swing.plaf.synth.SynthDesktopIconUI;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import static java.lang.Thread.currentThread;
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
 public class RegistrationController {
@@ -44,6 +47,7 @@ public class RegistrationController {
     private Client client;
     public Label lblText;
     private String username;
+    public boolean sveOk=true;
     public RegistrationController(Client client, String username) {
         rentACarDAO = RentACarDAO.getInstance();
         this.client = client;
@@ -61,9 +65,74 @@ public class RegistrationController {
     private boolean allDigits(String str) {
         return str.chars().allMatch(Character::isDigit);
     }
+    private static boolean change=false;
+    private static String initMail="";
 
     @FXML
     public void initialize() {
+            change=false;
+            new Thread(() -> {
+                //fldEmail.textProperty().addListener(new ChangeListener<String>() {
+                  //  @Override
+                    //public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                        while (true) {
+                                if(initMail.equals(fldEmail.getText())) {
+                                    change=false;
+                                } else {
+                                    change=true;
+                                }
+                                //nije prazno
+                                if(change) {
+                                    if (!fldEmail.getText().trim().isEmpty()) {
+                                        //validno preko metode
+                                        if (isValidEmailAddress(fldEmail.getText())) {
+                                            try {
+                                                if (!validateEmail(fldEmail.getText())) {
+                                                    sveOk = false;
+                                                    fldEmail.getStyleClass().removeAll("ispravnoPolje");
+                                                    fldEmail.getStyleClass().add("neispravnoPolje");
+                                                } else {
+                                                    sveOk = true;
+                                                    fldEmail.getStyleClass().removeAll("neispravnoPolje");
+                                                    fldEmail.getStyleClass().add("ispravnoPolje");
+                                                }
+                                            } catch (UnsupportedEncodingException e) {
+                                                e.printStackTrace();
+                                            } catch (MalformedURLException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            sveOk = false;
+                                            fldEmail.getStyleClass().removeAll("ispravnoPolje");
+                                            fldEmail.getStyleClass().add("neispravnoPolje");
+                                        }
+
+                                    } else {
+                                        sveOk = false;
+                                        fldEmail.getStyleClass().removeAll("ispravnoPolje");
+                                        fldEmail.getStyleClass().add("neispravnoPolje");
+                                    }
+                                }
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                    //}});
+            }).start();
+
+        /*
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    Platform.runLater(lblAddress.setText(lblAddress.getText() + Integer.toString(counter)));
+                }
+            }
+        });
+         */
 
         if (client != null) {
             if(!username.equals("")) lblText.setText("Podaci o klijentu");
@@ -71,6 +140,7 @@ public class RegistrationController {
             fldFirstName.setText(client.getFirstName());
             fldLastName.setText(client.getLastName());
             fldEmail.setText(client.getEmail());
+            initMail=fldEmail.getText();
             fldUsername.setText(client.getUsername());
             fldPassword.setText(client.getPassword());
             fldRetypePassword.setText(client.getPassword());
@@ -84,6 +154,8 @@ public class RegistrationController {
             lblTelephone.setVisible(false);
             fldAddress.setVisible(false);
             fldTelephone.setVisible(false);
+            //ovdje je uvijek prazno polje
+            initMail=fldEmail.getText();
         }
         if (client != null || !username.equals("")) {
             fldTelephone.textProperty().addListener(new ChangeListener<String>() {
@@ -154,23 +226,81 @@ public class RegistrationController {
             }
         });
 
-        fldEmail.textProperty().addListener(new ChangeListener<String>() {
+/*
+                    fldEmail.textProperty().addListener(new ChangeListener<String>() {
+                        @Override
+                        public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                            new Thread(() -> {
+                                try {
+                                    //while (true) {
+                                    if (!validateEmail(fldEmail.getText())) {
+                                        Platform.runLater(() -> {
+                                            fldEmail.getStyleClass().removeAll("ispravnoPolje");
+                                            fldEmail.getStyleClass().add("neispravnoPolje");
+                                            sveOk = false;
+
+                                        });
+                                    } else {
+                                        Platform.runLater(() -> {
+                                            fldEmail.getStyleClass().removeAll("neispravnoPolje");
+                                            fldEmail.getStyleClass().add("ispravnoPolje");
+                                        });
+                                    }
+                                    //Thread.sleep(200);
+                                    // }
+                                    //} catch (InterruptedException e) {
+
+                                } catch (UnsupportedEncodingException | MalformedURLException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }).start();
+                        }});
+*/
+
+
+        /*fldEmail.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
                 if (!fldEmail.getText().trim().isEmpty()) {
-                    if (!isValidEmailAddress(fldEmail.getText())) {
-                        fldEmail.getStyleClass().removeAll("ispravnoPolje");
-                        fldEmail.getStyleClass().add("neispravnoPolje");
-                    } else {
-                        fldEmail.getStyleClass().removeAll("neispravnoPolje");
-                        fldEmail.getStyleClass().add("ispravnoPolje");
+                    try {
+                        //if (!validateEmail(fldEmail.getText())) {
+                        new Thread(() -> {
+                            try {
+                                while (true) {
+                                    boolean result = validateEmail(fldEmail.getText());
+                                    if (!result) {
+                                        Platform.runLater(() -> {
+                                            fldEmail.getStyleClass().removeAll("ispravnoPolje");
+                                            fldEmail.getStyleClass().add("neispravnoPolje");
+                                            sveOk = false;
+
+                                        });
+                                    }
+                                    else {
+                                        Platform.runLater(() -> {
+                                        fldEmail.getStyleClass().removeAll("neispravnoPolje");
+                                        fldEmail.getStyleClass().add("ispravnoPolje");
+                                        });
+                                    }
+                                    //Thread.sleep(200);
+                                }
+                            }catch (UnsupportedEncodingException | MalformedURLException e) {
+                                e.printStackTrace();
+                            }
+                        }).start();
+
+                        } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 } else {
                     fldEmail.getStyleClass().removeAll("ispravnoPolje");
                     fldEmail.getStyleClass().add("neispravnoPolje");
                 }
             }
-        });
+        });*/
+
+
         fldUsername.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
@@ -188,6 +318,16 @@ public class RegistrationController {
                 }
             }
         });
+        /*fldEmail.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
+                if (fldEmail.getText().trim().isEmpty()) {
+                    fldEmail.getStyleClass().removeAll("ispravnoPolje");
+                    fldEmail.getStyleClass().add("neispravnoPolje");
+
+                }
+            }
+        });*/
         fldPassword.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
@@ -234,8 +374,8 @@ public class RegistrationController {
         error.setHeaderText(headerText);
         error.show();
     }
-    public boolean validateEmail(String email) throws UnsupportedEncodingException, MalformedURLException {
-        ///String address="https://api.trumail.io/v2/lookups/json?email="+email;
+    public  boolean validateEmail(String email) throws UnsupportedEncodingException, MalformedURLException {
+
         boolean ret=true;
         try {
             String key = "QUJSTVVM1367C57HM0A4";
@@ -248,14 +388,14 @@ public class RegistrationController {
                 datastr += "&" + entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), "UTF-8");
             }
             URL url = new URL("https://api.mailboxvalidator.com/v1/validation/single?key=" + key + datastr);
-            //System.out.println("prijee"+address);
+
             BufferedReader ulaz = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
-            //System.out.println("haaaa"+address);
+
             String json = "", line = null;
             while ((line = ulaz.readLine()) != null)
                 json = json + line;
             JSONObject obj = new JSONObject(json);
-            //System.out.println("cat: " + obj.getString("file"));
+
             if(obj.getString("is_syntax").equals("False")){
                 System.out.println(obj.getString("is_syntax"));
                 ret=false;
@@ -272,81 +412,88 @@ public class RegistrationController {
         }
         return ret;
     }
-    public void registrationConfirmAction(ActionEvent actionEvent) throws UnsupportedEncodingException, MalformedURLException {
-
-        boolean sveOk = true;
+    public void registrationConfirmAction(ActionEvent actionEvent) throws UnsupportedEncodingException, MalformedURLException, InterruptedException {
+        //boolean sveOk = true;
         if (fldFirstName.getText().trim().isEmpty()) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Unesite ime", Alert.AlertType.ERROR);
             return;
         }
         if (!allLetters(fldFirstName.getText())) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Ime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
             return;
         }
         if (fldFirstName.getText().length() < 2) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Ime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
             return;
         }
 
         if (fldLastName.getText().trim().isEmpty()) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Unesite prezime", Alert.AlertType.ERROR);
             return;
         }
 
         if (!allLetters(fldLastName.getText())) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Prezime mora sadržavati isključivo slova", Alert.AlertType.ERROR);
             return;
         }
         if (fldLastName.getText().length() < 2) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Prezime mora sadržavati više od 1 slova", Alert.AlertType.ERROR);
             return;
         }
 
         if (fldEmail.getText().trim().isEmpty()) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Unesite email adresu", Alert.AlertType.ERROR);
             return;
         }
-        if (!validateEmail(fldEmail.getText())) {
-            sveOk = false;
+        //currentThread().sleep(1000);
+        //System.out.println(currentThread().getName());
+        //currentThread().wait();
+        if(!sveOk){
             showAlert("Greška", "Nevalidna email adresa", Alert.AlertType.ERROR);
             return;
         }
+
+        /*if (!validateEmail(fldEmail.getText())) {
+            sveOk = false;
+            showAlert("Greška", "Nevalidna email adresa", Alert.AlertType.ERROR);
+            return;
+        }*/
        /*if (!isValidEmailAddress(fldEmail.getText())) {
             sveOk = false;
             showAlert("Greška", "Nevalidna email adresa", Alert.AlertType.ERROR);
             return;
         }*/
         if (fldUsername.getText().trim().isEmpty()) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Unesite korisničko ime", Alert.AlertType.ERROR);
             return;
         }
 
         if (!isValidUsername(fldUsername.getText())) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Korisničko ime mora sadržavati samo brojeve i/ili slova", Alert.AlertType.ERROR);
             return;
         }
         if (fldUsername.getText().length() < 2) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Korisničko ime mora biti duže od jednog znaka", Alert.AlertType.ERROR);
             return;
         }
 
         if (fldPassword.getText().trim().isEmpty()) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Unesite lozinku", Alert.AlertType.ERROR);
             return;
         }
         if (fldRetypePassword.getText().trim().isEmpty()) {
-            sveOk = false;
+            //sveOk = false;
             showAlert("Greška", "Potvrdite lozinku", Alert.AlertType.ERROR);
             return;
         }
@@ -372,7 +519,7 @@ public class RegistrationController {
 
             }
         }
-        if (sveOk) {
+        if (this.sveOk) {
             if (client != null) {
                 if (!fldUsername.getText().equals(client.getUsername())) {
                     if (rentACarDAO.getClientPerUsername(fldUsername.getText()) != null) {
@@ -401,7 +548,7 @@ public class RegistrationController {
                 if (result.get() == ButtonType.OK) {
                     client.setFirstName(fldFirstName.getText());
                     client.setLastName(fldLastName.getText());
-                    client.setAddress(fldAddress.getText());
+                    client.setEmail(fldEmail.getText());
                     client.setUsername(fldUsername.getText());
                     client.setPassword(fldPassword.getText());
                     client.setAddress(fldAddress.getText());

@@ -12,8 +12,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -224,8 +234,46 @@ public class RegistrationController {
         error.setHeaderText(headerText);
         error.show();
     }
+    public boolean validateEmail(String email) throws UnsupportedEncodingException, MalformedURLException {
+        ///String address="https://api.trumail.io/v2/lookups/json?email="+email;
+        boolean ret=true;
+        try {
+            String key = "QUJSTVVM1367C57HM0A4";
+            Hashtable<String, String> data = new Hashtable<String, String>();
+            data.put("format", "json");
+            data.put("email", email);
 
-    public void registrationConfirmAction(ActionEvent actionEvent) {
+            String datastr = "";
+            for (Map.Entry<String,String> entry : data.entrySet()) {
+                datastr += "&" + entry.getKey() + "=" + URLEncoder.encode(entry.getValue(), "UTF-8");
+            }
+            URL url = new URL("https://api.mailboxvalidator.com/v1/validation/single?key=" + key + datastr);
+            //System.out.println("prijee"+address);
+            BufferedReader ulaz = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
+            //System.out.println("haaaa"+address);
+            String json = "", line = null;
+            while ((line = ulaz.readLine()) != null)
+                json = json + line;
+            JSONObject obj = new JSONObject(json);
+            //System.out.println("cat: " + obj.getString("file"));
+            if(obj.getString("is_syntax").equals("False")){
+                System.out.println(obj.getString("is_syntax"));
+                ret=false;
+            }
+            ulaz.close();
+        } catch(MalformedURLException e) {
+            System.out.println("String "+" ne predstavlja validan URL");
+        } catch(IOException e) {
+            System.out.println("Greška pri kreiranju ulaznog toka");
+            System.out.println(e.getMessage());
+        } catch(Exception e) {
+            System.out.println("Poteškoće sa obradom JSON podataka");
+            System.out.println(e.getMessage());
+        }
+        return ret;
+    }
+    public void registrationConfirmAction(ActionEvent actionEvent) throws UnsupportedEncodingException, MalformedURLException {
+
         boolean sveOk = true;
         if (fldFirstName.getText().trim().isEmpty()) {
             sveOk = false;
@@ -265,13 +313,16 @@ public class RegistrationController {
             showAlert("Greška", "Unesite email adresu", Alert.AlertType.ERROR);
             return;
         }
-
-        if (!isValidEmailAddress(fldEmail.getText())) {
+        if (!validateEmail(fldEmail.getText())) {
             sveOk = false;
             showAlert("Greška", "Nevalidna email adresa", Alert.AlertType.ERROR);
             return;
         }
-
+       /*if (!isValidEmailAddress(fldEmail.getText())) {
+            sveOk = false;
+            showAlert("Greška", "Nevalidna email adresa", Alert.AlertType.ERROR);
+            return;
+        }*/
         if (fldUsername.getText().trim().isEmpty()) {
             sveOk = false;
             showAlert("Greška", "Unesite korisničko ime", Alert.AlertType.ERROR);

@@ -150,14 +150,10 @@ public class RegistrationController {
         //klijent se sam dodaje
         if (client == null && username.equals("")) {
             lblText.setText("Kreirajte Vaš račun");
-            lblAddress.setVisible(false);
-            lblTelephone.setVisible(false);
-            fldAddress.setVisible(false);
-            fldTelephone.setVisible(false);
             //ovdje je uvijek prazno polje
             initMail=fldEmail.getText();
         }
-        if (client != null || !username.equals("")) {
+
             fldTelephone.textProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
@@ -189,7 +185,7 @@ public class RegistrationController {
                     }
                 }
             });
-        }
+
         fldFirstName.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
@@ -225,81 +221,6 @@ public class RegistrationController {
                 }
             }
         });
-
-/*
-                    fldEmail.textProperty().addListener(new ChangeListener<String>() {
-                        @Override
-                        public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
-                            new Thread(() -> {
-                                try {
-                                    //while (true) {
-                                    if (!validateEmail(fldEmail.getText())) {
-                                        Platform.runLater(() -> {
-                                            fldEmail.getStyleClass().removeAll("ispravnoPolje");
-                                            fldEmail.getStyleClass().add("neispravnoPolje");
-                                            sveOk = false;
-
-                                        });
-                                    } else {
-                                        Platform.runLater(() -> {
-                                            fldEmail.getStyleClass().removeAll("neispravnoPolje");
-                                            fldEmail.getStyleClass().add("ispravnoPolje");
-                                        });
-                                    }
-                                    //Thread.sleep(200);
-                                    // }
-                                    //} catch (InterruptedException e) {
-
-                                } catch (UnsupportedEncodingException | MalformedURLException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }).start();
-                        }});
-*/
-
-
-        /*fldEmail.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
-                if (!fldEmail.getText().trim().isEmpty()) {
-                    try {
-                        //if (!validateEmail(fldEmail.getText())) {
-                        new Thread(() -> {
-                            try {
-                                while (true) {
-                                    boolean result = validateEmail(fldEmail.getText());
-                                    if (!result) {
-                                        Platform.runLater(() -> {
-                                            fldEmail.getStyleClass().removeAll("ispravnoPolje");
-                                            fldEmail.getStyleClass().add("neispravnoPolje");
-                                            sveOk = false;
-
-                                        });
-                                    }
-                                    else {
-                                        Platform.runLater(() -> {
-                                        fldEmail.getStyleClass().removeAll("neispravnoPolje");
-                                        fldEmail.getStyleClass().add("ispravnoPolje");
-                                        });
-                                    }
-                                    //Thread.sleep(200);
-                                }
-                            }catch (UnsupportedEncodingException | MalformedURLException e) {
-                                e.printStackTrace();
-                            }
-                        }).start();
-
-                        } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    fldEmail.getStyleClass().removeAll("ispravnoPolje");
-                    fldEmail.getStyleClass().add("neispravnoPolje");
-                }
-            }
-        });*/
-
 
         fldUsername.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -501,7 +422,7 @@ public class RegistrationController {
             showAlert("Greška", "Lozinke se ne podudaraju", Alert.AlertType.ERROR);
             return;
         }
-        if ((client != null && !client.getAddress().equals("")) || !username.equals("")) {
+
             if (fldAddress.getText().trim().isEmpty()) {
                 sveOk = false;
                 showAlert("Greška", "Unesite adresu", Alert.AlertType.ERROR);
@@ -518,7 +439,7 @@ public class RegistrationController {
                 return;
 
             }
-        }
+
         if (this.sveOk) {
             if (client != null) {
                 if (!fldUsername.getText().equals(client.getUsername())) {
@@ -573,9 +494,7 @@ public class RegistrationController {
             }
             //Client client=null;
             try {
-                if(username.equals(""))
-                client = new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), "", "");
-            else  client = new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), fldAddress.getText(), fldTelephone.getText());
+            client = new Client(0, fldFirstName.getText(), fldLastName.getText(), fldEmail.getText(), fldUsername.getText(), fldPassword.getText(), fldAddress.getText(), fldTelephone.getText());
             } catch (NegativeNumberException e) {
                 e.printStackTrace();
             }

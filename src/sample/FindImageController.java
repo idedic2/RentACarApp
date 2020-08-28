@@ -13,7 +13,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
-public class FindImageController {
+public class FindImageController{
     public TextField fldFindImage;
     public ListView listImages;
     private Vehicle vehicle;
@@ -68,17 +68,21 @@ public class FindImageController {
         error.setHeaderText(headerText);
         error.show();
     }
-    public void findImageAction(ActionEvent actionEvent) {
-        //try different directory and filename :)
-        switch (Util.getOS()) {
-            case WINDOWS:
-                searchDirectory(new File("C:\\Users"));
-                break;
-            case LINUX:
-                searchDirectory(new File("/"));
-                break;
+
+
+        public void findImageAction (ActionEvent actionEvent) {
+            //try different directory and filename :)
+            new Thread(() -> {
+                switch (Util.getOS()) {
+                    case WINDOWS:
+                        searchDirectory(new File("C:\\Users"));
+                        break;
+                    case LINUX:
+                        searchDirectory(new File("/"));
+                        break;
+                }
+            }).start();
         }
-    }
     public void confirmImageAction(ActionEvent actionEvent) {
         boolean sveOk = true;
         if (fldFindImage.getText().trim().isEmpty()) {
@@ -112,5 +116,6 @@ public class FindImageController {
         Stage stage2 = (Stage) fldFindImage.getScene().getWindow();
         stage2.close();
     }
+
 }
 

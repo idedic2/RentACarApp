@@ -267,33 +267,39 @@ public class AddCarController {
         Stage stage= (Stage) fldBrand.getScene().getWindow();
         stage.close();
     }
-    public void addImageAction(ActionEvent actionEvent){
-        Stage stage = new Stage();
-        Parent root = null;
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/findImage.fxml"));
-            FindImageController findImageController = new FindImageController(null);
-            loader.setController(findImageController);
-            root = loader.load();
-            stage.setTitle("Pretraga datoteka");
-            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
-            stage.setResizable(true);
-            stage.show();
-            stage.setOnHiding( event -> {
-                imagePath = findImageController.getImagePath();
-                System.out.println("kod zatvaranja form" +imagePath);
-                if(!imagePath.equals("")) {
-                    Image image = new Image("File:"+imagePath);
-                    placeholderImage.setImage(image);
-                }
-                //if (!imagePath.equals("")) {
+
+    public void addImageAction(ActionEvent actionEvent) {
+            Stage stage = new Stage();
+            Parent root = null;
+
+            try {
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/findImage.fxml"));
+                FindImageController findImageController = new FindImageController(null);
+                loader.setController(findImageController);
+                root = loader.load();
+                stage.setTitle("Pretraga datoteka");
+                stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                stage.setResizable(true);
+                stage.show();
+                stage.setOnHiding(event -> {
+                    imagePath = findImageController.getImagePath();
+                    System.out.println("kod zatvaranja forme" + imagePath);
+                    if (!imagePath.equals("")) {
+                        Image image = new Image("File:" + imagePath);
+                        placeholderImage.setImage(image);
+                    }
+                    //if (!imagePath.equals("")) {
                     //rentACarDAO.editReservation(newReservation);
                     //vehicle.setImage(imagePath);
-                //}
-            } );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    //}
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
     }
    /* public void slika(ActionEvent actionEvent) throws IOException {
         Stage stage = new Stage();

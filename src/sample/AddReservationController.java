@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +33,10 @@ public class AddReservationController {
     private Reservation reservation;
     private ObservableList<Vehicle>vehicles;
     private ObservableList<Client>clients;
+    public TextField fldSearchClient;
     private Vehicle currVehicle;
+    public ChoiceBox<String>choiceFilterClient;
+    public ChoiceBox<String>choiceFilterVehicle;
     public AddReservationController(Reservation reservation) {
         rentACarDAO = RentACarDAO.getInstance();
         this.reservation = reservation;
@@ -45,8 +49,99 @@ public class AddReservationController {
             //vehicles.add(reservation.getVehicle());
         }
     }
+    public void changeFilterVehicle(ActionEvent actionEvent){
+        if(choiceFilterVehicle.getValue().equals("Svi"))
+            fldSearchVehicle.setText("");
+        if(fldSearchVehicle.getText().isEmpty()) {
+            listVehicles.setItems(vehicles);
+        }
+        else{
+            FilteredList<Vehicle> filteredListVehicles=new FilteredList<Vehicle>(vehicles, p->true);
+
+            switch (choiceFilterVehicle.getValue())
+            {
+                case "Naziv":
+                    filteredListVehicles.setPredicate(p -> p.getName().toLowerCase().startsWith(fldSearchVehicle.getText().toLowerCase().trim()));
+                    break;
+                case "Model":
+                    filteredListVehicles.setPredicate(p -> p.getModel().toLowerCase().startsWith(fldSearchVehicle.getText().toLowerCase().trim()));
+                    break;
+
+            }
+            listVehicles.setItems(filteredListVehicles);
+
+        }
+    }
+    public void changeFilterClient(ActionEvent actionEvent){
+        if(choiceFilterClient.getValue().equals("Svi"))
+            fldSearchClient.setText("");
+        if(fldSearchClient.getText().isEmpty()) {
+            listClients.setItems(clients);
+        }
+        else{
+            FilteredList<Client> filteredListClients=new FilteredList<Client>(clients, p->true);
+
+                switch (choiceFilterClient.getValue())
+                {
+                    case "Ime":
+                        filteredListClients.setPredicate(p -> p.getFirstName().toLowerCase().startsWith(fldSearchClient.getText().toLowerCase().trim()));
+                        break;
+                    case "Prezime":
+                        filteredListClients.setPredicate(p -> p.getLastName().toLowerCase().startsWith(fldSearchClient.getText().toLowerCase().trim()));
+                        break;
+                    case "Username":
+                        filteredListClients.setPredicate(p -> p.getUsername().toLowerCase().startsWith(fldSearchClient.getText().toLowerCase().trim()));
+                        break;
+                    case "Adresa":
+                        filteredListClients.setPredicate(p -> String.valueOf(p.getAddress()).toLowerCase().startsWith(fldSearchClient.getText().toLowerCase().trim()));
+                        break;
+
+                }
+                listClients.setItems(filteredListClients);
+
+        }
+
+    }
+
      @FXML
      public void initialize() {
+         FilteredList<Vehicle> filteredListVehicles=new FilteredList<Vehicle>(vehicles, p->true);
+         fldSearchVehicle.setOnKeyReleased(keyEvent ->
+         {
+             switch (choiceFilterVehicle.getValue())
+             {
+                 case "Naziv":
+                     filteredListVehicles.setPredicate(p -> p.getName().toLowerCase().startsWith(fldSearchVehicle.getText().toLowerCase().trim()));
+                     break;
+                 case "Model":
+                     filteredListVehicles.setPredicate(p -> p.getModel().toLowerCase().startsWith(fldSearchVehicle.getText().toLowerCase().trim()));
+                     break;
+
+             }
+             listVehicles.setItems(filteredListVehicles);
+
+         });
+         FilteredList<Client> filteredListClients=new FilteredList<Client>(clients, p->true);
+         fldSearchClient.setOnKeyReleased(keyEvent ->
+         {
+             switch (choiceFilterClient.getValue())
+             {
+                 case "Ime":
+                     filteredListClients.setPredicate(p -> p.getFirstName().toLowerCase().startsWith(fldSearchClient.getText().toLowerCase().trim()));
+                     break;
+                 case "Prezime":
+                     filteredListClients.setPredicate(p -> p.getLastName().toLowerCase().startsWith(fldSearchClient.getText().toLowerCase().trim()));
+                     break;
+                 case "Username":
+                     filteredListClients.setPredicate(p -> p.getUsername().toLowerCase().startsWith(fldSearchClient.getText().toLowerCase().trim()));
+                     break;
+                 case "Adresa":
+                     filteredListClients.setPredicate(p -> String.valueOf(p.getAddress()).toLowerCase().startsWith(fldSearchClient.getText().toLowerCase().trim()));
+                     break;
+
+             }
+             listClients.setItems(filteredListClients);
+         });
          if (reservation != null) {
              //vehicles.add(reservation.getVehicle());
              listClients.setDisable(true);

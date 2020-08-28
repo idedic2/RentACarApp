@@ -34,7 +34,16 @@
   </rowConstraints>
    <children>
       <Label text="Vozilo:" GridPane.columnIndex="1" />
-       <TextField fx:id="fldSearchVehicle" promptText="search" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+       <TextField fx:id="fldSearchVehicle" promptText="search: e.g. Audi" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+       <ChoiceBox fx:id="choiceFilterVehicle" GridPane.rowIndex="1" GridPane.columnIndex="1" onAction="#changeFilterVehicle" value="Svi">
+           <items>
+               <FXCollections fx:factory="observableArrayList">
+                   <String fx:value="Svi" />
+                   <String fx:value="Naziv" />
+                   <String fx:value="Model" />
+               </FXCollections>
+           </items>
+       </ChoiceBox>
       <ListView fx:id="listVehicles" prefHeight="225.0" prefWidth="214.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <GridPane.margin>
@@ -42,6 +51,18 @@
          </GridPane.margin>
       </Separator>
       <Label text="Klijent:" GridPane.columnIndex="4" />
+       <TextField fx:id="fldSearchClient" promptText="search: e.g. Mujo" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+       <ChoiceBox fx:id="choiceFilterClient" GridPane.rowIndex="1" GridPane.columnIndex="4" onAction="#changeFilterClient" value="Svi">
+           <items>
+               <FXCollections fx:factory="observableArrayList">
+                   <String fx:value="Svi" />
+                   <String fx:value="Ime" />
+                   <String fx:value="Prezime" />
+                   <String fx:value="Username" />
+                   <String fx:value="Adresa" />
+               </FXCollections>
+           </items>
+       </ChoiceBox>
       <ListView fx:id="listClients" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="3" />
       <Label text="Datum preuzimanja:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">

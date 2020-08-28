@@ -528,4 +528,20 @@ public class ClientPageController {
 
         }
     }
+    public void aboutAction(ActionEvent actionEvent) {
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/about.fxml"));
+            root = loader.load();
+            stage.setTitle("O aplikaciji");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

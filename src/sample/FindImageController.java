@@ -69,7 +69,6 @@ public class FindImageController{
         error.show();
     }
 
-
         public void findImageAction (ActionEvent actionEvent) {
             //try different directory and filename :)
             new Thread(() -> {

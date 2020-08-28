@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane hgap="10.0" prefHeight="177.0" prefWidth="461.0" vgap="10.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AboutController">
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="176.0" minWidth="10.0" prefWidth="40.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="300.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="50.0" minHeight="20.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="9.0" prefHeight="15.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="50.0" minHeight="15.0" prefHeight="20.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="50.0" minHeight="15.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="50.0" minHeight="15.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="50.0" minHeight="15.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
+      <RowConstraints />
+    </rowConstraints>
+    <children>
+        <Label alignment="TOP_LEFT" maxHeight="Infinity" maxWidth="Infinity" text="O aplikaciji" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets top="3.0" />
+            </GridPane.margin>
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+        <ImageView fx:id="imageViewAbout" fitHeight="130.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" GridPane.rowSpan="6" />
+        <Label alignment="TOP_LEFT" prefHeight="17.0" prefWidth="218.0" text="Naziv : Rent a car aplikacija" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label alignment="TOP_LEFT" layoutX="99.0" layoutY="49.0" prefHeight="17.0" prefWidth="218.0" text="Autor: Irma Dedić" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label alignment="TOP_LEFT" layoutX="99.0" layoutY="74.0" prefHeight="17.0" prefWidth="218.0" text="Email: idedic2@etf.unsa.ba" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label alignment="TOP_LEFT" layoutX="99.0" layoutY="74.0" prefHeight="17.0" prefWidth="274.0" text="Github: https://github.com/idedic2/rpr-projekat.git" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <ButtonBar GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <buttons>
+              <Button fx:id="buttonOk" mnemonicParsing="false" onAction="#buttonOkClick" prefHeight="25.0" prefWidth="97.0" text="Ok" />
+         </buttons>
+      </ButtonBar>
+    </children>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+    </padding>
+</GridPane>

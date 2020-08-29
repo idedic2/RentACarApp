@@ -2,8 +2,6 @@ package sample;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import java.awt.*;
+
 import java.io.IOException;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
@@ -23,6 +21,7 @@ public class LoginController {
     public PasswordField fldPassword;
     public RadioButton radioClient;
     public RadioButton radioAdmin;
+    public RadioButton radioEmployee;
     public ToggleGroup toggleGroup;
     private User user;
     private RentACarDAO rentACarDAO;
@@ -76,10 +75,10 @@ public class LoginController {
             Stage mainStage = new Stage();
             switch (stageName) {
                 case "Admin":
-                    loader = new FXMLLoader(getClass().getResource("/fxml/adminPage.fxml"));
+                    loader = new FXMLLoader(getClass().getResource("/fxml/employeePage.fxml"));
                     mainStage.getIcons().add(new Image("/images/admin.png"));
-                    AdminPageController adminPageController = new AdminPageController(fldUsername.getText());
-                    loader.setController(adminPageController);
+                    EmployeePageController employeePageController = new EmployeePageController(fldUsername.getText(), "yes");
+                    loader.setController(employeePageController);
                     //mainStage.setOnHidden(event -> writeAdminView(controller.getTabsConfig()));
                     break;
                 case "Klijent":
@@ -87,6 +86,13 @@ public class LoginController {
                     mainStage.getIcons().add(new Image("/images/client.jpg"));
                     ClientPageController clientController = new ClientPageController(fldUsername.getText());
                     loader.setController(clientController);
+                    //mainStage.setOnHidden(event -> writeStudentView(studentController.getTabConfig()));
+                    break;
+                case "Zaposlenik":
+                    loader = new FXMLLoader(getClass().getResource("/fxml/employeePage.fxml"));
+                    mainStage.getIcons().add(new Image("/images/admin.png"));
+                    EmployeePageController employeePageController2 = new EmployeePageController(fldUsername.getText(), "no");
+                    loader.setController(employeePageController2);
                     //mainStage.setOnHidden(event -> writeStudentView(studentController.getTabConfig()));
                     break;
                 default:

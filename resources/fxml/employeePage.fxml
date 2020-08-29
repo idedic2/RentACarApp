@@ -23,7 +23,7 @@
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
    <children>
-      <TabPane prefHeight="149.0" prefWidth="264.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
+      <TabPane fx:id="tabPane" prefHeight="149.0" prefWidth="264.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
         <tabs>
           <Tab text="Vozila">
             <content>
@@ -158,6 +158,42 @@
                                     <TableColumn fx:id="colPassword" prefWidth="65.0" text="Password" />
                                     <TableColumn fx:id="colAddress" prefWidth="74.0" text="Adresa" />
                                     <TableColumn fx:id="colTelephone" prefWidth="76.0" text="Telefon" />
+                                </columns>
+                            </TableView>
+                        </children></GridPane>
+                </content>
+            </Tab>
+            <Tab fx:id="tabEmployees" text="Zaposlenici">
+                <content>
+                    <GridPane minHeight="0.0" minWidth="0.0" prefHeight="268.0" prefWidth="888.0">
+                        <columnConstraints>
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                        <children>
+                            <HBox prefHeight="42.0" prefWidth="907.0" spacing="5.0">
+                                <children>
+                                    <Button fx:id="btnAddEmployee" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addEmployee" prefHeight="45.0" prefWidth="45.0" />
+                                    <Button fx:id="btnEditEmployee" minHeight="-Infinity" mnemonicParsing="false" onAction="#editEmployeeAction" prefHeight="45.0" prefWidth="45.0" />
+                                    <Button fx:id="btnDeleteEmployee" minHeight="-Infinity" mnemonicParsing="false" onAction="#deleteEmployeeAction" prefHeight="45.0" prefWidth="45.0" />
+                                </children>
+                                <GridPane.margin>
+                                    <Insets top="10.0" />
+                                </GridPane.margin>
+                            </HBox>
+                            <TableView fx:id="tableViewEmployees" prefHeight="209.0" prefWidth="980.0" GridPane.rowIndex="1">
+                                <columns>
+                                    <TableColumn fx:id="colIdEmployee" prefWidth="51.999969482421875" text="ID" />
+                                    <TableColumn fx:id="colFirstNameEmployee" prefWidth="51.999969482421875" text="Ime" />
+                                    <TableColumn fx:id="colLastNameEmployee" prefWidth="57.0" text="Prezime" />
+                                    <TableColumn fx:id="colEmailEmployee" prefWidth="72.0" text="Email" />
+                                    <TableColumn fx:id="colUsernameEmployee" prefWidth="69.0" text="Username" />
+                                    <TableColumn fx:id="colPasswordEmployee" prefWidth="65.0" text="Password" />
                                 </columns>
                             </TableView>
                         </children></GridPane>

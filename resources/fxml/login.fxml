@@ -40,7 +40,7 @@
       <RadioButton fx:id="radioAdmin" mnemonicParsing="false" text="Admin" toggleGroup="$toggleGroup" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
         <buttons>
-          <Button fx:id="btnLoginConfirm" mnemonicParsing="false" onAction="#loginConfirmAction" text="OK" />
+          <Button fx:id="btnLoginConfirm" mnemonicParsing="false" onAction="#loginConfirmAction" text="Potvrdi" />
         </buttons>
       </ButtonBar>
       <ButtonBar GridPane.columnIndex="1">
@@ -51,6 +51,11 @@
             <Button mnemonicParsing="false" onAction="#backLoginAction" text="Nazad" />
          </buttons>
       </ButtonBar>
+      <RadioButton fx:id="radioEmployee" mnemonicParsing="false" text="Zaposlenik" toggleGroup="$toggleGroup" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets left="120.0" />
+         </GridPane.margin>
+      </RadioButton>
 
    </children>
    <padding>

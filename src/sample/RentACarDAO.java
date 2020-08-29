@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement editReservationQuery, getVehiclesPerAvailabilityQuery, deleteCardQuery, deleteReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getAdminQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getClientPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
+    private PreparedStatement getEmployeePerUsernameQuery, getClientPerUsernameQuery, addEmployeeQuery, deleteEmployeeQuery, editEmployeeQuery, getEmployeesQuery, editReservationQuery, getVehiclesPerAvailabilityQuery, deleteCardQuery, deleteReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getEmployeeQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getUserPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
 
     private RentACarDAO() {
         try {
@@ -31,7 +31,7 @@ public class RentACarDAO {
         }
         try{
             getClientQuery=conn.prepareStatement("SELECT u.username FROM client c, user u WHERE c.id=u.id AND u.username=? AND u.password=?");
-            getAdminQuery=conn.prepareStatement("SELECT u.username FROM admin a, user u WHERE a.id=u.id AND u.username=? AND u.password=?");
+            getEmployeeQuery=conn.prepareStatement("SELECT u.username FROM employee e, user u WHERE e.id=u.id AND u.username=? AND u.password=? AND e.admin=?");
             addUserQuery=conn.prepareStatement("INSERT INTO user VALUES(?,?,?,?,?,?)");
             maxIdUserQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM user");
             getVehiclesQuery=conn.prepareStatement("SELECT * FROM vehicle");
@@ -41,7 +41,7 @@ public class RentACarDAO {
             deleteVehicleQuery=conn.prepareStatement("DELETE FROM vehicle WHERE id=?");
             getVehiclesPerTypeQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE type=?");
             getVehiclePerIdQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE id=?");
-            getClientPerUsername=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, c.address, c.telephone FROM user u, client c WHERE c.id=u.id AND u.username=?");
+            getUserPerUsername=conn.prepareStatement("SELECT id, first_name, last_name, email, username, password FROM user  WHERE username=?");
             maxReservationIdQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM reservation");
             addReservationQuery=conn.prepareStatement("INSERT INTO reservation VALUES(?,?,?,?,?,?,?,?)");
             maxIdCardQuery=conn.prepareStatement("SELECT MAX(id)+1 FROM card");
@@ -62,6 +62,12 @@ public class RentACarDAO {
             deleteReservationQuery=conn.prepareStatement("DELETE FROM reservation WHERE id=?");
             getVehiclesPerAvailabilityQuery=conn.prepareStatement("SELECT * FROM vehicle WHERE availability=?");
             editReservationQuery=conn.prepareStatement("UPDATE reservation SET vehicle_id=?, client_id=?, pickup_date=?, return_date=?, pickup_time=?, return_time=?, card_id=? WHERE id=?");
+            getEmployeesQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, e.admin FROM user u, employee e WHERE u.id=e.id AND e.admin=?");
+            editEmployeeQuery=conn.prepareStatement("UPDATE employee SET admin=? WHERE id=?");
+            deleteEmployeeQuery=conn.prepareStatement("DELETE FROM employee WHERE id=?");
+            addEmployeeQuery=conn.prepareStatement("INSERT INTO employee VALUES(?,?)");
+            getClientPerUsernameQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, c.address, c.telephone FROM user u, client c WHERE c.id=u.id AND u.username=?");
+            getEmployeePerUsernameQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, e.admin FROM user u, employee e WHERE e.id=u.id AND u.username=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,10 +131,23 @@ public class RentACarDAO {
                 e.printStackTrace();
             }
         }
+        if (radioText.equals("Zaposlenik")) {
+            try {
+                getEmployeeQuery.setString(1, username);
+                getEmployeeQuery.setString(2, password);
+                getEmployeeQuery.setString(3, "no");
+                ResultSet rsEmployee = getEmployeeQuery.executeQuery();
+                if (rsEmployee.next()) return true;
+                return false;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         try {
-            getAdminQuery.setString(1, username);
-            getAdminQuery.setString(2, password);
-            ResultSet rsAdmin=getAdminQuery.executeQuery();
+            getEmployeeQuery.setString(1, username);
+            getEmployeeQuery.setString(2, password);
+            getEmployeeQuery.setString(3, "yes");
+            ResultSet rsAdmin=getEmployeeQuery.executeQuery();
             if(rsAdmin.next())temp=true;
             else temp=false;
         }
@@ -261,23 +280,18 @@ public class RentACarDAO {
         }
         return vehicle;
     }
-    public Client getClientPerUsername(String username){
-        Client client=null;
+    public boolean getUserPerUsername(String username){
         try{
-            getClientPerUsername.setString(1, username);
-            ResultSet rs=getClientPerUsername.executeQuery();
-            if(!rs.next())return null;
-            try {
-                client = new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
-            }
-            catch (NegativeNumberException e){
-                e.printStackTrace();
-            }
+            getUserPerUsername.setString(1, username);
+            ResultSet rs=getUserPerUsername.executeQuery();
+            if(rs.next())return true;
+
             } catch (SQLException e) {
             e.printStackTrace();
         }
-        return client;
+        return false;
     }
+
     public Client getClientPerId(int id){
         Client client=null;
         try{
@@ -303,6 +317,7 @@ public class RentACarDAO {
             ResultSet rs=maxReservationIdQuery.executeQuery();
             if(rs.next())id=rs.getInt(1);
             addReservationQuery.setInt(1, id);
+            System.out.println(reservation.getVehicle().getId());
             addReservationQuery.setInt(2, reservation.getVehicle().getId());
             addReservationQuery.setInt(3, reservation.getClient().getId());
             addReservationQuery.setString(4, reservation.getPickUpDate().getDayOfMonth()+"/"+reservation.getPickUpDate().getMonth()+"/"+reservation.getPickUpDate().getYear());
@@ -365,6 +380,25 @@ public class RentACarDAO {
             addClientQuery.setString(2, client.getAddress());
             addClientQuery.setString(3, client.getTelephone());
             addClientQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void addEmployee(Employee employee){
+        try{
+            int id=1;
+            ResultSet rs=maxIdUserQuery.executeQuery();
+            if(rs.next())id=rs.getInt(1);
+            addUserQuery.setInt(1, id);
+            addUserQuery.setString(2, employee.getFirstName());
+            addUserQuery.setString(3, employee.getLastName());
+            addUserQuery.setString(4, employee.getEmail());
+            addUserQuery.setString(5, employee.getUsername());
+            addUserQuery.setString(6, employee.getPassword());
+            addUserQuery.executeUpdate();
+            addEmployeeQuery.setInt(1, id);
+            addEmployeeQuery.setString(2, employee.getAdmin());
+            addEmployeeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -482,6 +516,33 @@ public class RentACarDAO {
             e.printStackTrace();
         }
     }
+    public void editEmployee(Employee employee){
+        try{
+            editUserQuery.setString(1, employee.getFirstName());
+            editUserQuery.setString(2, employee.getLastName());
+            editUserQuery.setString(3, employee.getEmail());
+            editUserQuery.setString(4, employee.getUsername());
+            editUserQuery.setString(5, employee.getPassword());
+            editUserQuery.setInt(6, employee.getId());
+            editUserQuery.executeUpdate();
+            //editEmployeeQuery.setString(1, employee.getAdmin());
+            //editEmployeeQuery.setInt(2, employee.getId());
+            //editEmployeeQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteEmployee(Employee employee){
+        int id=employee.getId();
+        try{
+            deleteEmployeeQuery.setInt(1, id);
+            deleteEmployeeQuery.executeUpdate();
+            deleteUserQuery.setInt(1, id);
+            deleteUserQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public ArrayList<Reservation> getReservations(){
         ArrayList<Reservation>reservations=new ArrayList<>();
         try{
@@ -584,30 +645,57 @@ public class RentACarDAO {
         }
         return false;
     }
-    /*public Client getClient(int id){
+    public ArrayList<Employee> getEmployees(){
+        ArrayList<Employee>employees=new ArrayList<>();
+        try {
+            getEmployeesQuery.setString(1, "no");
+            ResultSet rs = getEmployeesQuery.executeQuery();
+            while (rs.next()) {
+                try {
+                    employees.add(new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)));
+                }
+                catch (NegativeNumberException e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employees;
+    }
+    public Client getClientPerUsername(String username){
         Client client=null;
         try{
-            getClientQuery.setInt(1, id);
-            ResultSet rs=getClientQuery.executeQuery();
+            getClientPerUsernameQuery.setString(1, username);
+            ResultSet rs=getClientPerUsernameQuery.executeQuery();
             if(!rs.next())return null;
-            getUserPerId.setInt(1, id);
-            ResultSet userRs=getUserPerId.executeQuery();
-            if(!userRs.next())return null;
-            User user=new User(userRs.getInt(1), userRs.getString(2), userRs.getString(3), userRs.getString(4), userRs.getString(5), userRs.getString(6));
-            if(rs.getInt(4)==0)
-                return new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(), rs.getString(1), rs.getString(2), null);
-            else {
-                getCardQuery.setInt(1, rs.getInt(4));
-                ResultSet cardRs=getCardQuery.executeQuery();
-                if(!cardRs.next())return null;
-                LocalDate expireDate=stringToDate(cardRs.getString(4));
-                Card card=new Card(cardRs.getInt(1), cardRs.getString(2), cardRs.getString(3), expireDate);
-                client=new Client(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getUsername(), user.getPassword(), rs.getString(1), rs.getString(2), card);
+            try {
+                client = new Client(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8));
+            }
+            catch (NegativeNumberException e){
+                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return client;
-    }*/
+    }
+    public Employee getEmployeePerUsername(String username){
+        Employee employee=null;
+        try{
+            getEmployeePerUsernameQuery.setString(1, username);
+            ResultSet rs=getEmployeePerUsernameQuery.executeQuery();
+            if(!rs.next())return null;
+            try {
+                employee = new Employee(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7));
+            }
+            catch (NegativeNumberException e){
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employee;
+    }
 
 }

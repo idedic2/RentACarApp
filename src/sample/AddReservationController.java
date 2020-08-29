@@ -37,6 +37,7 @@ public class AddReservationController {
     private Vehicle currVehicle;
     public ChoiceBox<String>choiceFilterClient;
     public ChoiceBox<String>choiceFilterVehicle;
+    private boolean change=false;
     public AddReservationController(Reservation reservation) {
         rentACarDAO = RentACarDAO.getInstance();
         this.reservation = reservation;
@@ -146,7 +147,8 @@ public class AddReservationController {
              //vehicles.add(reservation.getVehicle());
              listClients.setDisable(true);
              //listVehicles.getSelectionModel().select(reservation.getVehicle());
-
+             choiceFilterClient.setDisable(true);
+             fldSearchClient.setDisable(true);
              datePickup.setValue(reservation.getPickUpDate());
              dateReturn.setValue(reservation.getReturnDate());
              String[] tmpPickup = reservation.getPickupTime().split(":");
@@ -163,6 +165,7 @@ public class AddReservationController {
              @Override
              public void changed(ObservableValue<? extends Vehicle> observable, Vehicle oldValue, Vehicle newValue) {
                  currVehicle=newValue;
+                 change=true;
                  System.out.println(newValue);
              }
          });
@@ -172,9 +175,11 @@ public class AddReservationController {
         return reservation;
      }
     public void confirmAddReservationAction(ActionEvent actionEvent) {
-        if(listVehicles.getSelectionModel().getSelectedItem()==null){
-            showAlert("Greška", "Odaberite vozilo", Alert.AlertType.ERROR);
-            return;
+        if(reservation==null) {
+            if (listVehicles.getSelectionModel().getSelectedItem() == null) {
+                showAlert("Greška", "Odaberite vozilo", Alert.AlertType.ERROR);
+                return;
+            }
         }
         if(reservation==null) {
             if (listClients.getSelectionModel().getSelectedItem() == null) {
@@ -199,6 +204,7 @@ public class AddReservationController {
             rentACarDAO.editVehicle(vehicle);
             try{
             Reservation reservation = new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), hourPickup.getValue() + ":" + minutePickup.getValue(), hourReturn.getValue() + ":" + minuteReturn.getValue(), null);
+            this.reservation=reservation;
             }
             catch (NegativeNumberException e){
                 e.printStackTrace();
@@ -206,19 +212,20 @@ public class AddReservationController {
             rentACarDAO.addReservation(reservation);
         }
         else{
-            if(reservation.getVehicle().getId()!=currVehicle.getId()){
-                //listVehicles.getSelectionModel().getSelectedItem().setAvailability("NE");
-                //rentACarDAO.editVehicle(listVehicles.getSelectionModel().getSelectedItem());
-                currVehicle.setAvailability("NE");
-                rentACarDAO.editVehicle(currVehicle);
-                reservation.getVehicle().setAvailability("DA");
+            if(change) {
+                if (reservation.getVehicle().getId() != currVehicle.getId()) {
+                    //listVehicles.getSelectionModel().getSelectedItem().setAvailability("NE");
+                    //rentACarDAO.editVehicle(listVehicles.getSelectionModel().getSelectedItem());
+                    currVehicle.setAvailability("NE");
+                    rentACarDAO.editVehicle(currVehicle);
+                    reservation.getVehicle().setAvailability("DA");
 
-                rentACarDAO.editVehicle(reservation.getVehicle());
-                reservation.setVehicle(currVehicle);
-                vehicles.setAll(rentACarDAO.getVehiclesPerAvailability());
-                //listVehicles.refresh();
+                    rentACarDAO.editVehicle(reservation.getVehicle());
+                    reservation.setVehicle(currVehicle);
+                    vehicles.setAll(rentACarDAO.getVehiclesPerAvailability());
+                    //listVehicles.refresh();
+                }
             }
-
            reservation.setPickUpDate(datePickup.getValue());
            reservation.setReturnDate(dateReturn.getValue());
            reservation.setPickupTime(hourPickup.getValue()+":"+minutePickup.getValue());

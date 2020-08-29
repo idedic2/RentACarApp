@@ -425,7 +425,7 @@ public class ClientPageController {
        Parent root = null;
        try {
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
-           RegistrationController registrationController = new RegistrationController(client, "");
+           RegistrationController registrationController = new RegistrationController(client, "", "client");
            loader.setController(registrationController);
            root = loader.load();
            stage.setTitle("Vaš profil");

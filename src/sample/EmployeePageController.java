@@ -55,7 +55,7 @@ import java.util.Optional;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
-public class AdminPageController {
+public class EmployeePageController {
     public TableView<Vehicle> tableViewVehicles;
     public TableColumn colId;
     public TableColumn colName;
@@ -92,11 +92,21 @@ public class AdminPageController {
     public TableColumn colReturnDate;
     public TableColumn colPickupTime;
     public TableColumn colReturnTime;
+    public TableView<Employee>tableViewEmployees;
+    public TableColumn colIdEmployee;
+    public TableColumn colFirstNameEmployee;
+    public TableColumn colLastNameEmployee;
+    public TableColumn colEmailEmployee;
+    public TableColumn colUsernameEmployee;
+    public TableColumn colPasswordEmployee;
     public Label lblWelcome;
     private RentACarDAO rentACarDAO;
     private ObservableList<Vehicle> listVehicles;
     private ObservableList<Client> listClients;
     private ObservableList<Reservation>listReservations;
+    private ObservableList<Employee>listEmployees;
+    public Tab tabEmployees;
+    public TabPane tabPane;
     private String username;
     public Button btnAddVehicle;
     public Button btnEditVehicle;
@@ -115,16 +125,22 @@ public class AdminPageController {
     public Button btnWriteVehiclesJSON;
     public Button btnWriteClientsJSON;
     public Button btnWriteReservationsXML;
-    public AdminPageController(String username) {
+    private String admin;
+    public EmployeePageController(String username, String admin) {
         rentACarDAO = RentACarDAO.getInstance();
         listVehicles = FXCollections.observableArrayList(rentACarDAO.getVehicles());
         listClients=FXCollections.observableArrayList(rentACarDAO.getClients());
         listReservations=FXCollections.observableArrayList(rentACarDAO.getReservations());
+        listEmployees=FXCollections.observableArrayList(rentACarDAO.getEmployees());
         this.username=username;
+        this.admin=admin;
     }
 
     @FXML
     public void initialize() {
+        if(admin.equals("no")){
+            tabPane.getTabs().remove(tabEmployees);
+        }
         lblWelcome.setText(lblWelcome.getText()+" "+username);
         tableViewVehicles.setItems(listVehicles);
         colId.setCellValueFactory(new PropertyValueFactory("id"));
@@ -172,6 +188,15 @@ public class AdminPageController {
         paying();
         editReservation();
         deleteReservation();
+        tableViewEmployees.setItems(listEmployees);
+        colIdEmployee.setCellValueFactory(new PropertyValueFactory("id"));
+        colFirstNameEmployee.setCellValueFactory(new PropertyValueFactory("firstName"));
+        colLastNameEmployee.setCellValueFactory(new PropertyValueFactory("lastName"));
+        colEmailEmployee.setCellValueFactory(new PropertyValueFactory("email"));
+        colUsernameEmployee.setCellValueFactory(new PropertyValueFactory("username"));
+        colPasswordEmployee.setCellValueFactory(new PropertyValueFactory("password"));
+        editEmployee();
+        deleteEmployee();
     }
 
     public void paying(){
@@ -404,7 +429,7 @@ public class AdminPageController {
                             Parent root = null;
                             try {
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
-                                RegistrationController registrationController = new RegistrationController(client, username);
+                                RegistrationController registrationController = new RegistrationController(client, username, "client");
                                 loader.setController(registrationController);
                                 root = loader.load();
                                 stage.setTitle("Izmijeni klijenta");
@@ -566,7 +591,7 @@ public class AdminPageController {
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
-            RegistrationController registrationController = new RegistrationController(null, username);
+            RegistrationController registrationController = new RegistrationController(null, username, "client");
             loader.setController(registrationController);
             root = loader.load();
             stage.setTitle("Dodavanje novog klijenta");
@@ -599,7 +624,7 @@ public class AdminPageController {
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
-            RegistrationController registrationController = new RegistrationController(client, username);
+            RegistrationController registrationController = new RegistrationController(client, username, "client");
             loader.setController(registrationController);
             root = loader.load();
             stage.setTitle("Izmijeni klijenta");
@@ -957,4 +982,182 @@ public class AdminPageController {
         }
     }
 
+    private void editEmployee() {
+        TableColumn<Employee, Void> colBtn = new TableColumn("Mijenjanje");
+        Callback<TableColumn<Employee, Void>, TableCell<Employee, Void>> cellFactory = new Callback<TableColumn<Employee, Void>, TableCell<Employee, Void>>() {
+            @Override
+            public TableCell<Employee, Void> call(final TableColumn<Employee, Void> param) {
+                final TableCell<Employee, Void> cell = new TableCell<Employee, Void>() {
+                    private final Button btn = new Button("Izmijeni");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Employee employee = getTableView().getItems().get(getIndex());
+                            //System.out.println("selectedData: " + data);
+                            //System.out.println(data.getReturnTime());
+                            Stage stage = new Stage();
+                            Parent root = null;
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
+                                RegistrationController registrationController = new RegistrationController(employee, username, "employee");
+                                loader.setController(registrationController);
+                                root = loader.load();
+                                stage.setTitle("Izmijeni zaposlenika");
+                                stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+                                stage.setResizable(true);
+                                stage.show();
+
+                                stage.setOnHiding( event2 -> {
+                                    Employee newEmployee = registrationController.getEmployee();
+                                    if (newEmployee != null) {
+                                        rentACarDAO.editEmployee(newEmployee);
+                                        listEmployees.setAll(rentACarDAO.getEmployees());
+                                    }
+                                } );
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        tableViewEmployees.getColumns().add(colBtn);
+
+    }
+    private void deleteEmployee() {
+        TableColumn<Employee, Void> colBtn = new TableColumn("Brisanje");
+        Callback<TableColumn<Employee, Void>, TableCell<Employee, Void>> cellFactory = new Callback<TableColumn<Employee, Void>, TableCell<Employee, Void>>() {
+            @Override
+            public TableCell<Employee, Void> call(final TableColumn<Employee, Void> param) {
+                final TableCell<Employee, Void> cell = new TableCell<Employee, Void>() {
+                    private final Button btn = new Button("Obriši");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Employee employee = getTableView().getItems().get(getIndex());
+                            //System.out.println("selectedData: " + data);
+                            //System.out.println(data.getReturnTime());
+
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Potvrda brisanja");
+                            alert.setHeaderText("Brisanje zaposlenika "+employee.getFirstName()+" "+employee.getLastName());
+                            alert.setContentText("Da li ste sigurni da želite obrisati zaposlenika " +employee.getFirstName()+" "+employee.getLastName()+"?");
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                System.out.println(employee.getId()+employee.getFirstName());
+                                rentACarDAO.deleteEmployee(employee);
+                                listEmployees.setAll(rentACarDAO.getEmployees());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellFactory);
+        tableViewEmployees.getColumns().add(colBtn);
+
+    }
+    public void addEmployee(ActionEvent actionEvent){
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
+            RegistrationController registrationController = new RegistrationController(null, username, "employee");
+            loader.setController(registrationController);
+            root = loader.load();
+            stage.setTitle("Dodavanje novog zaposlenika");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+            stage.setOnHiding( event -> {
+                Employee employee = registrationController.getEmployee();
+                if (employee != null) {
+                    //rentACarDAO.addEmployee(employee);
+                    listEmployees.setAll(rentACarDAO.getEmployees());
+                }
+            } );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void editEmployeeAction(ActionEvent actionEvent){
+        if(listEmployees.isEmpty()){
+            showAlert("Upozorenje", "Trenutno nema zaposlenika", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Employee employee = tableViewEmployees.getSelectionModel().getSelectedItem();
+        if (employee == null) {
+            showAlert("Upozorenje", "Odaberite zaposlenika kojeg želite izmijeniti", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
+            RegistrationController registrationController = new RegistrationController(employee, username, "employee");
+            loader.setController(registrationController);
+            root = loader.load();
+            stage.setTitle("Izmijeni zaposlenika");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+
+            stage.setOnHiding( event -> {
+                Employee employee1 = registrationController.getEmployee();
+                if (employee1 != null) {
+                    rentACarDAO.editEmployee(employee1);
+                    listEmployees.setAll(rentACarDAO.getEmployees());
+                }
+            } );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteEmployeeAction(ActionEvent actionEvent){
+        if(listEmployees.isEmpty()){
+            showAlert("Upozorenje", "Trenutno nema zaposlenika", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Employee employee = tableViewEmployees.getSelectionModel().getSelectedItem();
+        if (employee == null) {
+            showAlert("Upozorenje", "Odaberite zaposlenika kojeg želite obrisati", Alert.AlertType.CONFIRMATION);
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potvrda brisanja");
+        alert.setHeaderText("Brisanje zaposlenika "+employee.getFirstName()+" "+employee.getLastName());
+        alert.setContentText("Da li ste sigurni da želite obrisati zaposlenika " +employee.getFirstName()+" "+employee.getLastName()+"?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            rentACarDAO.deleteEmployee(employee);
+            listEmployees.setAll(rentACarDAO.getEmployees());
+        }
+
+    }
 }

@@ -11,7 +11,9 @@
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
     -fx-background-size: cover, cover;
 }
-
+#btnDeleteEmployee,
+#btnEditEmployee,
+#btnAddEmployee,
 #btnWriteReservationsXML,
 #btnWriteReservationsJSON,
 #btnWriteClientsJSON,
@@ -47,16 +49,16 @@
     -fx-background-color: transparent;
 }
 
-#btnEditVehicle, #btnEditReservation, #btnEditClient {
+#btnEditVehicle, #btnEditReservation, #btnEditClient, #btnEditEmployee {
     -fx-background-image: url("/images/editIcon.png");
 }
-#btnDeleteVehicle, #btnDeleteReservation, #btnDeleteClient, .deleteButton {
+#btnDeleteVehicle, #btnDeleteReservation, #btnDeleteClient, .deleteButton , #btnDeleteEmployee{
     -fx-background-image: url("/images/deleteIcon.png");
 }
 #btnVehicleReport, #btnReportReservation, #btnReportClient  {
     -fx-background-image: url("/images/reportIcon.png");
 }
-#btnAddVehicle, #btnAddReservation, #btnAddClient {
+#btnAddVehicle, #btnAddReservation, #btnAddClient, #btnAddEmployee{
     -fx-background-image: url("/images/addIcon.png");
 }
 #btnWriteVehiclesXML, #btnWriteClientsXML, #btnWriteReservationsXML{

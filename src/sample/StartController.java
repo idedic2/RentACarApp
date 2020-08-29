@@ -41,7 +41,7 @@ public class StartController {
             stage.close();
             Stage primaryStage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
-            RegistrationController registrationController = new RegistrationController(null, "");
+            RegistrationController registrationController = new RegistrationController(null, "", "client");
             loader.setController(registrationController);
             root = loader.load();
             primaryStage.setTitle("Registrujte se");

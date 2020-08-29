@@ -126,6 +126,7 @@ public class EmployeePageController {
     public Button btnWriteClientsJSON;
     public Button btnWriteReservationsXML;
     private String admin;
+    private Employee employee;
     public EmployeePageController(String username, String admin) {
         rentACarDAO = RentACarDAO.getInstance();
         listVehicles = FXCollections.observableArrayList(rentACarDAO.getVehicles());
@@ -134,6 +135,7 @@ public class EmployeePageController {
         listEmployees=FXCollections.observableArrayList(rentACarDAO.getEmployees());
         this.username=username;
         this.admin=admin;
+        employee=rentACarDAO.getEmployeePerUsername(username);
     }
 
     @FXML
@@ -668,6 +670,22 @@ public class EmployeePageController {
                 listClients.setAll(rentACarDAO.getClients());
             }
     }
+    public void aboutAction(ActionEvent actionEvent){
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/about.fxml"));
+            root = loader.load();
+            stage.setTitle("O aplikaciji");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void logOutAction(ActionEvent actionEvent){
         Parent root = null;
         try {
@@ -1159,5 +1177,27 @@ public class EmployeePageController {
             listEmployees.setAll(rentACarDAO.getEmployees());
         }
 
+    }
+    public void editProfilAction(ActionEvent actionEvent){
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
+            RegistrationController registrationController = new RegistrationController(employee, "", "employee");
+            loader.setController(registrationController);
+            root = loader.load();
+            stage.setTitle("Vaš profil");
+            stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+            stage.setResizable(true);
+            stage.show();
+            stage.setOnHiding( event -> {
+                Employee newEmployee = registrationController.getEmployee();
+                if (employee != null) {
+                    lblWelcome.setText("Dobrodošli "+employee.getUsername());
+                }
+            } );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

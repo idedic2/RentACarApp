@@ -170,7 +170,9 @@ public class RegistrationController {
                 fldTelephone.setText(client.getTelephone());
             }
             else if(employee!=null){
+                if (!username.equals(""))
                 lblText.setText("Podaci o zaposleniku");
+                else lblText.setText("Vaši podaci");
                 fldFirstName.setText(employee.getFirstName());
                 fldLastName.setText(employee.getLastName());
                 fldEmail.setText(employee.getEmail());
@@ -653,10 +655,10 @@ if(client!=null || employee!=null) {
     public void backRegistrationAction(ActionEvent actionEvent) {
         Stage stage = (Stage) fldUsername.getScene().getWindow();
         stage.close();
-        if(!username.equals("")){
+        /*if(!username.equals("") ){
             return;
-        }
-        if (client == null) {
+        }*/
+        if (client == null && userType.equals("client") && username.equals("")) {
             Stage oldstage = new Stage();
             Parent root = null;
             try {
@@ -673,5 +675,6 @@ if(client!=null || employee!=null) {
             }
 
         }
+
     }
 }

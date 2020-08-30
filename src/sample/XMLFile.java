@@ -19,7 +19,7 @@ public class XMLFile {
     private ArrayList<Vehicle> vehicles = new ArrayList<>();
     private ArrayList<Client> clients = new ArrayList<>();
     private ArrayList<Reservation>reservations=new ArrayList<>();
-
+    private ArrayList<Employee>employees=new ArrayList<>();
     public ArrayList<Vehicle> getVehicles() {
         return vehicles;
     }
@@ -38,6 +38,14 @@ public class XMLFile {
 
     public ArrayList<Reservation> getReservations() {
         return reservations;
+    }
+
+    public ArrayList<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(ArrayList<Employee> employees) {
+        this.employees = employees;
     }
 
     public XMLFile() {
@@ -296,4 +304,54 @@ public class XMLFile {
             err.printStackTrace();
         }
     }
+
+    public void writeEmployees(File file)  {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        Document document = null;
+
+        try {
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            document = documentBuilder.newDocument();
+        } catch (ParserConfigurationException err) {
+            err.printStackTrace();
+        }
+
+        Element root = document.createElement("employees");
+        document.appendChild(root);
+
+        for (Employee employee : employees) {
+            Element eEmployee = document.createElement("employee");
+
+            Element firstName = document.createElement("firstName");
+            firstName.appendChild(document.createTextNode(employee.getFirstName()));
+            eEmployee.appendChild(firstName);
+            Element lastName = document.createElement("lastName");
+            lastName.appendChild(document.createTextNode(employee.getLastName()));
+            eEmployee.appendChild(lastName);
+            Element email = document.createElement("email");
+            email.appendChild(document.createTextNode(employee.getEmail()));
+            eEmployee.appendChild(email);
+            Element username = document.createElement("username");
+            username.appendChild(document.createTextNode(employee.getUsername()));
+            eEmployee.appendChild(username);
+            /*ArrayList<Reservation>clientReservations=new ArrayList<>();
+            for(Reservation r: listReservations){
+                if(r.getClient().getUsername().equals(client.getUsername()))
+                    clientReservations.add(r);
+            }*/
+            root.appendChild(eEmployee);
+        }
+
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(document);
+
+            StreamResult streamResult = new StreamResult(file);
+            transformer.transform(source, streamResult);
+        } catch(TransformerException err) {
+            err.printStackTrace();
+        }
+    }
+
 }

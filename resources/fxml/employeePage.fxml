@@ -33,6 +33,7 @@
                          <MenuItem mnemonicParsing="false" onAction="#vehicleReportAction" text="Vozila" />
                          <MenuItem mnemonicParsing="false" onAction="#clientReportAction" text="Rezervacije" />
                          <MenuItem mnemonicParsing="false" onAction="#reservationReportAction" text="Klijenti" />
+                         <MenuItem mnemonicParsing="false" onAction="#employeeReportAction" text="Zaposlenici" />
                      </items>
                        </Menu>
                    </items>
@@ -208,6 +209,9 @@
                                     <Button fx:id="btnAddEmployee" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addEmployee" prefHeight="45.0" prefWidth="45.0" />
                                     <Button fx:id="btnEditEmployee" minHeight="-Infinity" mnemonicParsing="false" onAction="#editEmployeeAction" prefHeight="45.0" prefWidth="45.0" />
                                     <Button fx:id="btnDeleteEmployee" minHeight="-Infinity" mnemonicParsing="false" onAction="#deleteEmployeeAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnReportEmployee" mnemonicParsing="false" onAction="#employeeReportAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnWriteEmployeesXML" mnemonicParsing="false" onAction="#writeEmployeesXMLAction" prefHeight="45.0" prefWidth="45.0" />
+                              <Button fx:id="btnWriteEmployeesJSON" mnemonicParsing="false" onAction="#writeEmployeesJSONAction" prefHeight="45.0" prefWidth="45.0" />
                                 </children>
                                 <GridPane.margin>
                                     <Insets top="10.0" />

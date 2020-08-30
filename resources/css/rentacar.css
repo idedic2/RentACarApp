@@ -11,6 +11,9 @@
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
     -fx-background-size: cover, cover;
 }
+#btnWriteEmployeesJSON,
+#btnWriteEmployeesXML,
+#btnReportEmployee,
 #btnDeleteEmployee,
 #btnEditEmployee,
 #btnAddEmployee,
@@ -55,18 +58,18 @@
 #btnDeleteVehicle, #btnDeleteReservation, #btnDeleteClient, .deleteButton , #btnDeleteEmployee{
     -fx-background-image: url("/images/deleteIcon.png");
 }
-#btnVehicleReport, #btnReportReservation, #btnReportClient  {
+#btnVehicleReport, #btnReportReservation, #btnReportClient, #btnReportEmployee  {
     -fx-background-image: url("/images/reportIcon.png");
 }
 #btnAddVehicle, #btnAddReservation, #btnAddClient, #btnAddEmployee{
     -fx-background-image: url("/images/addIcon.png");
 }
-#btnWriteVehiclesXML, #btnWriteClientsXML, #btnWriteReservationsXML{
+#btnWriteVehiclesXML, #btnWriteClientsXML, #btnWriteReservationsXML, #btnWriteEmployeesXML{
     -fx-background-image: url("/images/xmlIcon.png");
 }
 #lblName, #lblBrand, #lblModel, #lblColor, #lblEngine, #lblTransmission, #lblYear, #lblType, #lblPrice, #lblFuelConsumption, #lblAvailability, #lblNmbDoors, #lblNmbSeats{
     -fx-font-weight: bold;
 }
-#btnWriteVehiclesJSON, #btnWriteClientsJSON, #btnWriteReservationsJSON{
+#btnWriteVehiclesJSON, #btnWriteClientsJSON, #btnWriteReservationsJSON, #btnWriteEmployeesJSON{
     -fx-background-image: url("/images/jsonIcon.png");
 }

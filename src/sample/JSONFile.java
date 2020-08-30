@@ -16,6 +16,7 @@ public class JSONFile {
     private ArrayList<Vehicle> vehicles = new ArrayList<>();
     private ArrayList<Client> clients = new ArrayList<>();
     private ArrayList<Reservation>reservations=new ArrayList<>();
+    private ArrayList<Employee>employees=new ArrayList<>();
     public ArrayList<Vehicle> getVehicles() {
         return vehicles;
     }
@@ -37,6 +38,14 @@ public class JSONFile {
 
     public void setReservations(ArrayList<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public ArrayList<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(ArrayList<Employee> employees) {
+        this.employees = employees;
     }
 
     public void writeVehicles(File file)  {
@@ -122,6 +131,23 @@ public class JSONFile {
         }
         try {
             Files.write(file.toPath(), Arrays.asList(jreservations.toString()), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return;
+        }
+    }
+
+    public void writeEmployees(File file)  {
+        JSONArray jemployees = new JSONArray();
+        for(Employee employee : employees) {
+            JSONObject jemployee = new JSONObject();
+            jemployee.put("firstName", employee.getFirstName());
+            jemployee.put("lastName", employee.getLastName());
+            jemployee.put("email", employee.getEmail());
+            jemployee.put("username", employee.getUsername());
+            jemployees.put(jemployee);
+        }
+        try {
+            Files.write(file.toPath(), Arrays.asList(jemployees.toString()), StandardCharsets.UTF_8);
         } catch (IOException e) {
             return;
         }

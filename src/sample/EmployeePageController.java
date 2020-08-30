@@ -866,6 +866,14 @@ public class EmployeePageController {
             e1.printStackTrace();
         }
     }
+    public void employeeReportAction(ActionEvent actionEvent){
+        try {
+
+            new PrintReport().showReport(rentACarDAO.getConn(), "/reports/employeesReport.jrxml");
+        } catch (JRException | URISyntaxException e1) {
+            e1.printStackTrace();
+        }
+    }
     public void writeVehiclesXMLAction(ActionEvent actionEvent){
         try {
             FileChooser fileChooser = new FileChooser();
@@ -929,6 +937,27 @@ public class EmployeePageController {
         }
     }
 
+    public void writeEmployeesXMLAction(ActionEvent actionEvent){
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Zapiši XML datoteku");
+            Stage stage = (Stage)tableViewEmployees.getScene().getWindow();
+            File file = fileChooser.showSaveDialog(stage);
+            if (file == null) // Kliknuto na cancel
+                return;
+            XMLFile xml=new XMLFile();
+            xml.setClients(null);
+            xml.setReservations(null);
+            xml.setVehicles(null);
+            xml.setEmployees(rentACarDAO.getEmployees());
+            xml.writeEmployees(file);
+        } catch(Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Wrong file format");
+            alert.setContentText("An error occured during file save.");
+            alert.showAndWait();
+        }
+    }
     public void writeVehiclesJSONAction(ActionEvent actionEvent) {
         try {
             FileChooser fileChooser = new FileChooser();
@@ -992,6 +1021,31 @@ public class EmployeePageController {
             json.setReservations(rentACarDAO.getReservations());
             json.setVehicles(null);
             json.writeReservations(file);
+        } catch(Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Wrong file format");
+            alert.setContentText("An error occured during file save.");
+            alert.showAndWait();
+        }
+    }
+
+    public void writeEmployeesJSONAction(ActionEvent actionEvent) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Zapiši JSON datoteku");
+            Stage stage = (Stage)tableViewEmployees.getScene().getWindow();
+            File file = fileChooser.showSaveDialog(stage);
+            if (file == null) // Kliknuto na cancel
+                return;
+
+            JSONFile json = new JSONFile();
+            //ArrayList<Vehicle>vehicles=new ArrayList<>();
+            //vehicles.addAll(listVehicles);
+            json.setClients(null);
+            json.setReservations(null);
+            json.setVehicles(null);
+            json.setEmployees(rentACarDAO.getEmployees());
+            json.writeEmployees(file);
         } catch(Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Wrong file format");

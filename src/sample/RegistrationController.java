@@ -87,15 +87,24 @@ public class RegistrationController {
     }
     private static boolean change=false;
     private static String initMail="";
+    private Thread thread;
+
+    public Thread getThread() {
+        return thread;
+    }
 
     @FXML
     public void initialize() {
+
             change=false;
-            new Thread(() -> {
+            thread = new Thread(() -> {
                 //fldEmail.textProperty().addListener(new ChangeListener<String>() {
                   //  @Override
                     //public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
-                        while (true) {
+                        while (!Thread.currentThread().isInterrupted()) {
+
+                                System.out.println("Running");
+
                                 if(initMail.equals(fldEmail.getText())) {
                                     change=false;
                                 } else {
@@ -136,12 +145,14 @@ public class RegistrationController {
                                 try {
                                     Thread.sleep(1000);
                                 } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                    //e.printStackTrace();
+                                    break;
                                 }
                             }
 
                     //}});
-            }).start();
+            });
+            thread.start();
 
         /*
         Thread thread = new Thread(new Runnable() {
@@ -331,6 +342,7 @@ public class RegistrationController {
             }
         });
     }
+
 
     private boolean isValidUsername(String str) {
         Pattern pattern = Pattern.compile("[A-Za-z0-9_]+");

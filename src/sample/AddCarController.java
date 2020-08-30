@@ -289,6 +289,9 @@ public class AddCarController {
                         Image image = new Image("File:" + imagePath);
                         placeholderImage.setImage(image);
                     }
+                    //findImageController.getThread().stop();
+                    findImageController.stopSearch();
+
                     //if (!imagePath.equals("")) {
                     //rentACarDAO.editReservation(newReservation);
                     //vehicle.setImage(imagePath);

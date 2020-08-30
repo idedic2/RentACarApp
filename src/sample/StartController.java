@@ -48,6 +48,10 @@ public class StartController {
             primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
             primaryStage.setResizable(true);
             primaryStage.show();
+            primaryStage.setOnHiding( event -> {
+                System.out.println("Closed ...");
+                registrationController.getThread().interrupt();
+            } );
         } catch (IOException e) {
             e.printStackTrace();
         }

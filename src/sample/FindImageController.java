@@ -19,10 +19,21 @@ public class FindImageController{
     private Vehicle vehicle;
     public ObservableList<String> obslistImages=FXCollections.observableArrayList();
     public String imagePath="";
+    private Thread thread;
+    private boolean continueSearch;
     public FindImageController(Vehicle vehicle) {
         //obslistImages= FXCollections.observableArrayList(new ArrayList<String>() );
         this.vehicle = vehicle;
     }
+
+    public Thread getThread() {
+        return thread;
+    }
+
+    public void stopSearch() {
+        continueSearch = false;
+    }
+
     @FXML
     public void initialize() {
         //listImages.setItems(obslistImages);
@@ -38,6 +49,7 @@ public class FindImageController{
     }
 
     private void search(File file) {
+        if (!continueSearch) return;
         if (file.isDirectory() && Files.exists(file.toPath()) && !file.isHidden() ) {
             System.out.println("Searching directory ... " + file.getAbsoluteFile());
             //do you have permission to read this directory?
@@ -71,7 +83,8 @@ public class FindImageController{
 
         public void findImageAction (ActionEvent actionEvent) {
             //try different directory and filename :)
-            new Thread(() -> {
+            continueSearch = true;
+            thread=new Thread(() -> {
                 switch (Util.getOS()) {
                     case WINDOWS:
                         searchDirectory(new File("C:\\Users"));
@@ -80,7 +93,8 @@ public class FindImageController{
                         searchDirectory(new File("/"));
                         break;
                 }
-            }).start();
+            });
+            thread.start();
         }
     public void confirmImageAction(ActionEvent actionEvent) {
         boolean sveOk = true;

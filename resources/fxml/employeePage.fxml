@@ -38,10 +38,10 @@
                        </Menu>
                    </items>
                </Menu>
-               <Menu mnemonicParsing="false" text="Profil">
+               <Menu mnemonicParsing="false" text="Profil" fx:id="profil">
                    <items>
                        <MenuItem mnemonicParsing="false" onAction="#editProfilAction" text="Uredi profil" />
-                       <MenuItem mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
+                       <MenuItem fx:id="btnLogOut" mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
                    </items>
                </Menu>
                <Menu mnemonicParsing="false" text="Pomoć">

@@ -1,9 +1,12 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -24,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class LoginControllerTest {
     Stage theStage;
     LoginController ctrl;
+
 
     @Start
     public void start (Stage stage) throws Exception {
@@ -71,9 +75,51 @@ class LoginControllerTest {
         robot.clickOn("#radioAdmin");
         // Klik na dugme ok
         robot.clickOn("#btnLoginConfirm");
-
+        robot.lookup("#lblWelcome").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblWelcome").queryAs(Label.class);
+        assertNotNull(lbl);
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
         // Sada je naziv validan, forma se zatvorila
+        //assertFalse(theStage.isShowing());
+
+
+    }
+
+    @Test
+    void loginConfirmAction2(FxRobot robot) {
+        TextField username = robot.lookup("#fldUsername").queryAs(TextField.class);
+        robot.clickOn("#fldUsername");
+        robot.write("idedic2");
+        PasswordField password = robot.lookup("#fldPassword").queryAs(PasswordField.class);
+        robot.clickOn("#fldPassword");
+        robot.write("password");
+        Background bg = username.getBackground();
+        boolean colorFound = false;
+        for (BackgroundFill bf : bg.getFills())
+            if (bf.getFill().toString().contains("9acd32"))
+                colorFound = true;
+        assertTrue(colorFound);
+        Background bg2 = password.getBackground();
+        boolean colorFound2 = false;
+        for (BackgroundFill bf : bg2.getFills())
+            if (bf.getFill().toString().contains("9acd32"))
+                colorFound2 = true;
+        assertTrue(colorFound2);
+        robot.clickOn("#radioClient");
+        robot.clickOn("#btnLoginConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#radioEmployee");
+        robot.clickOn("#btnLoginConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#radioAdmin");
+        robot.clickOn("#btnLoginConfirm");
         assertFalse(theStage.isShowing());
+        robot.lookup("#lblWelcome").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblWelcome").queryAs(Label.class);
+        assertNotNull(lbl);
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
     }
 
 }

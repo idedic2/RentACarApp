@@ -43,7 +43,6 @@ class LoginControllerTest {
         theStage = stage;
     }
 
-
     @Test
     void loginConfirmAction(FxRobot robot) {
         // Polje fieldNaziv je nevalidno jer je prazno

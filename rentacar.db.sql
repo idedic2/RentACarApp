@@ -1,7 +1,38 @@
 BEGIN TRANSACTION;
-CREATE TABLE IF NOT EXISTS "employee" (
+CREATE TABLE IF NOT EXISTS "card" (
 	"id"	INTEGER,
-	"admin"	TEXT,
+	"card_number"	TEXT,
+	"code"	TEXT,
+	"expiration_date"	TEXT,
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "user" (
+	"id"	INTEGER,
+	"first_name"	TEXT,
+	"last_name"	TEXT,
+	"email"	TEXT,
+	"username"	TEXT,
+	"password"	TEXT,
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "reservation" (
+	"id"	INTEGER,
+	"vehicle_id"	INTEGER,
+	"client_id"	INTEGER,
+	"pickup_date"	TEXT,
+	"return_date"	TEXT,
+	"pickup_time"	TEXT,
+	"return_time"	TEXT,
+	"card_id"	INTEGER,
+	PRIMARY KEY("id"),
+	FOREIGN KEY("vehicle_id") REFERENCES "vehicle"("id"),
+	FOREIGN KEY("client_id") REFERENCES "client"("id"),
+	FOREIGN KEY("card_id") REFERENCES "card"("id")
+);
+CREATE TABLE IF NOT EXISTS "client" (
+	"id"	INTEGER,
+	"address"	TEXT,
+	"telephone"	TEXT,
 	PRIMARY KEY("id"),
 	FOREIGN KEY("id") REFERENCES "user"("id")
 );
@@ -23,130 +54,20 @@ CREATE TABLE IF NOT EXISTS "vehicle" (
 	"image"	TEXT,
 	PRIMARY KEY("id")
 );
-CREATE TABLE IF NOT EXISTS "client" (
+CREATE TABLE IF NOT EXISTS "employee" (
 	"id"	INTEGER,
-	"address"	TEXT,
-	"telephone"	TEXT,
+	"admin"	TEXT,
 	PRIMARY KEY("id"),
 	FOREIGN KEY("id") REFERENCES "user"("id")
 );
-CREATE TABLE IF NOT EXISTS "reservation" (
-	"id"	INTEGER,
-	"vehicle_id"	INTEGER,
-	"client_id"	INTEGER,
-	"pickup_date"	TEXT,
-	"return_date"	TEXT,
-	"pickup_time"	TEXT,
-	"return_time"	TEXT,
-	"card_id"	INTEGER,
-	PRIMARY KEY("id"),
-	FOREIGN KEY("vehicle_id") REFERENCES "vehicle"("id"),
-	FOREIGN KEY("client_id") REFERENCES "client"("id"),
-	FOREIGN KEY("card_id") REFERENCES "card"("id")
-);
-CREATE TABLE IF NOT EXISTS "user" (
-	"id"	INTEGER,
-	"first_name"	TEXT,
-	"last_name"	TEXT,
-	"email"	TEXT,
-	"username"	TEXT,
-	"password"	TEXT,
-	PRIMARY KEY("id")
-);
-CREATE TABLE IF NOT EXISTS "card" (
-	"id"	INTEGER,
-	"card_number"	TEXT,
-	"code"	TEXT,
-	"expiration_date"	TEXT,
-	PRIMARY KEY("id")
-);
-INSERT INTO "employee" ("id","admin") VALUES (1,'yes'),
- (38,'no');
-INSERT INTO "vehicle" ("id","name","brand","model","type","year","seats_number","doors_number","engine","transmission","fuel_consumption","color","price_per_day","availability","image") VALUES (2,'GOLF 6','VOLKSWAGEN','GOLF 6 PLUS','Putnicki automobil',2019,4,5,'Dizel','Manuelni',20.0,'Bijela',50.0,'NE',NULL),
- (3,'AUDI A6','AUDI','AUDI A6 S6','Putnicki automobil',2025,5,5,'Dizel','Automatik',20.0,'Bijela',150.0,'DA',NULL),
- (4,'BMW 640d','BMW','BMW 640d Coupe','Luksuzni automobil',2013,5,5,'Benzin','Automatik',55.77,'Plava',100.0,'DA',NULL),
- (6,'SEAT ARONA','SEAT','SEAT ARONA AUTOMATIC','Putnicki automobil',2018,5,5,'Benzin','Automatik',71.0,'Zelena',85.0,'DA',NULL),
- (7,'Škoda Fabia','Škoda','Škoda Fabia','Putnicki automobil',2018,5,5,'Dizel','Manuelni',90.0,'Bijela',80.0,'DA',NULL),
- (8,'ff','ff','f','Putnicki automobil',2014,5,5,'Dizel','Automatik',80.0,'j',140.0,'DA',NULL),
- (9,'a','aaa','a','Putnicki automobil',2014,5,5,'Dizel','Automatik',80.0,'a',80.0,'DA',NULL),
- (10,'ss','s','s','Putnicki automobil',2013,5,5,'Dizel','Automatik',90.0,'s',80.0,'DA',NULL),
- (11,'aa','a','a','Putnicki automobil',2012,5,5,'Dizel','Automatik',80.0,'a',80.0,'DA',NULL),
- (12,'aa','aa','aa','Putnicki automobil',2013,5,5,'Dizel','Automatik',70.0,'ss',120.0,'DA','C:\Users\Windows 10\IdeaProjects\projekat\resources\images\skodaFabia.png'),
- (13,'d','d','d','Putnicki automobil',2014,5,5,'Dizel','Automatik',90.0,'d',80.0,'DA','C:\Users\Windows 10\IdeaProjects\projekat\resources\images\skodaFabia.png'),
- (14,'ii','ii','i','Putnicki automobil',2013,5,5,'Dizel','Automatik',60.0,'ii',80.0,'DA','C:\Users\Windows 10\IdeaProjects\projekat\resources\images\skodaFabia.png');
-INSERT INTO "client" ("id","address","telephone") VALUES (2,'loliboo','458439504'),
- (3,'Majina adresaaa','033600754'),
- (5,'nekina','123454654'),
- (6,'',''),
- (7,'',''),
- (8,'',''),
- (9,'beba','7777777777'),
- (10,'nn','000000000'),
- (11,'',''),
- (12,'',''),
- (13,'',''),
- (14,'',''),
- (15,'',''),
- (16,'',''),
- (17,'',''),
- (18,'',''),
- (19,'',''),
- (20,'',''),
- (21,'',''),
- (22,'',''),
- (23,'',''),
- (24,'',''),
- (25,'',''),
- (26,'',''),
- (27,'',''),
- (28,'',''),
- (29,'',''),
- (30,'',''),
- (31,'',''),
- (32,'',''),
- (34,'',''),
- (35,'Gost 123','123456789'),
- (36,'as','123444444'),
- (37,'as','123444444');
-INSERT INTO "reservation" ("id","vehicle_id","client_id","pickup_date","return_date","pickup_time","return_time","card_id") VALUES (1,2,3,'19/AUGUST/2020','21/AUGUST/2020','10:00','10:00',3);
-INSERT INTO "user" ("id","first_name","last_name","email","username","password") VALUES (1,'Irma','Dedic','idedic2@etf.unsa.ba','idedic2','password'),
- (2,'Alem','Zekić','azekic1@gmail.com','bobi','password'),
- (3,'Maja','Dedić','maja97@gmail.com','maja','password'),
- (5,'Niko','Nikić','niko@kurac.com','niki','password'),
- (6,'Niko','Nikić','niko@gmail.com','neki','password'),
- (7,'ne','ne','ne@gmail.co','miko','miko'),
- (8,'irma','dedić','idedic2@etf.unsa.ba','ff','miko'),
- (9,'iema','rma','iamd@gmail.co','beba','beba'),
- (10,'zerina','dedić','zerina@gmail.cm','zerina','password'),
- (11,'aa','aa','aa','aaaa','aaaa'),
- (12,'aaa','aa','aa','zob','aaa'),
- (13,'tt','tt','tt','tt','tt'),
- (14,'ll','ll','ll','ll','ll'),
- (15,'bo','bo','bo','bo','bo'),
- (16,'ww','ww','ww','ww','www'),
- (17,'ss','ss','ss','ss','ss'),
- (18,'dd','dd','dd','dd','dd'),
- (19,'rr','rr','rr','rr','rr'),
- (20,'rr','rr','rr@gmail.com','miso','rr'),
- (21,'Mujo','Mujić','mujo@gmail.com','mujo','password'),
- (22,'Haso','Hasić','haso@gmail.com','haso','password'),
- (23,'irma','rr','rr','qq','ww'),
- (24,'kk','kk','kk','ooo','zz'),
- (25,'gg','gg','jhg','ree','ree'),
- (26,'tt','tt','hh','zzzz','zz'),
- (27,'pepa','prase','pepa','pepa','pepa'),
- (28,'foo','foo','foo','foo','foo'),
- (29,'gg','gg','bbbb','lolololo','ss'),
- (30,'nn','nn','llllll','pooo','pp'),
- (31,'dd','dddd','dd','dddddddddddddddddd','dd'),
- (32,'tt','tt','tt','kkjk','tt'),
- (34,'al','al','nezz','nez','nez'),
- (35,'Gost','Gostić','gost@gmail.com','gost','password'),
- (36,'aa','aa','aaa@gmail.com','booo','as'),
- (37,'aa','aa','aaa@gmail.com','booo','as'),
- (38,'Zaposlenik','zap','zap@gmail.com','zaposlenik','password');
 INSERT INTO "card" ("id","card_number","code","expiration_date") VALUES (0,'1234567789534555','1234','JANUARY/2022'),
  (1,'1234567891234566','342','JANUARY/2022'),
  (2,'1234567891234567','123','31/JANUARY/2021'),
  (3,'1234567123456784','2222','31/1/2023');
+INSERT INTO "user" ("id","first_name","last_name","email","username","password") VALUES (1,'Irma','Dedic','idedic2@etf.unsa.ba','idedic2','password'),
+ (2,'Zaposlenik','Zaposlenikovic','zaposlenik@gmail.com','zaposlenik','password'),
+ (3,'Klijent','Klijentijevic','klijent@gmail.com','klijent','password');
+INSERT INTO "client" ("id","address","telephone") VALUES (3,'Klijentova adresa','062333457');
+INSERT INTO "employee" ("id","admin") VALUES (1,'yes'),
+ (2,'no');
 COMMIT;

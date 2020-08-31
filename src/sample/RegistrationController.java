@@ -16,10 +16,7 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import javax.swing.plaf.synth.SynthDesktopIconUI;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -47,7 +44,7 @@ public class RegistrationController {
     private Client client;
     private Employee employee;
     private User user;
-    public Label lblText;
+    public Label lblRegistrationText;
     private String username;
     public boolean sveOk=true;
     private String userType;
@@ -168,8 +165,8 @@ public class RegistrationController {
             //user je klijent
             if (client!=null) {
                 if (!username.equals(""))
-                    lblText.setText("Podaci o klijentu");
-                else lblText.setText("Vaši podaci");
+                    lblRegistrationText.setText("Podaci o klijentu");
+                else lblRegistrationText.setText("Vaši podaci");
                 fldFirstName.setText(client.getFirstName());
                 fldLastName.setText(client.getLastName());
                 fldEmail.setText(client.getEmail());
@@ -182,8 +179,8 @@ public class RegistrationController {
             }
             else if(employee!=null){
                 if (!username.equals(""))
-                lblText.setText("Podaci o zaposleniku");
-                else lblText.setText("Vaši podaci");
+                    lblRegistrationText.setText("Podaci o zaposleniku");
+                else lblRegistrationText.setText("Vaši podaci");
                 fldFirstName.setText(employee.getFirstName());
                 fldLastName.setText(employee.getLastName());
                 fldEmail.setText(employee.getEmail());
@@ -201,17 +198,17 @@ public class RegistrationController {
             initMail = fldEmail.getText();
             //klijent se sam dodaje
             if (username.equals("") && userType.equals("client")) {
-                lblText.setText("Kreirajte Vaš račun");
+                lblRegistrationText.setText("Kreirajte Vaš račun");
                 //ovdje je uvijek prazno polje
                 //initMail = fldEmail.getText();
             }
             if(!username.equals("") && userType.equals("client")){
-                lblText.setText("Dodajte novog klijenta");
+                lblRegistrationText.setText("Dodajte novog klijenta");
                 //ovdje je uvijek prazno polje
                 //initMail = fldEmail.getText();
             }
             if(!username.equals("") && userType.equals("employee")){
-                lblText.setText("Dodajte novog zaposlenika");
+                lblRegistrationText.setText("Dodajte novog zaposlenika");
                 //ovdje je uvijek prazno polje
                 //initMail = fldEmail.getText();
                 lblAddress.setVisible(false);
@@ -689,4 +686,5 @@ if(client!=null || employee!=null) {
         }
 
     }
+
 }

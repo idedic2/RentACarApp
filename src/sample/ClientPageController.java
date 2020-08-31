@@ -30,7 +30,7 @@ public class ClientPageController {
     public TableColumn colTransmission;
     public TableColumn colPrice;
     public TableColumn colId;
-    public Label lblWelcome;
+    public Label lblWelcomeClient;
     public ChoiceBox<String>choiceType;
     private Client client;
     private RentACarDAO rentACarDAO;
@@ -48,7 +48,7 @@ public class ClientPageController {
     }
     @FXML
     public void initialize() {
-        lblWelcome.setText(lblWelcome.getText()+" "+client.getUsername());
+        lblWelcomeClient.setText(lblWelcomeClient.getText()+" "+client.getUsername());
         tableViewCars.setItems(listVehicles);
         //choiceType.setValue("Putnicki automobil");
         //colId.setCellValueFactory(new PropertyValueFactory("id"));
@@ -435,7 +435,7 @@ public class ClientPageController {
            stage.setOnHiding( event -> {
                Client newClient = registrationController.getClient();
            if (newClient != null) {
-               lblWelcome.setText("Dobrodošli "+client.getUsername());
+               lblWelcomeClient.setText("Dobrodošli "+client.getUsername());
            }
            } );
        } catch (IOException e) {

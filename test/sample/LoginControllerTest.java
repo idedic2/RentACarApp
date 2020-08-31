@@ -28,7 +28,6 @@ class LoginControllerTest {
     Stage theStage;
     LoginController ctrl;
 
-
     @Start
     public void start (Stage stage) throws Exception {
         RentACarDAO dao = RentACarDAO.getInstance();
@@ -120,7 +119,7 @@ class LoginControllerTest {
     void loginConfirmAction3(FxRobot robot) {
         TextField username = robot.lookup("#fldUsername").queryAs(TextField.class);
         robot.clickOn("#fldUsername");
-        robot.write("suljo");
+        robot.write("klijent");
         PasswordField password = robot.lookup("#fldPassword").queryAs(PasswordField.class);
         robot.clickOn("#fldPassword");
         robot.write("password");
@@ -145,8 +144,8 @@ class LoginControllerTest {
         robot.clickOn("#radioClient");
         robot.clickOn("#btnLoginConfirm");
         assertFalse(theStage.isShowing());
-        robot.lookup("#lblWelcome").tryQuery().isPresent();
-        Label lbl=robot.lookup("#lblWelcome").queryAs(Label.class);
+        robot.lookup("#lblWelcomeClient").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblWelcomeClient").queryAs(Label.class);
         assertNotNull(lbl);
         Stage stage= (Stage) lbl.getScene().getWindow();
         Platform.runLater(() -> stage.close());
@@ -155,7 +154,7 @@ class LoginControllerTest {
     void loginConfirmAction4(FxRobot robot) {
         TextField username = robot.lookup("#fldUsername").queryAs(TextField.class);
         robot.clickOn("#fldUsername");
-        robot.write("john");
+        robot.write("zaposlenik");
         PasswordField password = robot.lookup("#fldPassword").queryAs(PasswordField.class);
         robot.clickOn("#fldPassword");
         robot.write("password");

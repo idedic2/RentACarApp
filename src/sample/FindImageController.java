@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,11 +33,24 @@ public class FindImageController{
 
     public void stopSearch() {
         continueSearch = false;
+        //thread.stop();
     }
+
+
 
     @FXML
     public void initialize() {
         //listImages.setItems(obslistImages);
+        thread=new Thread(() -> {
+            switch (Util.getOS()) {
+                case WINDOWS:
+                    searchDirectory(new File("C:\\Users"));
+                    break;
+                case LINUX:
+                    searchDirectory(new File("/"));
+                    break;
+            }
+        });
     }
 
     public void searchDirectory(File directory) {
@@ -50,20 +64,24 @@ public class FindImageController{
 
     private void search(File file) {
         if (!continueSearch) return;
-        if (file.isDirectory() && Files.exists(file.toPath()) && !file.isHidden() ) {
+        if (file.isDirectory() && Files.exists(file.toPath()) && !file.isHidden()) {
             System.out.println("Searching directory ... " + file.getAbsoluteFile());
             //do you have permission to read this directory?
             if (file.canRead() && !file.isHidden() ) {
                 for (File temp : file.listFiles()) {
-                    System.out.println(temp.getPath());
-                    System.out.println(temp.getAbsolutePath());
+                    //System.out.println(temp.getPath());
+
+                    System.out.println("File:" + temp.getAbsolutePath());
                     if (temp.isDirectory()) {
                         //if(temp.isHidden() || Files.notExists(temp.toPath()))continue;
                         search(temp);
                     } else {
                         if (temp.getAbsolutePath().contains(fldFindImage.getText())) {
-                            obslistImages.add(temp.getAbsoluteFile().toString());
-                            listImages.setItems(obslistImages);
+
+                            Platform.runLater(() ->
+                                    {obslistImages.add(temp.getAbsoluteFile().toString());
+                                    listImages.setItems(obslistImages);}
+                            );
                         }
                     }
                 }
@@ -84,17 +102,8 @@ public class FindImageController{
         public void findImageAction (ActionEvent actionEvent) {
             //try different directory and filename :)
             continueSearch = true;
-            thread=new Thread(() -> {
-                switch (Util.getOS()) {
-                    case WINDOWS:
-                        searchDirectory(new File("C:\\Users"));
-                        break;
-                    case LINUX:
-                        searchDirectory(new File("/"));
-                        break;
-                }
-            });
             thread.start();
+            //thread.setDaemon(true);
         }
     public void confirmImageAction(ActionEvent actionEvent) {
         boolean sveOk = true;

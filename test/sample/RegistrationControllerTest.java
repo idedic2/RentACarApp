@@ -32,6 +32,9 @@ class RegistrationControllerTest {
 
     @Start
     public void start (Stage stage) throws Exception {
+        RentACarDAO.removeInstance();
+        File dbfile = new File("rentacar.db");
+        dbfile.delete();
         RentACarDAO dao = RentACarDAO.getInstance();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registration.fxml"));
         ctrl = new RegistrationController(null, "", "client");
@@ -44,8 +47,38 @@ class RegistrationControllerTest {
         stage.toFront();
         theStage = stage;
     }
-
-
+    @Test
+    void registrationConfirmAction(FxRobot robot) {
+        robot.clickOn("#fldFirstName");
+        robot.write("Klijent");
+        robot.clickOn("#fldLastName");
+        robot.write("Klijentijević");
+        robot.clickOn("#fldEmail");
+        robot.write("klijent@gmail.com");
+        robot.clickOn("#fldUsername");
+        robot.write("klijent123");
+        robot.clickOn("#fldPassword");
+        robot.write("password");
+        robot.clickOn("#fldRetypePassword");
+        robot.write("password");
+        robot.clickOn("#fldAddress");
+        robot.write("Klijentova adresa");
+        robot.clickOn("#fldTelephone");
+        robot.write("062333457");
+        // Klik na dugme ok
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        robot.lookup("#lblWelcomeClient").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblWelcomeClient").queryAs(Label.class);
+        assertNotNull(lbl);
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
     @Test
     void backRegistrationAction(FxRobot robot) {
         robot.clickOn("#btnBackRegistration");

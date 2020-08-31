@@ -211,11 +211,11 @@ public class AddVehicleController {
             showAlert("Greška", "Cijena mora sadržavati isključivo brojeve", Alert.AlertType.ERROR);
             return;
         }
-
+        if(vehicle==null){
             if (imagePath.equals("")) {
                 showAlert("Greška", "Morate dodati fotografiju vozila", Alert.AlertType.ERROR);
                 return;
-
+            }
         }
         if (!sveOk) return;
         if (vehicle == null) vehicle = new Vehicle();

@@ -23,7 +23,7 @@
       <RowConstraints maxHeight="40.0" minHeight="23.0" prefHeight="50.0" />
   </rowConstraints>
    <children>
-      <Label prefHeight="55.0" prefWidth="253.0" text="Unesite Vaše pristupne podatke" GridPane.rowIndex="1">
+      <Label fx:id="lblLoginText" prefHeight="55.0" prefWidth="253.0" text="Unesite Vaše pristupne podatke" GridPane.rowIndex="1">
          <font>
             <Font size="18.0" />
          </font>

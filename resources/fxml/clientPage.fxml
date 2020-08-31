@@ -24,21 +24,21 @@
    <children>
        <MenuBar prefHeight="25.0" prefWidth="347.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
            <menus>
-               <Menu mnemonicParsing="false" text="Profil">
+               <Menu fx:id="menuProfil" mnemonicParsing="false" text="Profil">
                    <items>
-                       <MenuItem mnemonicParsing="false" text="Uredi profil" onAction="#editProfilAction"/>
-                       <MenuItem mnemonicParsing="false" text="Obriši profil" onAction="#deleteProfilAction"/>
-                       <MenuItem mnemonicParsing="false" text="Odjavi se" onAction="#logOutAction"/>
+                       <MenuItem fx:id="editProfil" mnemonicParsing="false" onAction="#editProfilAction" text="Uredi profil" />
+                       <MenuItem fx:id="deleteProfil" mnemonicParsing="false" onAction="#deleteProfilAction" text="Obriši profil" />
+                       <MenuItem fx:id="menuItemLogOut" mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
                    </items>
                </Menu>
                <Menu mnemonicParsing="false" text="Rezervacije">
                    <items>
-                       <MenuItem mnemonicParsing="false" text="Uredi rezervaciju" onAction="#editMyReservationsAction"/>
+                       <MenuItem mnemonicParsing="false" onAction="#editMyReservationsAction" text="Uredi rezervaciju" />
                    </items>
                </Menu>
-               <Menu mnemonicParsing="false" text="Pomoć">
+               <Menu fx:id="menuHelp" mnemonicParsing="false" text="Pomoć">
                    <items>
-                       <MenuItem mnemonicParsing="false" text="O aplikaciji" onAction="#aboutAction"/>
+                       <MenuItem fx:id="menuItemAboutApp" mnemonicParsing="false" onAction="#aboutAction" text="O aplikaciji" />
                    </items>
                </Menu>
            </menus>
@@ -65,7 +65,7 @@
           </items>
       </ChoiceBox>
 
-      <Label fx:id="lblWelcome" text="Dobrodošli" GridPane.rowIndex="2">
+      <Label fx:id="lblWelcomeClient" text="Dobrodošli" GridPane.rowIndex="2">
          <font>
             <Font size="19.0" />
          </font></Label>

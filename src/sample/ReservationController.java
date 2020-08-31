@@ -531,6 +531,7 @@ public class ReservationController {
                 }
                 try{
                 Reservation reservation = new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue() + ":" + choicePickupMinute.getValue(), choiceReturnHour.getValue() + ":" + choiceReturnMinute.getValue(), card);
+               this.reservation=reservation;
                 }
                 catch (NegativeNumberException e){
                     e.printStackTrace();

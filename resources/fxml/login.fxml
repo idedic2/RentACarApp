@@ -48,7 +48,7 @@
             <Insets />
          </GridPane.margin>
          <buttons>
-            <Button mnemonicParsing="false" onAction="#backLoginAction" text="Nazad" />
+            <Button fx:id="btnBackLogin" mnemonicParsing="false" onAction="#backLoginAction" text="Nazad" />
          </buttons>
       </ButtonBar>
       <RadioButton fx:id="radioEmployee" mnemonicParsing="false" text="Zaposlenik" toggleGroup="$toggleGroup" GridPane.rowIndex="4">

@@ -44,9 +44,9 @@
                        <MenuItem fx:id="btnLogOut" mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
                    </items>
                </Menu>
-               <Menu mnemonicParsing="false" text="Pomoć">
+               <Menu fx:id="menuHelp" mnemonicParsing="false" text="Pomoć">
                    <items>
-                       <MenuItem mnemonicParsing="false" onAction="#aboutAction" text="O aplikaciji" />
+                       <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#aboutAction" text="O aplikaciji" />
                    </items>
                </Menu>
            </menus>

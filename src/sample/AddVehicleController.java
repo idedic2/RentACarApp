@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
-public class AddCarController {
+public class AddVehicleController {
     public TextField fldName;
     public TextField fldBrand;
     public TextField fldModel;
@@ -46,7 +46,7 @@ public class AddCarController {
     public Vehicle getVehicle() {
         return vehicle;
     }
-    public AddCarController(Vehicle vehicle) {
+    public AddVehicleController(Vehicle vehicle) {
         this.vehicle=vehicle;
         if(vehicle!=null)
         this.edit=true;
@@ -58,6 +58,7 @@ public class AddCarController {
             System.out.println(path);
             Image image = new Image(path);
             placeholderImage.setImage(image);
+            imagePath=vehicle.getImage();
            fldName.setText(vehicle.getName());
            fldBrand.setText(vehicle.getBrand());
            fldModel.setText(vehicle.getModel());
@@ -171,6 +172,7 @@ public class AddCarController {
         error.show();
     }
     public void addConfirmAction(ActionEvent actionEvent) {
+
         boolean sveOk=true;
         if(fldName.getText().trim().isEmpty()){
             sveOk=false;
@@ -209,9 +211,11 @@ public class AddCarController {
             showAlert("Greška", "Cijena mora sadržavati isključivo brojeve", Alert.AlertType.ERROR);
             return;
         }
-        if(imagePath.equals("")){
-            showAlert("Greška", "Morate dodati fotografiju vozila", Alert.AlertType.ERROR);
-            return;
+
+            if (imagePath.equals("")) {
+                showAlert("Greška", "Morate dodati fotografiju vozila", Alert.AlertType.ERROR);
+                return;
+
         }
         if (!sveOk) return;
         if (vehicle == null) vehicle = new Vehicle();
@@ -223,6 +227,8 @@ public class AddCarController {
         vehicle.setTransmission(choiceTransmission.getValue());
         vehicle.setType(choiceType.getValue());
         vehicle.setImage(imagePath);
+        placeholderImage.setImage(new Image("File:"+vehicle.getImage()));
+        //placeholderImage.setImage(new Image(imagePath));
         System.out.println("dodavanje u vozilo" +vehicle.getImage());
         try {
             vehicle.setDoorsNumber(spinnerNmbDoors.getValue());

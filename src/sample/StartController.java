@@ -46,7 +46,7 @@ public class StartController {
             root = loader.load();
             primaryStage.setTitle("Registrujte se");
             primaryStage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
-            primaryStage.setResizable(true);
+            primaryStage.setResizable(false);
             primaryStage.show();
             primaryStage.setOnHiding( event -> {
                 System.out.println("Closed ...");

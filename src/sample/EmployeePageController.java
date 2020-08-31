@@ -1,11 +1,8 @@
 package sample;
 
-import com.sun.javaws.jnl.XMLFormat;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,40 +14,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import net.sf.jasperreports.engine.JRException;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import sun.util.cldr.CLDRLocaleDataMetaInfo;
 
-import javax.xml.crypto.Data;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
@@ -284,9 +257,9 @@ public class EmployeePageController {
         Stage stage = new Stage();
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addCar.fxml"));
-            AddCarController addCarController = new AddCarController(null);
-            loader.setController(addCarController);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addVehicle.fxml"));
+            AddVehicleController addVehicleController = new AddVehicleController(null);
+            loader.setController(addVehicleController);
             root = loader.load();
             stage.setTitle("Dodavanje novog vozila");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
@@ -294,7 +267,7 @@ public class EmployeePageController {
             stage.show();
 
             stage.setOnHiding( event -> {
-                Vehicle vehicle = addCarController.getVehicle();
+                Vehicle vehicle = addVehicleController.getVehicle();
                 //System.out.println("prije stavljanja u bazu"+vehicle.getImage());
                 if (vehicle != null) {
                     rentACarDAO.addVehicle(vehicle);
@@ -325,9 +298,9 @@ public class EmployeePageController {
                             Stage stage = new Stage();
                             Parent root = null;
                             try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addCar.fxml"));
-                                AddCarController addCarController = new AddCarController(vehicle);
-                                loader.setController(addCarController);
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addVehicle.fxml"));
+                                AddVehicleController addVehicleController = new AddVehicleController(vehicle);
+                                loader.setController(addVehicleController);
                                 root = loader.load();
                                 stage.setTitle("Izmijeni vozilo");
                                 stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
@@ -335,7 +308,7 @@ public class EmployeePageController {
                                 stage.show();
 
                                 stage.setOnHiding( event2 -> {
-                                    Vehicle newVehicle = addCarController.getVehicle();
+                                    Vehicle newVehicle = addVehicleController.getVehicle();
                                     if (newVehicle != null) {
                                         //ako je vozilo rezervisano trenutno ne smije se mijenjati
                                         rentACarDAO.editVehicle(newVehicle);
@@ -540,9 +513,9 @@ public class EmployeePageController {
         Stage stage = new Stage();
         Parent root = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addCar.fxml"));
-            AddCarController addCarController = new AddCarController(vehicle);
-            loader.setController(addCarController);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addVehicle.fxml"));
+            AddVehicleController addVehicleController = new AddVehicleController(vehicle);
+            loader.setController(addVehicleController);
             root = loader.load();
             stage.setTitle("Izmijeni vozilo");
             stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
@@ -550,7 +523,7 @@ public class EmployeePageController {
             stage.show();
 
             stage.setOnHiding( event -> {
-                Vehicle newVehicle = addCarController.getVehicle();
+                Vehicle newVehicle = addVehicleController.getVehicle();
                 if (newVehicle != null) {
                     //ako je vozilo rezervisano trenutno ne smije se mijenjati
                         rentACarDAO.editVehicle(newVehicle);
@@ -603,7 +576,7 @@ public class EmployeePageController {
             stage.setOnHiding( event -> {
                 Client client = registrationController.getClient();
                 if (client != null) {
-                    rentACarDAO.addClient(client);
+                    //rentACarDAO.addClient(client);
                     listClients.setAll(rentACarDAO.getClients());
                 }
             } );

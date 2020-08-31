@@ -59,7 +59,7 @@
             <Insets />
          </GridPane.margin>
          <buttons>
-            <Button mnemonicParsing="false" onAction="#backRegistrationAction" text="Nazad" />
+            <Button fx:id="btnBackRegistration" mnemonicParsing="false" onAction="#backRegistrationAction" text="Nazad" />
          </buttons>
       </ButtonBar>
     </children>

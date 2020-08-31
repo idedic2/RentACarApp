@@ -23,7 +23,7 @@
       <RowConstraints />
     </rowConstraints>
     <children>
-        <Label alignment="TOP_LEFT" maxHeight="Infinity" maxWidth="Infinity" text="O aplikaciji" GridPane.columnIndex="1">
+        <Label fx:id="lblAboutApplication" alignment="TOP_LEFT" maxHeight="Infinity" maxWidth="Infinity" text="O aplikaciji" GridPane.columnIndex="1">
             <GridPane.margin>
                 <Insets top="3.0" />
             </GridPane.margin>

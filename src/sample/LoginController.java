@@ -130,6 +130,7 @@ public class LoginController {
             return;
         }
         Stage mainStage = getNewStage(selectedRadio.getText());
+        //ovdje je sigurno neko dugme odabrano
         if (mainStage == null) {
             //System.out.println("lfsgl");
             return;

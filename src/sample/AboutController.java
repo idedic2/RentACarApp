@@ -11,6 +11,9 @@ public class AboutController {
     public Button buttonOk;
     public ImageView imageViewAbout;
 
+    public AboutController() {
+    }
+
     @FXML
     public void initialize() {
         imageViewAbout.setImage(new Image("/images/about.png"));

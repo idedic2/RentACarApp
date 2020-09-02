@@ -36,8 +36,6 @@ public class FindImageController{
         //thread.stop();
     }
 
-
-
     @FXML
     public void initialize() {
         //listImages.setItems(obslistImages);
@@ -138,6 +136,7 @@ public class FindImageController{
         Stage stage2 = (Stage) fldFindImage.getScene().getWindow();
         stage2.close();
     }
+
 
 }
 

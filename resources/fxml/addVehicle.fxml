@@ -74,7 +74,7 @@
         </ChoiceBox>
         <ButtonBar prefHeight="30.0" prefWidth="241.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="20">
             <buttons>
-                <Button fx:id="btnAddConfirm" mnemonicParsing="false" onAction="#addConfirmAction" text="OK" />
+                <Button fx:id="btnAddConfirm" mnemonicParsing="false" onAction="#addConfirmAction" text="Potvrdi" />
                 <Button fx:id="btnCloseAddCar" mnemonicParsing="false" onAction="#CloseAddCarAction" prefHeight="25.0" prefWidth="162.0" text="Zatvori" />
             </buttons>
         </ButtonBar>
@@ -87,7 +87,7 @@
                 </FXCollections>
             </items>
         </ChoiceBox>
-        <Label text="Naziv:" />
+        <Label fx:id="lblNameVehicle" text="Naziv:" />
         <TextField fx:id="fldName" prefWidth="147.0" GridPane.columnIndex="1" />
         <ComboBox fx:id="comboYear" editable="true" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <items>
@@ -128,7 +128,12 @@
         </ComboBox>
         <Label text="Dostupnost:" GridPane.rowIndex="12" />
         <CheckBox fx:id="checkAvailability" mnemonicParsing="false" text="DA" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-        <Button mnemonicParsing="false" onAction="#addImageAction" text="Dodaj" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+      <ButtonBar GridPane.columnIndex="1" GridPane.rowIndex="13">
+         <buttons>
+              <Button mnemonicParsing="false" onAction="#addImageAction" prefHeight="25.0" prefWidth="130.0" text="Učitaj" />
+            <Button fx:id="btnChooseImage" mnemonicParsing="false" onAction="#chooesImageAction" text="Odaberi" />
+         </buttons>
+      </ButtonBar>
         <Label text="Dodaj sliku:" GridPane.rowIndex="13" />
         <ImageView fx:id="placeholderImage" fitHeight="171.0" fitWidth="266.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.rowSpan="5" />
     </children>

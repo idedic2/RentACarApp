@@ -1,41 +1,61 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.io.File;
 
 public class VehicleImagesController {
-    public GridPane grid;
+
+    public ListView<String> listViewImages;
+    public ObservableList<String> listImages;
+    private String path;
+    public VehicleImagesController(){
+        listImages = FXCollections.observableArrayList();
+    }
+    private void showAlert(String title, String headerText, Alert.AlertType type) {
+        Alert error = new Alert(type);
+        error.setTitle(title);
+        error.setHeaderText(headerText);
+        error.show();
+    }
+
+    public String getPath() {
+        return path;
+    }
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         File folder = new File("resources/images");
         File[] listOfFiles = folder.listFiles();
-        int x = 0, y = 0;
-
+        //System.out.println(listOfFiles.length);
         for (int i = 0; i < listOfFiles.length; i++) {
-                Image image = new Image(listOfFiles[i].toURI().toString());
-                //Image image = new Image("file:/C:/Users/Windows%2010/IdeaProjects/projekat/resources/images/admin.png");
-                System.out.println(listOfFiles[i].toURI().toString());
-                ImageView imageView = new ImageView(image);
-                imageView.setFitHeight(300);
-                imageView.setFitWidth(300);
-                //grid.add(imageView,0,0);
-                HBox hBox=new HBox(imageView);
-                grid.add(imageView, x, y);
-
-                if (x % 3 == 0) {
-                    y++;
-                    x=0;
-                }
-
+            String url = listOfFiles[i].toURI().toString();
+            if (!url.contains("Vehicle")) continue;
+            listImages.add(url);
+            //System.out.println(url);
         }
+        listViewImages.setItems(listImages);
+    }
+    public void confirmChoosenImageAction(ActionEvent actionEvent){
+        if(listViewImages.getSelectionModel().getSelectedItem()==null){
+            showAlert("Greška", "Morate odabrati fotografiju", Alert.AlertType.ERROR);
+            return;
+        }
+        path=listViewImages.getSelectionModel().getSelectedItem();
+        Stage stage= (Stage) listViewImages.getScene().getWindow();
+        stage.close();
     }
 }

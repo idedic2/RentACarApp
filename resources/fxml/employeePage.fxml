@@ -40,7 +40,7 @@
                </Menu>
                <Menu mnemonicParsing="false" text="Profil" fx:id="profil">
                    <items>
-                       <MenuItem mnemonicParsing="false" onAction="#editProfilAction" text="Uredi profil" />
+                       <MenuItem fx:id="btnEditProfilEmployee" mnemonicParsing="false" onAction="#editProfilAction" text="Uredi profil" />
                        <MenuItem fx:id="btnLogOut" mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
                    </items>
                </Menu>
@@ -53,7 +53,7 @@
        </MenuBar>
       <TabPane fx:id="tabPane" prefHeight="149.0" prefWidth="264.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
         <tabs>
-          <Tab text="Vozila">
+          <Tab fx:id="tabVehicles" text="Vozila">
             <content>
               <GridPane minHeight="0.0" minWidth="0.0" prefHeight="268.0" prefWidth="888.0">
                      <columnConstraints>

@@ -113,21 +113,29 @@ public class RegistrationController {
                                         //validno preko metode
                                         if (isValidEmailAddress(fldEmail.getText())) {
                                             try {
-                                                if (!validateEmail(fldEmail.getText())) {
-                                                    sveOk = false;
-                                                    fldEmail.getStyleClass().removeAll("ispravnoPolje");
-                                                    fldEmail.getStyleClass().add("neispravnoPolje");
-                                                } else {
+                                                //if (!rentACarDAO.existEmail(fldEmail.getText())) {
+                                                    if (!validateEmail(fldEmail.getText())) {
+                                                        sveOk = false;
+                                                        fldEmail.getStyleClass().removeAll("ispravnoPolje");
+                                                        fldEmail.getStyleClass().add("neispravnoPolje");
+                                                    } else {
+                                                        sveOk = true;
+                                                        fldEmail.getStyleClass().removeAll("neispravnoPolje");
+                                                        fldEmail.getStyleClass().add("ispravnoPolje");
+                                                    }
+                                                //}
+                                                /*else{
                                                     sveOk = true;
                                                     fldEmail.getStyleClass().removeAll("neispravnoPolje");
                                                     fldEmail.getStyleClass().add("ispravnoPolje");
-                                                }
-                                            } catch (UnsupportedEncodingException e) {
+                                                }*/
+                                            }catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
                                             } catch (MalformedURLException e) {
                                                 e.printStackTrace();
                                             }
-                                        } else {
+                                        }
+                                         else{
                                             sveOk = false;
                                             fldEmail.getStyleClass().removeAll("ispravnoPolje");
                                             fldEmail.getStyleClass().add("neispravnoPolje");

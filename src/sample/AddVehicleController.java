@@ -21,6 +21,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 
@@ -54,7 +55,7 @@ public class AddVehicleController {
     @FXML
     public void initialize() {
         if (vehicle != null) {
-            String path="File:"+vehicle.getImage();
+            String path=vehicle.getImage();
             System.out.println(path);
             Image image = new Image(path);
             placeholderImage.setImage(image);
@@ -203,6 +204,10 @@ public class AddVehicleController {
                 showAlert("Greška", "Godina mora sadržavati isključivo brojeve", Alert.AlertType.ERROR);
                 return;
             }
+        if(Integer.parseInt(comboYear.getValue())> LocalDate.now().getYear()){
+            showAlert("Greška", "Godina proizvodnje ne smije biti iz budućnosti", Alert.AlertType.ERROR);
+            return;
+        }
         if(!validationForDouble(comboFuelConsumption.getValue())){
             showAlert("Greška", "Potrošnja mora sadržavati isključivo brojeve", Alert.AlertType.ERROR);
             return;
@@ -227,7 +232,7 @@ public class AddVehicleController {
         vehicle.setTransmission(choiceTransmission.getValue());
         vehicle.setType(choiceType.getValue());
         vehicle.setImage(imagePath);
-        placeholderImage.setImage(new Image("File:"+vehicle.getImage()));
+        placeholderImage.setImage(new Image(vehicle.getImage()));
         //placeholderImage.setImage(new Image(imagePath));
         System.out.println("dodavanje u vozilo" +vehicle.getImage());
         try {
@@ -296,7 +301,7 @@ public class AddVehicleController {
                         placeholderImage.setImage(image);
                     }
                     //findImageController.getThread().stop();
-                    findImageController.stopSearch();
+                    //findImageController.stopSearch();
 
                     //if (!imagePath.equals("")) {
                     //rentACarDAO.editReservation(newReservation);
@@ -332,4 +337,29 @@ public class AddVehicleController {
        File selectedFile = fileChooser.showOpenDialog(fldBrand.getScene().getWindow());
 
    }*/
+   public void chooesImageAction(ActionEvent actionEvent) {
+       try {
+           Stage stage = new Stage();
+           Parent root = null;
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/vehicleImages.fxml"));
+           VehicleImagesController vehicleImagesController = new VehicleImagesController();
+           loader.setController(vehicleImagesController);
+           root = loader.load();
+           stage.setTitle("Slike");
+           stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
+           stage.setResizable(true);
+           stage.show();
+           stage.setOnHiding(event -> {
+               imagePath = vehicleImagesController.getPath();
+               System.out.println("kod zatvaranja forme" + imagePath);
+               if (!imagePath.equals("")) {
+                   Image image = new Image(imagePath);
+                   placeholderImage.setImage(image);
+               }
+           });
+       }
+       catch (Exception e){
+           e.printStackTrace();
+       }
+   }
 }

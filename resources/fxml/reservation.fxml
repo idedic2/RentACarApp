@@ -133,7 +133,7 @@
       </ButtonBar>
       <ButtonBar GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.rowIndex="6">
          <buttons>
-          <Button fx:id="btnReservationConfirm" mnemonicParsing="false" onAction="#reservationConfirmAction" prefHeight="25.0" prefWidth="60.0" text="OK" />
+          <Button fx:id="btnReservationConfirm" mnemonicParsing="false" onAction="#reservationConfirmAction" prefHeight="25.0" prefWidth="60.0" text="Potvrdi" />
          </buttons>
       </ButtonBar>
       <Label fx:id="lblTotalPrice" text="*UKUPNA CIJENA JE " GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="5" />

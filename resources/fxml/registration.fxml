@@ -45,7 +45,7 @@
         <PasswordField fx:id="fldPassword" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
         <buttons>
-          <Button fx:id="btnRegistrationConfirm" mnemonicParsing="false" onAction="#registrationConfirmAction" text="OK" />
+          <Button fx:id="btnRegistrationConfirm" mnemonicParsing="false" onAction="#registrationConfirmAction" text="Potvrdi" />
         </buttons>
       </ButtonBar>
       <Label text="Ponovi lozinku:" GridPane.rowIndex="7" />

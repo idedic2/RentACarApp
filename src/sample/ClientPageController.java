@@ -64,7 +64,7 @@ public class ClientPageController {
         reservationButton();
     }
     private void detailsButton() {
-        TableColumn<Vehicle, Void> colBtn = new TableColumn("Detalji");
+        TableColumn<Vehicle, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>> cellFactory = new Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>>() {
             @Override
             public TableCell<Vehicle, Void> call(final TableColumn<Vehicle, Void> param) {
@@ -123,7 +123,7 @@ public class ClientPageController {
         tableViewCars.getColumns().add(colBtn);
     }
     private void priceButton() {
-        TableColumn<Vehicle, Void> colBtn = new TableColumn("Cijena");
+        TableColumn<Vehicle, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>> cellFactory = new Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>>() {
             @Override
             public TableCell<Vehicle, Void> call(final TableColumn<Vehicle, Void> param) {
@@ -182,7 +182,7 @@ public class ClientPageController {
         tableViewCars.getColumns().add(colBtn);
     }
     private void reservationButton() {
-        TableColumn<Vehicle, Void> colBtn = new TableColumn("Rezervacija");
+        TableColumn<Vehicle, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>> cellFactory = new Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>>() {
             @Override
             public TableCell<Vehicle, Void> call(final TableColumn<Vehicle, Void> param) {

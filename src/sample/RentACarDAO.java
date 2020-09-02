@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class RentACarDAO {
     private static RentACarDAO instance;
     private Connection conn;
-    private PreparedStatement getEmployeePerUsernameQuery, getClientPerUsernameQuery, addEmployeeQuery, deleteEmployeeQuery, editEmployeeQuery, getEmployeesQuery, editReservationQuery, getVehiclesPerAvailabilityQuery, deleteCardQuery, deleteReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getEmployeeQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getUserPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
+    private PreparedStatement existEmailQuery, getEmployeePerUsernameQuery, getClientPerUsernameQuery, addEmployeeQuery, deleteEmployeeQuery, editEmployeeQuery, getEmployeesQuery, editReservationQuery, getVehiclesPerAvailabilityQuery, deleteCardQuery, deleteReservationQuery, getClientPerIdQuery, getReservationsQuery, deleteUserQuery, deleteClientQuery, editUserQuery, editClientQuery, getClientsQuery,doesExistCardQuery, getClientQuery, getEmployeeQuery, maxClientIdQuery, getUsersQuery,getUserQuery,addUserQuery,maxIdUserQuery,getVehiclesQuery,addVehicleQuery,maxIdVehicleQuery,editVehicleQuery,deleteVehicleQuery,getVehiclesPerTypeQuery,getVehiclePerIdQuery, getUserPerUsername, addReservationQuery, maxReservationIdQuery, maxIdCardQuery, addCardQuery, addClientQuery, getCardQuery, getUserPerId;
 
     private RentACarDAO() {
         try {
@@ -68,6 +68,7 @@ public class RentACarDAO {
             addEmployeeQuery=conn.prepareStatement("INSERT INTO employee VALUES(?,?)");
             getClientPerUsernameQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, c.address, c.telephone FROM user u, client c WHERE c.id=u.id AND u.username=?");
             getEmployeePerUsernameQuery=conn.prepareStatement("SELECT u.id, u.first_name, u.last_name, u.email, u.username, u.password, e.admin FROM user u, employee e WHERE e.id=u.id AND u.username=?");
+            existEmailQuery=conn.prepareStatement("SELECT * FROM user WHERE email=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -696,6 +697,16 @@ public class RentACarDAO {
             e.printStackTrace();
         }
         return employee;
+    }
+    public boolean existEmail(String email){
+        try{
+            existEmailQuery.setString(1, email);
+            ResultSet rs=existEmailQuery.executeQuery();
+            if(rs.next())return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

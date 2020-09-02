@@ -44,11 +44,6 @@ class ClientPageControllerTest {
     }
 
     @Test
-    void editMyReservationsAction(FxRobot robot) {
-
-    }
-
-    @Test
     void editProfilAction(FxRobot robot) {
         robot.clickOn("#menuProfil");
         robot.clickOn("#editProfil");
@@ -139,7 +134,20 @@ class ClientPageControllerTest {
         robot.lookup("#lblAboutApplication").tryQuery().isPresent();
         Label lbl=robot.lookup("#lblAboutApplication").queryAs(Label.class);
         assertNotNull(lbl);
-        Stage stage= (Stage) lbl.getScene().getWindow();
-        Platform.runLater(() -> stage.close());
+        robot.clickOn("#buttonOk");
+        //Stage stage= (Stage) lbl.getScene().getWindow();
+        //Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void detailsButton(FxRobot robot) {
+        TableView tableView = robot.lookup("#tableViewCars").queryAs(TableView.class);
+        tableView.getSelectionModel().selectFirst();
+        robot.clickOn("Detalji");
+        robot.lookup("#lblName").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblName").queryAs(Label.class);
+        assertNotNull(lbl);
+        robot.clickOn("#btnBack");
+        assertTrue(theStage.isShowing());
+
     }
 }

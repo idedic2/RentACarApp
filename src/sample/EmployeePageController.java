@@ -205,7 +205,7 @@ public class EmployeePageController {
         tableViewReservations.getColumns().addAll( select);
     }
     private void deleteReservation() {
-        TableColumn<Reservation, Void> colBtn = new TableColumn("Brisanje");
+        TableColumn<Reservation, Void> colBtn = new TableColumn("");
 
         Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>> cellFactory = new Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>>() {
             @Override
@@ -279,15 +279,15 @@ public class EmployeePageController {
         }
     }
     private void editVehicle() {
-        TableColumn<Vehicle, Void> colBtn = new TableColumn("Mijenjanje");
+        TableColumn<Vehicle, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>> cellFactory = new Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>>() {
             @Override
             public TableCell<Vehicle, Void> call(final TableColumn<Vehicle, Void> param) {
                 final TableCell<Vehicle, Void> cell = new TableCell<Vehicle, Void>() {
                     private final Button btn = new Button("Izmijeni");
-
                     {
                         btn.setOnAction((ActionEvent event) -> {
+                            btn.setId("btnEditVehicle2");
                             Vehicle vehicle = getTableView().getItems().get(getIndex());
                             //System.out.println("selectedData: " + data);
                             //System.out.println(data.getReturnTime());
@@ -341,7 +341,7 @@ public class EmployeePageController {
 
     }
     private void deleteVehicle() {
-        TableColumn<Vehicle, Void> colBtn = new TableColumn("Brisanje");
+        TableColumn<Vehicle, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>> cellFactory = new Callback<TableColumn<Vehicle, Void>, TableCell<Vehicle, Void>>() {
             @Override
             public TableCell<Vehicle, Void> call(final TableColumn<Vehicle, Void> param) {
@@ -349,6 +349,7 @@ public class EmployeePageController {
                     private final Button btn = new Button("Obriši");
 
                     {
+                        btn.setId("btnDeleteVehicle2");
                         btn.setOnAction((ActionEvent event) -> {
                             Vehicle vehicle = getTableView().getItems().get(getIndex());
                             //System.out.println("selectedData: " + data);
@@ -359,8 +360,8 @@ public class EmployeePageController {
                             }
                             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                             alert.setTitle("Potvrda brisanja");
-                            alert.setHeaderText("Brisanje grada "+vehicle.getName());
-                            alert.setContentText("Da li ste sigurni da želite obrisati grad " +vehicle.getName()+"?");
+                            alert.setHeaderText("Brisanje vozila "+vehicle.getName());
+                            alert.setContentText("Da li ste sigurni da želite obrisati vozilo " +vehicle.getName()+"?");
                             Optional<ButtonType> result = alert.showAndWait();
                             if (result.get() == ButtonType.OK) {
                                 rentACarDAO.deleteVehicle(vehicle);
@@ -388,7 +389,7 @@ public class EmployeePageController {
 
     }
     private void editClient() {
-        TableColumn<Client, Void> colBtn = new TableColumn("Mijenjanje");
+        TableColumn<Client, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory = new Callback<TableColumn<Client, Void>, TableCell<Client, Void>>() {
             @Override
             public TableCell<Client, Void> call(final TableColumn<Client, Void> param) {
@@ -444,7 +445,7 @@ public class EmployeePageController {
 
     }
     private void deleteClient() {
-        TableColumn<Client, Void> colBtn = new TableColumn("Brisanje");
+        TableColumn<Client, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Client, Void>, TableCell<Client, Void>> cellFactory = new Callback<TableColumn<Client, Void>, TableCell<Client, Void>>() {
             @Override
             public TableCell<Client, Void> call(final TableColumn<Client, Void> param) {
@@ -552,8 +553,8 @@ public class EmployeePageController {
         }
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Potvrda brisanja");
-        alert.setHeaderText("Brisanje grada "+vehicle.getName());
-        alert.setContentText("Da li ste sigurni da želite obrisati grad " +vehicle.getName()+"?");
+        alert.setHeaderText("Brisanje vozila "+vehicle.getName());
+        alert.setContentText("Da li ste sigurni da želite obrisati vozilo " +vehicle.getName()+"?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
                 rentACarDAO.deleteVehicle(vehicle);
@@ -760,7 +761,7 @@ public class EmployeePageController {
         }
     }
     private void editReservation() {
-        TableColumn<Reservation, Void> colBtn = new TableColumn("Mijenjanje");
+        TableColumn<Reservation, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>> cellFactory = new Callback<TableColumn<Reservation, Void>, TableCell<Reservation, Void>>() {
             @Override
             public TableCell<Reservation, Void> call(final TableColumn<Reservation, Void> param) {
@@ -1028,7 +1029,7 @@ public class EmployeePageController {
     }
 
     private void editEmployee() {
-        TableColumn<Employee, Void> colBtn = new TableColumn("Mijenjanje");
+        TableColumn<Employee, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Employee, Void>, TableCell<Employee, Void>> cellFactory = new Callback<TableColumn<Employee, Void>, TableCell<Employee, Void>>() {
             @Override
             public TableCell<Employee, Void> call(final TableColumn<Employee, Void> param) {
@@ -1084,7 +1085,7 @@ public class EmployeePageController {
 
     }
     private void deleteEmployee() {
-        TableColumn<Employee, Void> colBtn = new TableColumn("Brisanje");
+        TableColumn<Employee, Void> colBtn = new TableColumn("");
         Callback<TableColumn<Employee, Void>, TableCell<Employee, Void>> cellFactory = new Callback<TableColumn<Employee, Void>, TableCell<Employee, Void>>() {
             @Override
             public TableCell<Employee, Void> call(final TableColumn<Employee, Void> param) {

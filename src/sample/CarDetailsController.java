@@ -66,7 +66,7 @@ public class CarDetailsController {
             lblAvailability.setText(vehicle.getAvailability());
             lblFuelConsumption.setText(Double.toString(vehicle.getFuelConsumption()));
             lblYear.setText(Integer.toString(vehicle.getYear()));
-            String path="File:"+vehicle.getImage();
+            String path=vehicle.getImage();
             System.out.println(path);
             Image image = new Image(path);
             imageVehicle.setImage(image);

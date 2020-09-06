@@ -2,6 +2,8 @@ package sample;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HorizontalDirection;
+import javafx.geometry.VerticalDirection;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,7 +15,10 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -410,8 +415,272 @@ class EmployeePageControllerTest {
         robot.write("100");
         robot.clickOn("#btnAddConfirm");
         assertEquals(100, dao.getVehiclePerId(0).getPricePerDay());
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void addReservationAction(FxRobot robot) {
+        robot.clickOn("#tabReservations");
+        TableView tableView = robot.lookup("#tableViewReservations").queryAs(TableView.class);
+        robot.clickOn("#btnAddReservation");
+        robot.lookup("#lblVehicle").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblVehicle").queryAs(Label.class);
+        assertNotNull(lbl);
+        robot.lookup("#listVehicles").tryQuery().isPresent();
+        ListView<Vehicle> vehicleListView=robot.lookup("#listVehicles").queryAs(ListView.class);
+        vehicleListView.getSelectionModel().selectFirst();
+        robot.lookup("#listClients").tryQuery().isPresent();
+        ListView<Client> clientListView=robot.lookup("#listClients").queryAs(ListView.class);
+        clientListView.getSelectionModel().selectFirst();
+        DatePicker datePicker=robot.lookup("#datePickup").queryAs(DatePicker.class);
+        datePicker.setValue(LocalDate.now());
+        DatePicker datePicker1=robot.lookup("#dateReturn").queryAs(DatePicker.class);
+        datePicker1.setValue(LocalDate.of(2020, 9, LocalDate.now().getDayOfMonth()+1));
+        robot.clickOn("#btnConfirmAddReservation");
+        assertTrue(theStage.isShowing());
+        RentACarDAO dao = RentACarDAO.getInstance();
+        assertEquals(1, dao.getReservations().size());
+        assertEquals(1, tableView.getItems().size());
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void addReservationAction2(FxRobot robot) {
+        robot.clickOn("#tabReservations");
+        TableView tableView = robot.lookup("#tableViewReservations").queryAs(TableView.class);
+        robot.clickOn("#btnAddReservation");
+        robot.lookup("#lblVehicle").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblVehicle").queryAs(Label.class);
+        assertNotNull(lbl);
+        robot.lookup("#listVehicles").tryQuery().isPresent();
+        ListView<Vehicle> vehicleListView=robot.lookup("#listVehicles").queryAs(ListView.class);
+        vehicleListView.getSelectionModel().selectFirst();
+        robot.lookup("#listClients").tryQuery().isPresent();
+        ListView<Client> clientListView=robot.lookup("#listClients").queryAs(ListView.class);
+        clientListView.getSelectionModel().selectFirst();
+        DatePicker datePicker=robot.lookup("#datePickup").queryAs(DatePicker.class);
+        datePicker.setValue(LocalDate.now());
+        DatePicker datePicker1=robot.lookup("#dateReturn").queryAs(DatePicker.class);
+        datePicker1.setValue(LocalDate.of(2020, 9, LocalDate.now().getDayOfMonth()+1));
+        robot.clickOn("#btnConfirmAddReservation");
+        assertTrue(theStage.isShowing());
+        RentACarDAO dao = RentACarDAO.getInstance();
+        assertEquals(1, dao.getReservations().size());
+        assertEquals(1, tableView.getItems().size());
+        tableView.getSelectionModel().selectFirst();
+        robot.clickOn("#btnEditReservation");
+        ListView<Vehicle> vehicleListView1=robot.lookup("#listVehicles").queryAs(ListView.class);
+        vehicleListView1.getSelectionModel().selectFirst();
+        robot.clickOn("#btnConfirmAddReservation");
+        assertTrue(theStage.isShowing());
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void addReservationAction3(FxRobot robot) {
+        robot.clickOn("#tabReservations");
+        TableView tableView = robot.lookup("#tableViewReservations").queryAs(TableView.class);
+        robot.clickOn("#btnAddReservation");
+        robot.lookup("#lblVehicle").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblVehicle").queryAs(Label.class);
+        assertNotNull(lbl);
+        robot.lookup("#listVehicles").tryQuery().isPresent();
+        ListView<Vehicle> vehicleListView=robot.lookup("#listVehicles").queryAs(ListView.class);
+        vehicleListView.getSelectionModel().selectFirst();
+        robot.lookup("#listClients").tryQuery().isPresent();
+        ListView<Client> clientListView=robot.lookup("#listClients").queryAs(ListView.class);
+        clientListView.getSelectionModel().selectFirst();
+        DatePicker datePicker=robot.lookup("#datePickup").queryAs(DatePicker.class);
+        datePicker.setValue(LocalDate.now());
+        DatePicker datePicker1=robot.lookup("#dateReturn").queryAs(DatePicker.class);
+        datePicker1.setValue(LocalDate.of(2020, 9, LocalDate.now().getDayOfMonth()+1));
+        robot.clickOn("#btnConfirmAddReservation");
+        assertTrue(theStage.isShowing());
+        robot.clickOn("#btnEditReservation");
+        robot.clickOn("OK");
+        tableView.getSelectionModel().selectFirst();
+        robot.clickOn("#btnEditReservation");
+        robot.lookup("#lblVehicle").tryQuery().isPresent();
+        Label label=robot.lookup("#lblVehicle").queryAs(Label.class);
+        assertNotNull(label);
+        robot.clickOn("#btnCancelAddReservation");
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void addReservationAction4(FxRobot robot) {
+        robot.clickOn("#tabReservations");
+        TableView tableView = robot.lookup("#tableViewReservations").queryAs(TableView.class);
+        robot.clickOn("#btnDeleteReservation");
+        robot.clickOn("OK");
+        robot.clickOn("#btnAddReservation");
+        robot.lookup("#lblVehicle").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblVehicle").queryAs(Label.class);
+        assertNotNull(lbl);
+        robot.lookup("#listVehicles").tryQuery().isPresent();
+        ListView<Vehicle> vehicleListView=robot.lookup("#listVehicles").queryAs(ListView.class);
+        vehicleListView.getSelectionModel().selectFirst();
+        robot.lookup("#listClients").tryQuery().isPresent();
+        ListView<Client> clientListView=robot.lookup("#listClients").queryAs(ListView.class);
+        clientListView.getSelectionModel().selectFirst();
+        DatePicker datePicker=robot.lookup("#datePickup").queryAs(DatePicker.class);
+        datePicker.setValue(LocalDate.now());
+        DatePicker datePicker1=robot.lookup("#dateReturn").queryAs(DatePicker.class);
+        datePicker1.setValue(LocalDate.of(2020, 9, LocalDate.now().getDayOfMonth()+1));
+        robot.clickOn("#btnConfirmAddReservation");
+        assertTrue(theStage.isShowing());
+        robot.clickOn("#btnDeleteReservation");
+        robot.clickOn("OK");
+        tableView.getSelectionModel().selectFirst();
+        robot.clickOn("#btnDeleteReservation");
+        robot.clickOn("OK");
+        RentACarDAO dao = RentACarDAO.getInstance();
+        assertEquals(0, dao.getReservations().size());
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void deleteReservation(FxRobot robot) {
+        robot.clickOn("#tabReservations");
+        TableView tableView = robot.lookup("#tableViewReservations").queryAs(TableView.class);
+        robot.clickOn("#btnAddReservation");
+        robot.lookup("#lblVehicle").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblVehicle").queryAs(Label.class);
+        assertNotNull(lbl);
+        robot.lookup("#listVehicles").tryQuery().isPresent();
+        ListView<Vehicle> vehicleListView=robot.lookup("#listVehicles").queryAs(ListView.class);
+        vehicleListView.getSelectionModel().selectFirst();
+        robot.lookup("#listClients").tryQuery().isPresent();
+        ListView<Client> clientListView=robot.lookup("#listClients").queryAs(ListView.class);
+        clientListView.getSelectionModel().selectFirst();
+        DatePicker datePicker=robot.lookup("#datePickup").queryAs(DatePicker.class);
+        datePicker.setValue(LocalDate.now());
+        DatePicker datePicker1=robot.lookup("#dateReturn").queryAs(DatePicker.class);
+        datePicker1.setValue(LocalDate.of(2020, 9, LocalDate.now().getDayOfMonth()+1));
+        robot.clickOn("#btnConfirmAddReservation");
+        assertTrue(theStage.isShowing());
+        tableView.getSelectionModel().selectFirst();
+        tableView.scrollToColumnIndex(12);
+        robot.clickOn("Obriši");
+        robot.clickOn("OK");
+        RentACarDAO dao = RentACarDAO.getInstance();
+        assertEquals(0, dao.getReservations().size());
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void editReservation(FxRobot robot) {
+        robot.clickOn("#tabReservations");
+        TableView tableView = robot.lookup("#tableViewReservations").queryAs(TableView.class);
+        robot.clickOn("#btnAddReservation");
+        robot.lookup("#lblVehicle").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblVehicle").queryAs(Label.class);
+        assertNotNull(lbl);
+        robot.lookup("#listVehicles").tryQuery().isPresent();
+        ListView<Vehicle> vehicleListView=robot.lookup("#listVehicles").queryAs(ListView.class);
+        vehicleListView.getSelectionModel().selectFirst();
+        robot.lookup("#listClients").tryQuery().isPresent();
+        ListView<Client> clientListView=robot.lookup("#listClients").queryAs(ListView.class);
+        clientListView.getSelectionModel().selectFirst();
+        DatePicker datePicker=robot.lookup("#datePickup").queryAs(DatePicker.class);
+        datePicker.setValue(LocalDate.now());
+        DatePicker datePicker1=robot.lookup("#dateReturn").queryAs(DatePicker.class);
+        datePicker1.setValue(LocalDate.of(2020, 9, LocalDate.now().getDayOfMonth()+1));
+        robot.clickOn("#btnConfirmAddReservation");
+        assertTrue(theStage.isShowing());
+        tableView.getSelectionModel().selectFirst();
+        tableView.scrollToColumnIndex(11);
+        robot.clickOn("Izmijeni");
+        robot.clickOn("#dateReturn");
+        KeyCode ctrl = KeyCode.CONTROL;
+        if (System.getProperty("os.name").equals("Mac OS X"))
+            ctrl = KeyCode.COMMAND;
+        robot.press(ctrl).press(KeyCode.A).release(KeyCode.A).release(ctrl);
+        robot.write("10/7/2020");
+        robot.clickOn("#btnConfirmAddReservation");
+        RentACarDAO dao = RentACarDAO.getInstance();
+        ArrayList<Reservation>reservations=dao.getReservations();
+        Reservation reservation=reservations.get(0);
+        assertEquals(10, reservation.getReturnDate().getMonth().getValue());
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void editVehicle(FxRobot robot) {
+        robot.clickOn("#tabVehicles");
+        TableView tableView = robot.lookup("#tableViewVehicles").queryAs(TableView.class);
+        tableView.getSelectionModel().selectFirst();
+        tableView.scrollToColumnIndex(14);
+        robot.clickOn("Izmijeni");
+        Label lbl=robot.lookup("#lblNameVehicle").queryAs(Label.class);
+        assertNotNull(lbl);
+        robot.clickOn("#comboPrice");
+        KeyCode ctrl = KeyCode.CONTROL;
+        if (System.getProperty("os.name").equals("Mac OS X"))
+            ctrl = KeyCode.COMMAND;
+        robot.press(ctrl).press(KeyCode.A).release(KeyCode.A).release(ctrl);
+        robot.write("180");
+        robot.clickOn("#btnAddConfirm");
+        assertTrue(theStage.isShowing());
+        RentACarDAO dao = RentACarDAO.getInstance();
+        assertEquals(180.0, dao.getVehiclePerId(0).getPricePerDay());
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void deleteVehicle(FxRobot robot) {
+        robot.clickOn("#tabVehicles");
+        TableView tableView = robot.lookup("#tableViewVehicles").queryAs(TableView.class);
+        tableView.getSelectionModel().selectFirst();
+        tableView.scrollToColumnIndex(15);
+        robot.clickOn("Obriši");
+        robot.clickOn("OK");
+        RentACarDAO dao = RentACarDAO.getInstance();
+        assertEquals(5, dao.getVehicles().size());
+        Stage stage= (Stage) tableView.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
     }
     /*@Test
+    void addReservationAction4(FxRobot robot) {
+        robot.clickOn("#tabReservations");
+        TableView tableView = robot.lookup("#tableViewReservations").queryAs(TableView.class);
+        robot.clickOn("#btnAddReservation");
+        robot.lookup("#lblVehicle").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblVehicle").queryAs(Label.class);
+        assertNotNull(lbl);
+        robot.lookup("#listVehicles").tryQuery().isPresent();
+        ListView<Vehicle> vehicleListView=robot.lookup("#listVehicles").queryAs(ListView.class);
+        vehicleListView.getSelectionModel().selectFirst();
+        robot.lookup("#listClients").tryQuery().isPresent();
+        ListView<Client> clientListView=robot.lookup("#listClients").queryAs(ListView.class);
+        clientListView.getSelectionModel().selectFirst();
+        /*DatePicker datePicker=robot.lookup("#datePickup").queryAs(DatePicker.class);
+        datePicker.setValue(LocalDate.now());
+        DatePicker datePicker1=robot.lookup("#dateReturn").queryAs(DatePicker.class);
+        datePicker1.setValue(LocalDate.now());
+        robot.clickOn("OK");
+        datePicker1.setValue(LocalDate.of(2020, 9, LocalDate.now().getDayOfMonth()-4));
+        robot.clickOn("OK");
+        datePicker1.setValue(LocalDate.of(2020, 9, LocalDate.now().getDayOfMonth()+14));
+        robot.clickOn("#datePickup");
+        robot.write("9/5/2020");
+        robot.clickOn("#dateReturn");
+        robot.write("9/5/2020");
+        robot.clickOn("OK");
+        robot.clickOn("#dateReturn");
+        robot.write("8/5/2020");
+        robot.clickOn("OK");
+        robot.clickOn("#dateReturn");
+        robot.write("9/15/2020");
+        robot.clickOn("#btnConfirmAddReservation");
+        assertTrue(theStage.isShowing());
+        RentACarDAO dao = RentACarDAO.getInstance();
+        assertEquals(1, dao.getReservations().size());
+        assertEquals(1, tableView.getItems().size());
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
     void editVehicleAction2(FxRobot robot) {
         robot.clickOn("#tabVehicles");
         TableView tableView = robot.lookup("#tableViewVehicles").queryAs(TableView.class);
@@ -431,4 +700,5 @@ class EmployeePageControllerTest {
         robot.clickOn("#btnAddConfirm");
         assertEquals(100, dao.getVehiclePerId(0).getPricePerDay());
     }*/
+
 }

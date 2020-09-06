@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,21 +22,22 @@ public class PriceRentingController {
     public DatePicker dateReturn;
     private Client client;
     private Vehicle vehicle;
-    public Button btnReservation;
+    public Button btnReservationFromPrice;
     public Label lblVehicleName;
-
+    public ImageView imageViewVehicleFromPrice;
     public PriceRentingController(Vehicle vehicle, Client client) {
         this.vehicle=vehicle;
         this.client=client;
     }
     @FXML
     public void initialize(){
-        if(vehicle==null){
+        /*if(vehicle==null){
             showAlert("Greška", "Vozilo nije odabrano", Alert.AlertType.ERROR);
             return;
-        }
+        }*/
         lblVehicleName.setText(vehicle.getName());
-        if (vehicle.getAvailability().equals("NE")) btnReservation.setDisable(true);
+        if (vehicle.getAvailability().equals("NE")) btnReservationFromPrice.setDisable(true);
+        imageViewVehicleFromPrice.setImage(new Image(vehicle.getImage()));
     }
     public void reservationAction(ActionEvent actionEvent) {
         Stage currentStage = (Stage) fldPrice.getScene().getWindow();

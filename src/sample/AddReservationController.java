@@ -206,7 +206,7 @@ public class AddReservationController {
             Reservation reservation = new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), hourPickup.getValue() + ":" + minutePickup.getValue(), hourReturn.getValue() + ":" + minuteReturn.getValue(), null);
             this.reservation=reservation;
             }
-            catch (NegativeNumberException e){
+            catch (NegativeNumberException | InvalidTimeFormatException e){
                 e.printStackTrace();
             }
             rentACarDAO.addReservation(reservation);
@@ -228,9 +228,17 @@ public class AddReservationController {
             }
            reservation.setPickUpDate(datePickup.getValue());
            reservation.setReturnDate(dateReturn.getValue());
-           reservation.setPickupTime(hourPickup.getValue()+":"+minutePickup.getValue());
-           reservation.setReturnTime(hourReturn.getValue()+":"+minuteReturn.getValue());
-           rentACarDAO.editReservation(reservation);
+            try {
+                reservation.setPickupTime(hourPickup.getValue()+":"+minutePickup.getValue());
+            } catch (InvalidTimeFormatException e) {
+                e.printStackTrace();
+            }
+            try {
+                reservation.setReturnTime(hourReturn.getValue()+":"+minuteReturn.getValue());
+            } catch (InvalidTimeFormatException e) {
+                e.printStackTrace();
+            }
+            rentACarDAO.editReservation(reservation);
            System.out.println(reservation.getVehicle().getName());
 
         }

@@ -55,6 +55,7 @@ public class ReservationController {
         this.client=client;
         this.reservation=reservation;
         rentACarDAO=RentACarDAO.getInstance();
+        if(reservation!=null)dateOk=true;
     }
 
 
@@ -275,7 +276,7 @@ public class ReservationController {
             }
         });
 */
-            fldTelephone.textProperty().addListener(new ChangeListener<String>() {
+            /*fldTelephone.textProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
                     if (!fldTelephone.getText().trim().isEmpty()) {
@@ -305,7 +306,7 @@ public class ReservationController {
                         //returnDateValidate = false;
                     }
                 }
-            });
+            });*/
             fldNmbCard.textProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue<? extends String> observableValue, String o, String n) {
@@ -401,6 +402,7 @@ public class ReservationController {
         if (result.get() == ButtonType.OK){
             //System.out.println(data.getReturnTime());
             reservation.getVehicle().setAvailability("DA");
+            System.out.println(reservation.getVehicle().getAvailability());
             rentACarDAO.deleteReservation(reservation);
            Stage stage= (Stage) fldName.getScene().getWindow();
            stage.close();
@@ -426,6 +428,7 @@ public class ReservationController {
 
            }
        }
+
         if(!dateOk){
             showAlert("Greška", "Odaberite ispravan datum rentanja/vraćanja vozila", Alert.AlertType.ERROR);
             return;
@@ -533,7 +536,7 @@ public class ReservationController {
                 Reservation reservation = new Reservation(0, vehicle, client, datePickup.getValue(), dateReturn.getValue(), choicePickupHour.getValue() + ":" + choicePickupMinute.getValue(), choiceReturnHour.getValue() + ":" + choiceReturnMinute.getValue(), card);
                this.reservation=reservation;
                 }
-                catch (NegativeNumberException e){
+                catch (NegativeNumberException | InvalidTimeFormatException e){
                     e.printStackTrace();
                 }
                 rentACarDAO.addReservation(reservation);
@@ -548,8 +551,16 @@ public class ReservationController {
             if (result.get() == ButtonType.OK) {
                 reservation.setPickUpDate(datePickup.getValue());
                 reservation.setReturnDate(dateReturn.getValue());
-                reservation.setPickupTime(choicePickupHour.getValue() + ":" + choicePickupMinute.getValue());
-                reservation.setReturnTime(choiceReturnHour.getValue() + ":" + choiceReturnMinute.getValue());
+                try {
+                    reservation.setPickupTime(choicePickupHour.getValue() + ":" + choicePickupMinute.getValue());
+                } catch (InvalidTimeFormatException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    reservation.setReturnTime(choiceReturnHour.getValue() + ":" + choiceReturnMinute.getValue());
+                } catch (InvalidTimeFormatException e) {
+                    e.printStackTrace();
+                }
                 if(checkBoxNow.isSelected()){
                     String expire = getDays(choiceMonth.getValue()) + "." + getMonth(choiceMonth.getValue()) + "." + fldYear.getText();
                     LocalDate expireDate = stringToDate(expire);
@@ -564,8 +575,10 @@ public class ReservationController {
                     //dobavi ponovo karticu iz baze
                     card = rentACarDAO.getCard(fldNmbCard.getText());
                     reservation.setCard(card);
+                    System.out.println("broj kartice "+card.getCardNumber());
                 }
                 rentACarDAO.editReservation(reservation);
+                System.out.println(reservation.getCard().getCardNumber());
             }
         }
             Stage stage = (Stage) lblTotalPrice.getScene().getWindow();

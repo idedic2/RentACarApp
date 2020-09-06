@@ -131,6 +131,7 @@ public class ClientPageController {
                     private final Button btn = new Button("Cijena");
 
                     {
+                        btn.setId("btnPrice");
                         btn.setOnAction((ActionEvent event) -> {
                             Vehicle vehicle = getTableView().getItems().get(getIndex());
                             //System.out.println("selectedData: " + data);
@@ -190,6 +191,7 @@ public class ClientPageController {
                     private final Button btn = new Button("Rezervacija");
 
                     {
+                        btn.setId("btnReservation");
                         btn.setOnAction((ActionEvent event) -> {
                             Vehicle vehicle = getTableView().getItems().get(getIndex());
                             if(vehicle.getAvailability().equals("NE")){
@@ -285,6 +287,11 @@ public class ClientPageController {
                 stage.setScene(new Scene(root, USE_COMPUTED_SIZE, USE_COMPUTED_SIZE));
                 stage.setResizable(true);
                 stage.show();
+                stage.setOnHiding( event -> {
+
+                    listVehicles.setAll(rentACarDAO.getVehicles());
+                    //}
+                } );
             } catch (IOException e) {
                 e.printStackTrace();
             }

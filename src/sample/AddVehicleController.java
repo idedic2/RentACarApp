@@ -77,7 +77,7 @@ public class AddVehicleController {
            else checkAvailability.setSelected(false);
 
         } else {
-            String path="/images/placeholderVehicle.png";
+            String path="/images/placeholder.png";
             System.out.println(path);
             Image image = new Image(path);
             placeholderImage.setImage(image);

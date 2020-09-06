@@ -68,6 +68,57 @@ class RegistrationControllerTest {
         // Klik na dugme ok
         robot.clickOn("#btnRegistrationConfirm");
         robot.clickOn("OK");
+        robot.lookup("#lblWelcomeClient").tryQuery().isPresent();
+        Label lbl=robot.lookup("#lblWelcomeClient").queryAs(Label.class);
+        assertNotNull(lbl);
+        Stage stage= (Stage) lbl.getScene().getWindow();
+        Platform.runLater(() -> stage.close());
+    }
+    @Test
+    void registrationConfirmAction2(FxRobot robot) {
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#fldFirstName");
+        robot.write("Klijent");
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#fldLastName");
+        robot.write("Klijentijević");
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#fldEmail");
+        robot.write("klijent@gmail.com");
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#fldUsername");
+        robot.write("klijent123");
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#fldPassword");
+        robot.write("password");
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#fldRetypePassword");
+        robot.write("passwor");
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#fldRetypePassword");
+        KeyCode ctrl = KeyCode.CONTROL;
+        if (System.getProperty("os.name").equals("Mac OS X"))
+            ctrl = KeyCode.COMMAND;
+        robot.press(ctrl).press(KeyCode.A).release(KeyCode.A).release(ctrl);
+        robot.write("password");
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#fldAddress");
+        robot.write("Klijentova adresa");
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
+        robot.clickOn("#fldTelephone");
+        robot.write("062333457");
+        // Klik na dugme ok
+        robot.clickOn("#btnRegistrationConfirm");
+        robot.clickOn("OK");
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

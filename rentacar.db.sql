@@ -66,8 +66,8 @@ INSERT INTO "vehicle" ("id","name","brand","model","type","year","seats_number",
  (1,'Mercedes Eclass','Mercedes','Eclass','Luksuzni automobil',2019,5,5,'Dizel','Automatik',30.0,'Crna',140.0,'DA','file:/C:/Users/Windows%2010/IdeaProjects/projekat/resources/images/mercedesEclassVehicle.png'),
  (2,'Ford Custom','Ford','Custom 2.0','Transportno vozilo',2017,8,4,'Benzin','Automatik',30.0,'Siva',120.0,'DA','file:/C:/Users/Windows%2010/IdeaProjects/projekat/resources/images/fordCustomVehicle.png'),
  (3,'Škoda Fabia','Škoda','Fabia 1.2','Putnicki automobil',2017,5,5,'Benzin','Automatik',12.0,'Plava',50.0,'DA','file:/C:/Users/Windows%2010/IdeaProjects/projekat/resources/images/skodaFabiaVehicle.png'),
- (4,'Opel Vivaro','Opel','Vivaro 1.6','Transportno vozilo',2019,8,4,'Dizel','Manuelni',30.0,'Siva',120.0,'DA','file:/C:/Users/Windows%2010/IdeaProjects/projekat/resources/images/opelVivaroVehicle.png'),
- (5,'Seat Leon','Seat','Leon 1.2 Turbo','Putnicki automobil',2018,5,5,'Dizel','Manuelni',10.0,'Bijela',80.0,'DA','file:/C:/Users/Windows%2010/IdeaProjects/projekat/resources/images/seatLeonVehicle.png');
+ (4,'Opel Vivaro','Opel','Vivaro 1.6','Transportno vozilo',2019,8,4,'Dizel','Manuelni',30.0,'Siva',120.0,'NE','file:/C:/Users/Windows%2010/IdeaProjects/projekat/resources/images/opelVivaroVehicle.png'),
+ (5,'Seat Leon','Seat','Leon 1.2 Turbo','Putnicki automobil',2018,5,5,'Dizel','Manuelni',10.0,'Bijela',80.0,'NE','file:/C:/Users/Windows%2010/IdeaProjects/projekat/resources/images/seatLeonVehicle.png');
 INSERT INTO "client" ("id","address","telephone") VALUES (3,'Klijentova adresa','062333457');
 INSERT INTO "user" ("id","first_name","last_name","email","username","password") VALUES (1,'Irma','Dedic','idedic2@etf.unsa.ba','idedic2','password'),
  (2,'Zaposlenik','Zaposlenikovic','zaposlenik@gmail.com','zaposlenik','password'),

@@ -58,7 +58,7 @@
       <Label fx:id="lblPrice" GridPane.columnIndex="1" GridPane.rowIndex="11" />
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="13">
         <buttons>
-          <Button fx:id="btnReservation" mnemonicParsing="false" onAction="#reservationAction" text="Rezerviši" />
+          <Button fx:id="btnReservationFromDetails" mnemonicParsing="false" onAction="#reservationAction" text="Rezerviši" />
             <Button fx:id="btnBack" mnemonicParsing="false" onAction="#backAction" text="Nazad" />
         </buttons>
       </ButtonBar>

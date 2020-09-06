@@ -33,7 +33,7 @@
       <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Vozilo:" GridPane.columnIndex="1" />
+      <Label fx:id="lblVehicle" text="Vozilo:" GridPane.columnIndex="1" />
        <TextField fx:id="fldSearchVehicle" promptText="search: e.g. Audi" GridPane.columnIndex="2" GridPane.rowIndex="1" />
        <ChoiceBox fx:id="choiceFilterVehicle" onAction="#changeFilterVehicle" value="Svi" GridPane.columnIndex="1" GridPane.rowIndex="1">
            <items>
@@ -128,8 +128,8 @@
       </ChoiceBox>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="10">
         <buttons>
-          <Button mnemonicParsing="false" onAction="#confirmAddReservationAction" text="Potvrdi" />
-            <Button mnemonicParsing="false" onAction="#cancelAddReservationAction" text="Odustani" />
+          <Button fx:id="btnConfirmAddReservation" mnemonicParsing="false" onAction="#confirmAddReservationAction" text="Potvrdi" />
+            <Button fx:id="btnCancelAddReservation" mnemonicParsing="false" onAction="#cancelAddReservationAction" text="Odustani" />
         </buttons>
       </ButtonBar>
    </children>

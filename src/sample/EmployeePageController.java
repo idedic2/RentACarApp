@@ -214,7 +214,7 @@ public class EmployeePageController {
                     private final Button btn = new Button("Obriši");
                     {
                         //btn.getStyleClass().add("deleteButton");
-
+                        btn.setId("btnDeleteReservationDynamic");
                         btn.setOnAction((ActionEvent event) -> {
                             Reservation data = getTableView().getItems().get(getIndex());
                             //System.out.println("selectedData: " + data);

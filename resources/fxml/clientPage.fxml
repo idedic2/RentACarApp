@@ -31,9 +31,9 @@
                        <MenuItem fx:id="menuItemLogOut" mnemonicParsing="false" onAction="#logOutAction" text="Odjavi se" />
                    </items>
                </Menu>
-               <Menu mnemonicParsing="false" text="Rezervacije">
+               <Menu fx:id="menuReservations" mnemonicParsing="false" text="Rezervacije">
                    <items>
-                       <MenuItem mnemonicParsing="false" onAction="#editMyReservationsAction" text="Uredi rezervaciju" />
+                       <MenuItem fx:id="menuItemEditReservation" mnemonicParsing="false" onAction="#editMyReservationsAction" text="Uredi rezervaciju" />
                    </items>
                </Menu>
                <Menu fx:id="menuHelp" mnemonicParsing="false" text="Pomoć">

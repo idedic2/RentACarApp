@@ -30,7 +30,7 @@ public class CarDetailsController {
     public Label lblAvailability;
     public Label lblPrice;
     public Label lblName;
-    public Button btnReservation;
+    public Button btnReservationFromDetails;
     public Vehicle vehicle;
     public Client client;
     public ImageView imageVehicle;
@@ -39,20 +39,15 @@ public class CarDetailsController {
         this.vehicle=vehicle;
         this.client=client;
     }
-    private void showAlert(String title, String headerText, Alert.AlertType type) {
-        Alert error = new Alert(type);
-        error.setTitle(title);
-        error.setHeaderText(headerText);
-        error.show();
-    }
+
     @FXML
-    public void initialize() throws FileNotFoundException {
-        if(vehicle==null){
+    public void initialize() {
+       /* if (vehicle == null) {
             showAlert("Greška", "Vozilo nije odabrano", Alert.AlertType.ERROR);
             return;
-        }
-        else{
-            lblImage.setText(lblImage.getText()+vehicle.getName());
+        } else {*/
+       if(vehicle!=null){
+            lblImage.setText(lblImage.getText() + vehicle.getName());
             lblName.setText(vehicle.getName());
             lblBrand.setText(vehicle.getBrand());
             lblModel.setText(vehicle.getModel());
@@ -66,14 +61,15 @@ public class CarDetailsController {
             lblAvailability.setText(vehicle.getAvailability());
             lblFuelConsumption.setText(Double.toString(vehicle.getFuelConsumption()));
             lblYear.setText(Integer.toString(vehicle.getYear()));
-            String path=vehicle.getImage();
+            String path = vehicle.getImage();
             System.out.println(path);
             Image image = new Image(path);
             imageVehicle.setImage(image);
             //imageVehicle=new ImageView(image);
         }
-        if (vehicle.getAvailability().equals("NE")) btnReservation.setDisable(true);
+        if (vehicle.getAvailability().equals("NE")) btnReservationFromDetails.setDisable(true);
     }
+
     public void reservationAction(ActionEvent actionEvent) {
 
             Stage currentStage = (Stage) lblName.getScene().getWindow();

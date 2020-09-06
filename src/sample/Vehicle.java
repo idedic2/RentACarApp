@@ -1,5 +1,7 @@
 package sample;
 
+import java.time.LocalDate;
+
 public class Vehicle {
     private int id;
     private String name;
@@ -20,6 +22,7 @@ public class Vehicle {
     public Vehicle(int id, String name, String brand, String model, String type, int year, int seatsNumber, int doorsNumber, String engine, String transmission, Double fuelConsumption, String color, Double pricePerDay, String availability, String image) throws NegativeNumberException {
         if (id < 0 || year < 0 || seatsNumber < 0 || doorsNumber < 0 || fuelConsumption < 0 || pricePerDay < 0)
             throw new NegativeNumberException("Unijeli ste negativan broj");
+        if(year>LocalDate.now().getYear())throw new IllegalArgumentException("Godina proizvodnje ne smije biti iz budućnosti");
         else {
             this.id = id;
             this.name = name;
@@ -52,7 +55,6 @@ public class Vehicle {
     public void setId(int id) throws NegativeNumberException{
         if(id<0)
             throw new NegativeNumberException("Unijeli ste negativan broj");
-        else
             this.id = id;
     }
 
@@ -95,6 +97,7 @@ public class Vehicle {
     public void setYear(int year) throws NegativeNumberException{
         if(year<0)
             throw new NegativeNumberException("Unijeli ste negativan broj");
+        if(year>LocalDate.now().getYear())throw new IllegalArgumentException("Godina proizvodnje ne smije biti iz budućnosti");
         else
         this.year = year;
     }

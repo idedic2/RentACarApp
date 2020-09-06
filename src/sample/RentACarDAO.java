@@ -281,6 +281,7 @@ public class RentACarDAO {
         }
         return vehicle;
     }
+
     public boolean getUserPerUsername(String username){
         try{
             getUserPerUsername.setString(1, username);
@@ -318,7 +319,7 @@ public class RentACarDAO {
             ResultSet rs=maxReservationIdQuery.executeQuery();
             if(rs.next())id=rs.getInt(1);
             addReservationQuery.setInt(1, id);
-            System.out.println(reservation.getVehicle().getId());
+            //System.out.println(reservation.getVehicle().getId());
             addReservationQuery.setInt(2, reservation.getVehicle().getId());
             addReservationQuery.setInt(3, reservation.getClient().getId());
             addReservationQuery.setString(4, reservation.getPickUpDate().getDayOfMonth()+"/"+reservation.getPickUpDate().getMonth()+"/"+reservation.getPickUpDate().getYear());
@@ -558,7 +559,7 @@ public class RentACarDAO {
                 try {
                     reservations.add(new Reservation(rs.getInt(1), vehicle, client, stringToDate(rs.getString(4)), stringToDate(rs.getString(5)), rs.getString(6), rs.getString(7), card));
                 }
-                catch (NegativeNumberException e){
+                catch (NegativeNumberException | InvalidTimeFormatException e){
                     e.printStackTrace();
                 }
             }

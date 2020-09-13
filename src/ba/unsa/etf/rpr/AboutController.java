@@ -14,6 +14,7 @@ public class AboutController {
     public AboutController() {
     }
 
+    //komentar
     @FXML
     public void initialize() {
         imageViewAbout.setImage(new Image("/images/about.png"));

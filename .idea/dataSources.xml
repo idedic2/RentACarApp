@@ -8,10 +8,10 @@
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/rentcar.db</jdbc-url>
     </data-source>
     <data-source source="LOCAL" name="rentacar" uuid="532f2e9e-0fb3-4676-8d9c-4c1309280c72">
-      <driver-ref>sqlite.xerial</driver-ref>
+      <driver-ref>444a42ab-6cba-4bd8-897b-0652007883a3</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\Windows 10\IdeaProjects\projekat\rentacar.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/rentacar.db</jdbc-url>
       <libraries>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/license.txt</url>

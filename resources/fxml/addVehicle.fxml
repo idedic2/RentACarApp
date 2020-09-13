@@ -8,7 +8,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@/css/rentacar.css" />
     </stylesheets>
@@ -128,14 +128,14 @@
         </ComboBox>
         <Label text="Dostupnost:" GridPane.rowIndex="12" />
         <CheckBox fx:id="checkAvailability" mnemonicParsing="false" text="DA" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-      <ButtonBar GridPane.columnIndex="1" GridPane.rowIndex="13">
-         <buttons>
-              <Button mnemonicParsing="false" onAction="#addImageAction" prefHeight="25.0" prefWidth="130.0" text="Učitaj" />
-            <Button fx:id="btnChooseImage" mnemonicParsing="false" onAction="#chooesImageAction" text="Odaberi" />
-         </buttons>
-      </ButtonBar>
+
+            <Button fx:id="btnChooseImage" mnemonicParsing="false" onAction="#chooseImageAction" text="Odaberi" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+
         <Label text="Dodaj sliku:" GridPane.rowIndex="13" />
-        <ImageView fx:id="placeholderImage" fitHeight="171.0" fitWidth="266.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="14" GridPane.rowSpan="5" />
+        <ImageView fx:id="placeholderImage" fitHeight="171.0" fitWidth="266.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="14" GridPane.rowSpan="5">
+         <GridPane.margin>
+            <Insets left="100.0" />
+         </GridPane.margin></ImageView>
     </children>
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

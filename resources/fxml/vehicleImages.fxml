@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:id="grid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="553.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="grid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="553.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -19,6 +19,7 @@
       <ButtonBar GridPane.rowIndex="2">
          <buttons>
             <Button fx:id="btnConfirmImage" mnemonicParsing="false" onAction="#confirmChoosenImageAction" text="Potvrdi" />
+            <Button mnemonicParsing="false" onAction="#closeVehicleImagesAction" text="Zatvori" />
          </buttons>
       </ButtonBar>
    </children>

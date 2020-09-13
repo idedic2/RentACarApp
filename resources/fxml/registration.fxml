@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane prefHeight="373.0" prefWidth="417.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@/css/rentacar.css" />
     </stylesheets>
     <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="159.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="406.0" minWidth="10.0" prefWidth="248.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="306.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
@@ -28,7 +28,7 @@
       <RowConstraints maxHeight="130.0" minHeight="30.0" prefHeight="50.0" />
   </rowConstraints>
     <children>
-        <Label fx:id="lblRegistrationText" GridPane.rowIndex="1">
+        <Label fx:id="lblRegistrationText" GridPane.columnSpan="2" GridPane.rowIndex="1">
             <font>
                 <Font size="18.0" />
             </font>
